@@ -2111,7 +2111,10 @@ button {
 /* --- The arc between two sections -----------------------------------------
    The next section's ground rises as a wide dome through this one. The halo is
    a blurred copy of the same dome rather than a box-shadow: on a light ground a
-   shadow washes out long before it reads as light. */
+   shadow washes out long before it reads as light.
+
+   The glows sit in their own masked layer, so the light fades out on its own
+   instead of stopping dead where the section is clipped. */
 
 /* The straight rule would fight the curve, so it goes. */
 .pillars:has(+ .arc) {
@@ -2120,35 +2123,53 @@ button {
 
 .arc {
   background: var(--surface-sunk);
-  height: clamp(120px, 14vw, 200px);
+  height: clamp(150px, 17vw, 250px);
   overflow: hidden;
   position: relative;
 }
 
-.arc > span {
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  bottom: -140%;
-  display: block;
-  left: -25%;
+.arc-glows {
+  inset: 0;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 42%);
   position: absolute;
-  right: -25%;
-  top: 48%;
+}
+
+.arc-glows > span,
+.arc-dome {
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  bottom: -160%;
+  display: block;
+  /* Wide enough that the curve is still climbing at the screen edges: a
+     narrower dome dives below the frame and the ends read as flat. */
+  left: -70%;
+  position: absolute;
+  right: -70%;
+  top: 34%;
+}
+
+/* Three passes: a bright rim, a mid halo, and a wide bloom. */
+.arc-halo-tight {
+  background: color-mix(in srgb, var(--accent) 82%, #fff);
+  filter: blur(12px);
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
 .arc-halo {
   background: var(--accent);
-  filter: blur(22px);
-  opacity: 0.75;
-  transform: translateY(-4px);
+  filter: blur(34px);
+  opacity: 0.9;
+  transform: translateY(-12px);
 }
 
 .arc-halo-wide {
-  filter: blur(60px);
-  opacity: 0.55;
-  transform: translateY(-16px) scaleX(1.04);
+  background: var(--accent);
+  filter: blur(80px);
+  opacity: 0.7;
+  transform: translateY(-40px) scaleX(1.02);
 }
 
 .arc-dome {
   background: var(--paper);
-  border-top: 2px solid var(--accent);
+  border-top: 4px solid var(--accent);
 }
