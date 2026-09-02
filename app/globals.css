@@ -1625,67 +1625,88 @@ button {
 }
 
 /* --- Claude, in a bubble --------------------------------------------------
-   Pinned to the editor and speaking in the first person: a second way in, for
-   people whose editor writes the integration for them. */
+   The mark sits in a round avatar and the bubble grows out of it, comic-style:
+   the tail is drawn twice so its outline stays continuous. */
 
-.code-stage {
-  position: relative;
+.claude-say {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  margin-top: clamp(30px, 3.5vw, 40px);
+  max-width: 30rem;
+}
+
+.claude-avatar {
+  align-items: center;
+  background: color-mix(in srgb, #d97757 14%, transparent);
+  border-radius: 50%;
+  color: #d97757;
+  display: flex;
+  flex: none;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
 }
 
 .bubble {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
-  bottom: -18px;
   box-shadow:
-    0 1px 2px rgb(20 21 26 / 5%),
-    0 22px 44px -20px rgb(20 21 26 / 30%);
-  max-width: 300px;
-  padding: 15px 17px 14px;
-  position: absolute;
-  right: -14px;
-  z-index: 2;
+    0 1px 2px rgb(20 21 26 / 4%),
+    0 16px 32px -22px rgb(20 21 26 / 28%);
+  padding: 14px 16px 13px;
+  position: relative;
 }
 
-/* The tail, drawn twice: the border underneath, the fill on top of it. */
 .bubble::before,
 .bubble::after {
   border-style: solid;
   content: '';
   height: 0;
   position: absolute;
-  top: 26px;
+  top: 15px;
   width: 0;
 }
 
 .bubble::before {
   border-color: transparent var(--line) transparent transparent;
-  border-width: 9px 13px 9px 0;
-  left: -13px;
+  border-width: 8px 12px 8px 0;
+  left: -12px;
 }
 
 .bubble::after {
   border-color: transparent var(--surface) transparent transparent;
-  border-width: 8px 12px 8px 0;
-  left: -11px;
+  border-width: 7px 11px 7px 0;
+  left: -10px;
 }
 
 .bubble-speaker {
-  align-items: center;
   color: #d97757;
-  display: inline-flex;
+  display: block;
   font-size: 0.75rem;
   font-weight: 600;
-  gap: 7px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.bubble p {
+/* The line keeps its full height while it types, so nothing jumps below it. */
+.bubble-line {
   color: var(--ink);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
-  margin: 8px 0 0;
+  margin: 7px 0 0;
+  min-height: 4.5em;
+}
+
+.type-caret {
+  animation: caret 1.06s step-end infinite;
+  background: #d97757;
+  display: inline-block;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  width: 2px;
 }
 
 .bubble a {
@@ -1695,7 +1716,14 @@ button {
   font-size: 0.8125rem;
   font-weight: 500;
   gap: 6px;
-  margin-top: 10px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity var(--base) var(--ease);
+}
+
+/* The action turns up once the sentence has finished. */
+.bubble a[data-ready='true'] {
+  opacity: 1;
 }
 
 .bubble a svg {
@@ -1704,22 +1732,6 @@ button {
 
 .bubble a:hover svg {
   transform: translateX(3px);
-}
-
-/* On a narrow screen it stops floating and sits under the editor. */
-@media (max-width: 900px) {
-  .bubble {
-    bottom: auto;
-    margin-top: 18px;
-    max-width: none;
-    position: static;
-    right: auto;
-  }
-
-  .bubble::before,
-  .bubble::after {
-    display: none;
-  }
 }
 
 /* --- Talk to us -----------------------------------------------------------
@@ -1902,19 +1914,16 @@ button {
 }
 
 /* ==========================================================================
-   Closing — the page ends on an island.
-
-   The same cloud ground as the editor upstairs, so the two ends of the page
-   rhyme, with the foundations stated plainly under a hairline.
+   Closing — the last ask, then the record it stands on.
    ========================================================================== */
 
 .closing {
   background: var(--paper);
-  padding-block: clamp(80px, 10vw, 132px);
+  padding-block: clamp(80px, 10vw, 132px) clamp(64px, 8vw, 104px);
   position: relative;
 }
 
-/* A faint dot field, fading in behind the panel rather than crowding it. */
+/* A faint dot field, fading in behind the copy rather than crowding it. */
 .closing::before {
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -1929,38 +1938,10 @@ button {
   position: absolute;
 }
 
-.closing-panel {
-  background:
-    radial-gradient(
-      54% 60% at 14% 12%,
-      color-mix(in srgb, var(--accent) 40%, transparent) 0%,
-      transparent 66%
-    ),
-    radial-gradient(
-      48% 54% at 88% 18%,
-      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
-      transparent 64%
-    ),
-    radial-gradient(
-      64% 62% at 76% 96%,
-      color-mix(in srgb, var(--accent) 34%, transparent) 0%,
-      transparent 68%
-    ),
-    color-mix(in srgb, var(--accent) 12%, var(--paper));
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  border-radius: 28px;
-  margin-inline: auto;
-  max-width: 1240px;
-  overflow: hidden;
-  padding-block: clamp(52px, 6.5vw, 88px);
-  position: relative;
-  width: calc(100% - 2 * var(--nav-gutter));
-}
-
 .closing-inner {
   margin-inline: auto;
-  max-width: 860px;
-  padding-inline: clamp(20px, 4vw, 48px);
+  max-width: 1240px;
+  padding-inline: var(--nav-gutter);
   position: relative;
   text-align: center;
 }
@@ -2005,60 +1986,102 @@ button {
   min-height: 46px;
 }
 
-/* --- The ground it stands on ---------------------------------------------- */
+/* --- The record ------------------------------------------------------------
+   Identifiers in a table, on the page itself: no panel, no card. */
 
-.foundations {
-  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
-  color: var(--ink-soft);
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  margin: clamp(40px, 5vw, 60px) auto 0;
-  max-width: 62ch;
-  padding-top: clamp(28px, 3.5vw, 40px);
-  text-wrap: pretty;
+.record {
+  margin: clamp(64px, 8vw, 100px) auto 0;
+  max-width: 880px;
+  padding-inline: var(--nav-gutter);
+  position: relative;
 }
 
-.foundations a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
-  text-underline-offset: 3px;
-  transition:
-    color var(--fast) var(--ease),
-    text-decoration-color var(--fast) var(--ease);
-}
-
-.foundations a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
-.foundations-address {
-  align-items: center;
-  color: var(--ink-muted);
+.record-head {
+  align-items: baseline;
+  border-bottom: 1px solid var(--ink);
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 14px;
-  justify-content: center;
-  margin: 18px auto 0;
+  gap: 4px 20px;
+  justify-content: space-between;
+  padding-bottom: 12px;
 }
 
-.foundations-address code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+.record-head h3 {
   font-size: 0.8125rem;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.record-head p {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.record-rows {
+  margin: 0;
+}
+
+.record-row {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 4px 24px;
+  grid-template-columns: 1fr auto;
+  padding-block: 15px;
+  text-align: left;
+}
+
+@media (min-width: 720px) {
+  .record-row {
+    grid-template-columns: 9.5rem 1fr auto;
+  }
+}
+
+.record-row dt {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+}
+
+.record-value {
+  color: var(--ink);
+  font-size: 0.9375rem;
+  margin: 0;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.foundations-address a {
-  color: var(--ink-muted);
+/* Addresses and commit hashes are identifiers: monospace, a touch smaller so a
+   44-character key still fits one line. */
+.record-value.is-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.8125rem;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--ink) 24%, transparent);
-  text-underline-offset: 3px;
-  transition: color var(--fast) var(--ease);
+  letter-spacing: -0.01em;
 }
 
-.foundations-address a:hover {
+.record-row a {
+  align-items: center;
+  color: var(--ink-muted);
+  display: inline-flex;
+  font-size: 0.8125rem;
+  gap: 5px;
+  grid-column: -2;
+  grid-row: 1;
+  transition: color var(--fast) var(--ease);
+  white-space: nowrap;
+}
+
+.record-row a:hover {
   color: var(--accent);
+}
+
+.record-row a svg {
+  transition: transform var(--base) var(--ease);
+}
+
+.record-row a:hover svg {
+  transform: translateX(3px);
 }

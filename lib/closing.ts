@@ -22,11 +22,35 @@ export const closing = {
       { icon: 'x', label: 'Message us on X', detail: contact.x.handle, href: contact.x.href },
     ],
   },
-  foundations: {
-    program: { label: 'Solana Subscriptions program', href: REPO },
-    licence: { label: 'MIT licence', href: `${REPO}/blob/main/LICENSE` },
-    audits: { label: 'audited three times by Cantina', href: `${REPO}/blob/main/audits/AUDIT_STATUS.md` },
-    diff: { label: 'diff since', href: `${REPO}/compare/${AUDITED_COMMIT}...main` },
-    address: 'De1egAFMkMWZSN5rYXRj9CAdheBamobVNubTsi9avR44',
-  },
+  tableTitle: 'The ground it stands on',
+  tableNote: 'Every line is checkable in the open-source repository.',
+  rows: [
+    {
+      label: 'program',
+      value: 'De1egAFMkMWZSN5rYXRj9CAdheBamobVNubTsi9avR44',
+      mono: true,
+      link: { label: 'Source', href: REPO },
+    },
+    {
+      label: 'licence',
+      value: 'MIT — Solana Foundation',
+      link: { label: 'Read', href: `${REPO}/blob/main/LICENSE` },
+    },
+    {
+      label: 'audits',
+      value: 'Cantina × 3 — latest 2026-07-30',
+      link: { label: 'Status', href: `${REPO}/blob/main/audits/AUDIT_STATUS.md` },
+    },
+    {
+      label: 'audited through',
+      value: AUDITED_COMMIT,
+      mono: true,
+      link: { label: 'Diff since', href: `${REPO}/compare/${AUDITED_COMMIT}...main` },
+    },
+    {
+      label: 'custody',
+      value: 'None — capped, revocable delegation',
+      link: { label: 'How it works', href: `${REPO}#overview` },
+    },
+  ],
 }

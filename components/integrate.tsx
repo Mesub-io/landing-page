@@ -50,9 +50,36 @@ function useTypewriter(run: boolean) {
   return shown
 }
 
+/** Types a plain string out once, after a beat, when the section is in view. */
+function useTypedText(text: string, run: boolean, startDelay: number, speed = 22) {
+  const [shown, setShown] = useState(0)
+
+  useEffect(() => {
+    if (!run) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShown(text.length)
+      return
+    }
+
+    let frame = 0
+    const start = performance.now()
+    const tick = (now: number) => {
+      const elapsed = now - start - startDelay
+      const chars = elapsed <= 0 ? 0 : Math.min(text.length, Math.floor(elapsed / speed))
+      setShown(chars)
+      if (chars < text.length) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [run, startDelay, speed, text])
+
+  return { done: shown >= text.length, text: text.slice(0, shown) }
+}
+
 export function Integrate() {
   const { ref, seen } = useReveal<HTMLElement>(0.2)
   const shown = useTypewriter(seen)
+  const said = useTypedText(integrate.mcp.line, seen, 900)
 
   // Walk the lines, handing each one the characters it is still owed.
   let budget = shown
@@ -101,19 +128,6 @@ export function Integrate() {
               </pre>
             </div>
 
-            <div className="bubble">
-              <span className="bubble-speaker">
-                <ClaudeMark size={16} />
-                {integrate.mcp.speaker}
-              </span>
-              <p>{integrate.mcp.line}</p>
-              <a href={integrate.mcp.href}>
-                {integrate.mcp.action}
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-            </div>
           </div>
         </div>
 
@@ -133,6 +147,27 @@ export function Integrate() {
           <a className="text-link" href={integrate.link.href}>
             {integrate.link.label}
           </a>
+
+          {/* The bubble grows out of the avatar, comic-style. */}
+          <div className="claude-say">
+            <span className="claude-avatar">
+              <ClaudeMark size={22} />
+            </span>
+
+            <div className="bubble">
+              <span className="bubble-speaker">{integrate.mcp.speaker}</span>
+              <p className="bubble-line">
+                {said.text}
+                {said.done ? null : <span className="type-caret" />}
+              </p>
+              <a data-ready={said.done} href={integrate.mcp.href}>
+                {integrate.mcp.action}
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
 
         </div>
       </div>
