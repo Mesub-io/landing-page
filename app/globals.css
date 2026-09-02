@@ -1624,233 +1624,102 @@ button {
   color: var(--ink);
 }
 
-/* --- The MCP entry point --------------------------------------------------
-   A second door into the same product, for people whose editor writes the
-   integration for them. Kept as a single row: a card here would compete with
-   the code window across the way. */
+/* --- Claude, in a bubble --------------------------------------------------
+   Pinned to the editor and speaking in the first person: a second way in, for
+   people whose editor writes the integration for them. */
 
-.mcp-row {
-  align-items: center;
-  border-top: 1px solid var(--line);
-  display: flex;
-  gap: 13px;
-  margin-top: 26px;
-  max-width: 42ch;
-  padding-top: 22px;
+.code-stage {
+  position: relative;
 }
 
-.mcp-mark {
+.bubble {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  bottom: -18px;
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 5%),
+    0 22px 44px -20px rgb(20 21 26 / 30%);
+  max-width: 300px;
+  padding: 15px 17px 14px;
+  position: absolute;
+  right: -14px;
+  z-index: 2;
+}
+
+/* The tail, drawn twice: the border underneath, the fill on top of it. */
+.bubble::before,
+.bubble::after {
+  border-style: solid;
+  content: '';
+  height: 0;
+  position: absolute;
+  top: 26px;
+  width: 0;
+}
+
+.bubble::before {
+  border-color: transparent var(--line) transparent transparent;
+  border-width: 9px 13px 9px 0;
+  left: -13px;
+}
+
+.bubble::after {
+  border-color: transparent var(--surface) transparent transparent;
+  border-width: 8px 12px 8px 0;
+  left: -11px;
+}
+
+.bubble-speaker {
   align-items: center;
-  background: color-mix(in srgb, #d97757 13%, transparent);
-  border-radius: 9px;
   color: #d97757;
-  display: flex;
-  flex: none;
-  height: 34px;
-  justify-content: center;
-  transition: background-color var(--base) var(--ease);
-  width: 34px;
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 600;
+  gap: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.mcp-row:hover .mcp-mark {
-  background: color-mix(in srgb, #d97757 22%, transparent);
-}
-
-.mcp-text {
-  display: block;
-  min-width: 0;
-}
-
-.mcp-title {
+.bubble p {
   color: var(--ink);
-  display: block;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
-.mcp-body {
-  color: var(--ink-muted);
-  display: block;
+.bubble a {
+  align-items: center;
+  color: var(--accent);
+  display: inline-flex;
   font-size: 0.8125rem;
-  margin-top: 2px;
+  font-weight: 500;
+  gap: 6px;
+  margin-top: 10px;
 }
 
-.mcp-arrow {
-  color: var(--ink-muted);
-  flex: none;
-  margin-left: auto;
-  transition:
-    color var(--base) var(--ease),
-    transform var(--base) var(--ease);
+.bubble a svg {
+  transition: transform var(--base) var(--ease);
 }
 
-.mcp-row:hover .mcp-arrow {
-  color: var(--ink);
+.bubble a:hover svg {
   transform: translateX(3px);
 }
 
-/* ==========================================================================
-   Closing — the last ask, then the record it stands on.
+/* On a narrow screen it stops floating and sits under the editor. */
+@media (max-width: 900px) {
+  .bubble {
+    bottom: auto;
+    margin-top: 18px;
+    max-width: none;
+    position: static;
+    right: auto;
+  }
 
-   The facts are laid out as identifiers rather than as feature cards: an
-   address, a licence, a commit. They are meant to be checked, not admired.
-   ========================================================================== */
-/* ==========================================================================
-   Closing — the last ask, then the record it stands on.
-
-   The facts are laid out as identifiers rather than as feature cards: an
-   address, a licence, a commit. They are meant to be checked, not admired.
-   ========================================================================== */
-
-.closing {
-  background: var(--paper);
-  padding-block: clamp(80px, 10vw, 140px) clamp(64px, 8vw, 104px);
-  position: relative;
-}/* A faint dot field, fading out before it reaches the copy. */
-
-
-.closing::before {
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    color-mix(in srgb, var(--ink) 22%, transparent) 1.2px,
-    transparent 0
-  );
-  background-size: 20px 20px;
-  content: '';
-  inset: 0;
-  /* Still fades in behind the headline rather than crowding it. */
-  mask-image: radial-gradient(120% 90% at 50% 0%, transparent 26%, #000 74%);
-  pointer-events: none;
-  position: absolute;
-}
-
-.closing-inner {
-  margin-inline: auto;
-  max-width: 1240px;
-  padding-inline: var(--nav-gutter);
-  position: relative;
-  text-align: center;
-}
-
-.closing-mark {
-  color: var(--accent);
-  height: 30px;
-  margin: 0 auto 28px;
-}
-
-.closing h2 {
-  font-size: clamp(2.125rem, 3.6vw, 3.25rem);
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.06;
-  margin: 0 auto;
-  max-width: 18ch;
-  text-wrap: balance;
-}
-
-.closing-sub {
-  color: var(--ink-soft);
-  font-size: clamp(1rem, 1.2vw, 1.0625rem);
-  line-height: 1.55;
-  margin: 18px auto 0;
-  max-width: 48ch;
-}
-
-.closing-actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 32px;
-}
-
-.closing-actions .cta,
-.closing-actions .pill {
-  display: inline-flex;
-  margin: 0;
-  min-height: 46px;
-}
-/* ==========================================================================
-   The lockup, and the record as an object
-   ========================================================================== */
-/* --- The lockup ----------------------------------------------------------
-   The mark on its salmon tile, as supplied in the brand asset: the mask takes
-   the paper colour, the tile carries the accent. */
-
-
-
-.brand-tile {
-  align-items: center;
-  background: var(--accent);
-  border-radius: 10px;
-  color: var(--paper);
-  display: inline-flex;
-  height: 38px;
-  justify-content: center;
-  width: 38px;
-}
-
-/* The mark is 3:2, so it is sized by height and centred: the tile stays square. */
-.brand-tile .mark {
-  height: 17px;
-}/* --- The ground it stands on ----------------------------------------------
-   Said in a sentence rather than in a card: the facts belong to the reading,
-   not to an object competing with the call to action. */
-
-.foundations {
-  color: var(--ink-muted);
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  margin: clamp(48px, 6vw, 72px) auto 0;
-  max-width: 62ch;
-  text-wrap: pretty;
-}
-
-.foundations a {
-  color: var(--ink-soft);
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 3px;
-  transition:
-    color var(--fast) var(--ease),
-    text-decoration-color var(--fast) var(--ease);
-}
-
-.foundations a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
-.foundations-address {
-  align-items: center;
-  color: var(--ink-muted);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  justify-content: center;
-  margin: 18px auto 0;
-}
-
-.foundations-address code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.8125rem;
-  letter-spacing: -0.01em;
-  overflow-wrap: anywhere;
-}
-
-.foundations-address a {
-  color: var(--ink-muted);
-  font-size: 0.8125rem;
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 3px;
-  transition: color var(--fast) var(--ease);
-}
-
-.foundations-address a:hover {
-  color: var(--accent);
+  .bubble::before,
+  .bubble::after {
+    display: none;
+  }
 }
 
 /* --- Talk to us -----------------------------------------------------------
@@ -2030,4 +1899,166 @@ button {
 .talk-copy svg {
   height: 16px;
   width: 16px;
+}
+
+/* ==========================================================================
+   Closing — the page ends on an island.
+
+   The same cloud ground as the editor upstairs, so the two ends of the page
+   rhyme, with the foundations stated plainly under a hairline.
+   ========================================================================== */
+
+.closing {
+  background: var(--paper);
+  padding-block: clamp(80px, 10vw, 132px);
+  position: relative;
+}
+
+/* A faint dot field, fading in behind the panel rather than crowding it. */
+.closing::before {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--ink) 22%, transparent) 1.2px,
+    transparent 0
+  );
+  background-size: 20px 20px;
+  content: '';
+  inset: 0;
+  mask-image: radial-gradient(120% 90% at 50% 0%, transparent 26%, #000 74%);
+  pointer-events: none;
+  position: absolute;
+}
+
+.closing-panel {
+  background:
+    radial-gradient(
+      54% 60% at 14% 12%,
+      color-mix(in srgb, var(--accent) 40%, transparent) 0%,
+      transparent 66%
+    ),
+    radial-gradient(
+      48% 54% at 88% 18%,
+      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
+      transparent 64%
+    ),
+    radial-gradient(
+      64% 62% at 76% 96%,
+      color-mix(in srgb, var(--accent) 34%, transparent) 0%,
+      transparent 68%
+    ),
+    color-mix(in srgb, var(--accent) 12%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 28px;
+  margin-inline: auto;
+  max-width: 1240px;
+  overflow: hidden;
+  padding-block: clamp(52px, 6.5vw, 88px);
+  position: relative;
+  width: calc(100% - 2 * var(--nav-gutter));
+}
+
+.closing-inner {
+  margin-inline: auto;
+  max-width: 860px;
+  padding-inline: clamp(20px, 4vw, 48px);
+  position: relative;
+  text-align: center;
+}
+
+.closing-mark {
+  color: var(--accent);
+  height: 30px;
+  margin: 0 auto 28px;
+}
+
+.closing h2 {
+  font-size: clamp(2.125rem, 3.6vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0 auto;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+.closing-sub {
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.2vw, 1.0625rem);
+  line-height: 1.55;
+  margin: 18px auto 0;
+  max-width: 48ch;
+}
+
+.closing-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.closing-actions .cta,
+.closing-actions .pill {
+  display: inline-flex;
+  margin: 0;
+  min-height: 46px;
+}
+
+/* --- The ground it stands on ---------------------------------------------- */
+
+.foundations {
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  margin: clamp(40px, 5vw, 60px) auto 0;
+  max-width: 62ch;
+  padding-top: clamp(28px, 3.5vw, 40px);
+  text-wrap: pretty;
+}
+
+.foundations a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 3px;
+  transition:
+    color var(--fast) var(--ease),
+    text-decoration-color var(--fast) var(--ease);
+}
+
+.foundations a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.foundations-address {
+  align-items: center;
+  color: var(--ink-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  justify-content: center;
+  margin: 18px auto 0;
+}
+
+.foundations-address code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.foundations-address a {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 24%, transparent);
+  text-underline-offset: 3px;
+  transition: color var(--fast) var(--ease);
+}
+
+.foundations-address a:hover {
+  color: var(--accent);
 }

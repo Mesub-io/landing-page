@@ -16,44 +16,46 @@ export function Closing() {
 
   return (
     <section className="closing">
-      <div className="closing-inner">
-        <Logo className="closing-mark" />
+      <div className="closing-panel">
+        <div className="closing-inner">
+          <Logo className="closing-mark" />
 
-        <h2>{closing.title}</h2>
-        <p className="closing-sub">{closing.subhead}</p>
+          <h2>{closing.title}</h2>
+          <p className="closing-sub">{closing.subhead}</p>
 
-        <div className="closing-actions">
-          <a className="cta" href={closing.primary.href}>
-            {closing.primary.label}
-            <Arrow className="cta-arrow" />
-          </a>
-          <TalkToUs />
+          <div className="closing-actions">
+            <a className="cta" href={closing.primary.href}>
+              {closing.primary.label}
+              <Arrow className="cta-arrow" />
+            </a>
+            <TalkToUs />
+          </div>
+
+          {/* The ground it stands on, said plainly. */}
+          <p className="foundations">
+            Built on the open-source{' '}
+            <a href={program.href} rel="noreferrer" target="_blank">
+              {program.label}
+            </a>
+            , published by the Solana Foundation under the{' '}
+            <a href={licence.href} rel="noreferrer" target="_blank">
+              {licence.label}
+            </a>{' '}
+            and{' '}
+            <a href={audits.href} rel="noreferrer" target="_blank">
+              {audits.label}
+            </a>
+            . Non-custodial by construction: subscribers authorize a pull capped per period, and revoke it whenever they
+            want.
+          </p>
+
+          <p className="foundations-address">
+            <code>{address}</code>
+            <a href={diff.href} rel="noreferrer" target="_blank">
+              {diff.label}
+            </a>
+          </p>
         </div>
-
-        {/* The ground it stands on, said plainly. */}
-        <p className="foundations">
-          Built on the open-source{' '}
-          <a href={program.href} rel="noreferrer" target="_blank">
-            {program.label}
-          </a>
-          , published by the Solana Foundation under the{' '}
-          <a href={licence.href} rel="noreferrer" target="_blank">
-            {licence.label}
-          </a>{' '}
-          and{' '}
-          <a href={audits.href} rel="noreferrer" target="_blank">
-            {audits.label}
-          </a>
-          . Non-custodial by construction: subscribers authorize a pull capped per period, and revoke it whenever they
-          want.
-        </p>
-
-        <p className="foundations-address">
-          <code>{address}</code>
-          <a href={diff.href} rel="noreferrer" target="_blank">
-            {diff.label}
-          </a>
-        </p>
       </div>
     </section>
   )

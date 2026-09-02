@@ -100,6 +100,20 @@ export function Integrate() {
                 </code>
               </pre>
             </div>
+
+            <div className="bubble">
+              <span className="bubble-speaker">
+                <ClaudeMark size={16} />
+                {integrate.mcp.speaker}
+              </span>
+              <p>{integrate.mcp.line}</p>
+              <a href={integrate.mcp.href}>
+                {integrate.mcp.action}
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -120,18 +134,6 @@ export function Integrate() {
             {integrate.link.label}
           </a>
 
-          <a className="mcp-row" href={integrate.mcp.href}>
-            <span className="mcp-mark">
-              <ClaudeMark size={18} />
-            </span>
-            <span className="mcp-text">
-              <span className="mcp-title">{integrate.mcp.title}</span>
-              <span className="mcp-body">{integrate.mcp.body}</span>
-            </span>
-            <svg className="mcp-arrow" width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
         </div>
       </div>
     </section>

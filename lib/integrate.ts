@@ -25,9 +25,11 @@ export const integrate = {
     { icon: 'sync', label: 'The same states as the dashboard' },
   ],
   link: { label: 'Browse the API reference', href: PLACEHOLDER },
+  /** Claude, speaking from a bubble pinned to the editor. */
   mcp: {
-    title: 'Or let Claude wire it for you',
-    body: 'Connect our MCP server and its skills',
+    speaker: 'Claude',
+    line: 'Want me to write it? Connect me to the MCP server and I’ll wire the subscribe flow and the guard for you.',
+    action: 'Connect Claude',
     href: PLACEHOLDER,
   },
   file: 'app/api/reports/route.ts',
