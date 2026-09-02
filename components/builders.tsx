@@ -63,7 +63,6 @@ export function Builders() {
               </div>
               <div className="mobile-actions">
                 <span className="mobile-action">{builders.mobile.action}</span>
-                <span className="mobile-cancel">{builders.mobile.cancel}</span>
               </div>
             </div>
 

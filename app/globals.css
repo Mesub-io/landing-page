@@ -1215,34 +1215,12 @@ button {
   text-align: center;
 }
 
-/* Cancelling is a real option, not a hidden one — but it is not the one the
-   screen pushes. */
-.mobile-cancel {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  color: var(--ink-soft);
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 11px;
-  text-align: center;
-}
-
 .panel {
   /* Wider than its track: it runs past the stage on the right. */
   min-width: 660px;
   position: relative;
   z-index: 1;
 }
-
-/* Rather than being cut off, the dashboard dissolves into the stage — the
-   whole panel is masked, so its surface, rows and shadow fade together. */
-@media (min-width: 901px) {
-  .builders-stage .panel {
-    mask-image: linear-gradient(to right, #000 62%, transparent 97%);
-  }
-}
-
-
 
 /* The dashboard gets the same window chrome as the hero mock, so both read as
    the same product seen twice. */

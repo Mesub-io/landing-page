@@ -17,7 +17,6 @@ export interface Stat {
 
 export interface MobileView {
   action: string
-  cancel: string
   amount: string
   nextLabel: string
   nextValue: string
@@ -60,7 +59,6 @@ export const builders: {
     nextLabel: 'Next payment',
     nextValue: 'in 12 days',
     action: 'Manage subscription',
-    cancel: 'Cancel',
   },
   stats: [
     { label: 'Active subscriptions', value: 1284, delta: '+6%' },
