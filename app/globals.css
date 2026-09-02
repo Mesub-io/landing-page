@@ -1588,7 +1588,7 @@ button {
 }
 
 .footer-columns a:hover {
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .footer-bottom {
@@ -1791,132 +1791,177 @@ button {
 /* The mark is 3:2, so it is sized by height and centred: the tile stays square. */
 .brand-tile .mark {
   height: 17px;
-}/* --- The record, as an object --------------------------------------------- */
-
-
+}/* --- The program card -----------------------------------------------------
+   Not a table: one identifier set large, the credentials that vouch for it,
+   and a single footnote. Dark, like the editor upstairs. */
 
 .attest {
   margin: clamp(64px, 8vw, 100px) auto 0;
-  max-width: 920px;
+  max-width: 780px;
   padding-inline: var(--nav-gutter);
   position: relative;
 }
 
-.attest-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+.program-card {
+  background: #131417;
+  border-radius: 20px;
   box-shadow:
-    0 1px 2px rgb(20 21 26 / 4%),
-    0 30px 60px -40px rgb(20 21 26 / 34%);
+    0 1px 2px rgb(20 21 26 / 18%),
+    0 40px 70px -44px rgb(20 21 26 / 65%);
   overflow: hidden;
+  padding: clamp(26px, 3.4vw, 40px);
+  position: relative;
   text-align: left;
 }
 
-.attest-bar {
-  align-items: center;
-  background: var(--surface-sunk);
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  justify-content: space-between;
-  padding: 14px 20px;
+/* A single warm light in the corner, the same one the footer uses. */
+.program-card::before {
+  background: radial-gradient(
+    62% 78% at 88% -6%,
+    color-mix(in srgb, var(--accent) 42%, transparent) 0%,
+    transparent 68%
+  );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
 }
 
-.attest-bar-left {
+.program-head {
   align-items: center;
-  color: var(--ink);
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.program-label {
+  align-items: center;
+  color: color-mix(in srgb, var(--paper) 62%, transparent);
   display: inline-flex;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  gap: 11px;
-  letter-spacing: 0.06em;
+  gap: 10px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.attest-logo {
+.program-logo {
   color: var(--accent);
-  height: 17px;
+  height: 15px;
 }
 
-.attest-badge {
+.program-badge {
   align-items: center;
-  background: color-mix(in srgb, #16a34a 12%, transparent);
+  background: color-mix(in srgb, #4ade80 16%, transparent);
   border-radius: 999px;
-  color: #15803d;
+  color: #6ee7a0;
   display: inline-flex;
   font-size: 0.75rem;
   font-weight: 600;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 4px 11px;
 }
 
-.attest-rows {
-  margin: 0;
-}
-
-.attest-row {
-  align-items: baseline;
-  border-bottom: 1px solid var(--line-soft);
-  display: grid;
-  gap: 4px 20px;
-  grid-template-columns: 1fr auto;
-  padding: 15px 20px;
-}
-
-.attest-row dt {
-  color: var(--ink-muted);
-  font-size: 0.8125rem;
-  letter-spacing: 0.03em;
-}
-
-.attest-value {
-  color: var(--ink);
-  font-size: 0.9375rem;
-  margin: 0;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}/* Addresses and commit hashes are identifiers: monospace, and a touch smaller
-   so a 44-character key still fits on one line. */
-
-
-.attest-value.is-mono {
+/* The address is the object. It is a vanity key, so the prefix gets the accent. */
+.program-address {
+  color: var(--paper);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.8125rem;
-  letter-spacing: -0.01em;
+  font-size: clamp(1rem, 2.1vw, 1.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  margin: clamp(20px, 2.6vw, 30px) 0 0;
+  overflow-wrap: anywhere;
+  position: relative;
 }
 
-.attest-row a {
-  align-items: center;
-  color: var(--ink-muted);
+.program-prefix {
+  color: var(--accent);
+}
+
+.program-note {
+  color: color-mix(in srgb, var(--paper) 58%, transparent);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 14px 0 0;
+  max-width: 52ch;
+  position: relative;
+}
+
+.program-credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: clamp(24px, 3vw, 32px) 0 0;
+  padding: 0;
+  position: relative;
+}
+
+.program-credentials a {
+  align-items: baseline;
+  border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
+  border-radius: 999px;
   display: inline-flex;
+  gap: 8px;
+  padding: 8px 15px;
+  transition:
+    background-color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.program-credentials a:hover {
+  background: color-mix(in srgb, var(--paper) 8%, transparent);
+  border-color: color-mix(in srgb, var(--paper) 30%, transparent);
+}
+
+.credential-name {
+  color: var(--paper);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.credential-role {
+  color: color-mix(in srgb, var(--paper) 48%, transparent);
+  font-size: 0.75rem;
+}
+
+.program-foot {
+  align-items: center;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
+  color: color-mix(in srgb, var(--paper) 48%, transparent);
+  display: flex;
+  flex-wrap: wrap;
   font-size: 0.8125rem;
+  gap: 6px 10px;
+  margin: clamp(24px, 3vw, 32px) 0 0;
+  padding-top: 18px;
+  position: relative;
+}
+
+.program-foot code {
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.program-foot a {
+  align-items: center;
+  color: var(--paper);
+  display: inline-flex;
   gap: 5px;
-  grid-column: -2;
-  grid-row: 1;
+  margin-left: auto;
   transition: color var(--fast) var(--ease);
   white-space: nowrap;
 }
 
-.attest-row a:hover {
+.program-foot a:hover {
   color: var(--accent);
 }
 
-.attest-row a svg {
+.program-foot a svg {
   transition: transform var(--base) var(--ease);
 }
 
-.attest-row a:hover svg {
+.program-foot a:hover svg {
   transform: translateX(3px);
-}/* The signatories, stamped along the bottom edge. */
-
-
-.attest-seal {
-  border-top: 1px dashed var(--line-strong);
-  color: var(--ink-muted);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-  margin: 0;
-  padding: 14px 20px;
 }

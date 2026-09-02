@@ -30,37 +30,49 @@ export function Closing() {
         </div>
       </div>
 
-      {/* An artifact rather than a table: chrome on top, identifiers in the
-          middle, and the signatories stamped along the bottom. */}
+      {/* One identifier, its credentials, one footnote. The dark card echoes
+          the editor upstairs, so the two read as the same product. */}
       <div className="attest">
-        <div className="attest-card">
-          <div className="attest-bar">
-            <span className="attest-bar-left">
-              <Logo className="attest-logo" />
-              {closing.attestTitle}
+        <div className="program-card">
+          <div className="program-head">
+            <span className="program-label">
+              <Logo className="program-logo" />
+              {closing.program.label}
             </span>
-            <span className="attest-badge">
+            <span className="program-badge">
               <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M2.8 7.4 5.6 10.2 11.2 4.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2.8 7.4 5.6 10.2 11.2 4.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Verifiable
+              {closing.program.badge}
             </span>
           </div>
 
-          <dl className="attest-rows">
-            {closing.rows.map((row) => (
-              <div className="attest-row" key={row.label}>
-                <dt>{row.label}</dt>
-                <dd className={row.mono ? 'attest-value is-mono' : 'attest-value'}>{row.value}</dd>
-                <a href={row.link.href} rel="noreferrer" target="_blank">
-                  {row.link.label}
-                  <Arrow />
-                </a>
-              </div>
-            ))}
-          </dl>
+          <p className="program-address">
+            <span className="program-prefix">{closing.program.prefix}</span>
+            {closing.program.rest}
+          </p>
 
-          <p className="attest-seal">{closing.attestNote}</p>
+          <p className="program-note">{closing.program.note}</p>
+
+          <ul className="program-credentials">
+            {closing.program.credentials.map((credential) => (
+              <li key={credential.name}>
+                <a href={credential.href} rel="noreferrer" target="_blank">
+                  <span className="credential-name">{credential.name}</span>
+                  <span className="credential-role">{credential.role}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <p className="program-foot">
+            <span>{closing.program.foot.label}</span>
+            <code>{closing.program.foot.value.slice(0, 12)}…</code>
+            <a href={closing.program.foot.link.href} rel="noreferrer" target="_blank">
+              {closing.program.foot.link.label}
+              <Arrow />
+            </a>
+          </p>
         </div>
       </div>
     </section>
