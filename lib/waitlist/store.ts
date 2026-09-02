@@ -4,10 +4,18 @@
  * Talks to Supabase over PostgREST with plain fetch — no SDK, no dependency.
  *
  * The table has RLS enabled and no policy, so nothing can read or write it from
- * a browser. Only the service role key can, and that key is read from the
- * environment on the server. It must never be prefixed NEXT_PUBLIC_, which
- * would ship it to every visitor.
+ * a browser. Only a secret key can, and that key is read from the environment
+ * on the server. It must never be prefixed NEXT_PUBLIC_, which would ship it to
+ * every visitor.
+ *
+ * Either key name works: SUPABASE_SECRET_KEY for the modern `sb_secret_...`
+ * key, or SUPABASE_SERVICE_ROLE_KEY for the legacy one. Prefer the secret key —
+ * it answers 401 when used from a browser, and rotates on its own.
  */
+
+function secretKey(): string | undefined {
+  return process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY
+}
 
 export interface WaitlistEntry {
   email: string | null
@@ -21,12 +29,12 @@ export type StoreResult = 'stored' | 'already-listed' | 'not-configured' | 'fail
 const TIMEOUT_MS = 5_000
 
 export function isStoreConfigured(): boolean {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY)
+  return Boolean(process.env.SUPABASE_URL && secretKey())
 }
 
 export async function store(entry: WaitlistEntry): Promise<StoreResult> {
   const url = process.env.SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const key = secretKey()
   if (!url || !key) return 'not-configured'
 
   const controller = new AbortController()

@@ -70,7 +70,7 @@ export async function POST(request: Request) {
   // Refuse rather than pretend: claiming success while storing nothing is worse
   // than telling the visitor to email us.
   if (!isStoreConfigured()) {
-    console.error('[waitlist] refused: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set')
+    console.error('[waitlist] refused: SUPABASE_URL / SUPABASE_SECRET_KEY are not set')
     return fail(503, {
       form: 'The waitlist is not accepting signups right now. Email contact@mesub.io and we will add you.',
     })
