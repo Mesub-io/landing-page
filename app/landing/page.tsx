@@ -1,3 +1,7 @@
+/* Scoped entirely under `.dash`, so loading it here cannot touch the rest of
+   the page -  the hero renders the real dashboard rather than a picture of it. */
+import '../dashboard/dashboard.css'
+
 import { Builders } from '@/components/builders'
 import { Closing } from '@/components/closing'
 import { Faq } from '@/components/faq'

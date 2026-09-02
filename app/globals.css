@@ -318,13 +318,17 @@ button {
   padding-block: calc(var(--nav-height) + clamp(48px, 7vw, 96px)) clamp(56px, 8vw, 112px);
 }
 
+/* The hero runs about a tenth larger than the rest of the page: it is the only
+   section carrying a screenshot of the product, and at the shared width the
+   dashboard inside the window was legible rather than readable. The stage is a
+   container query, so widening this frame enlarges everything in it. */
 .hero-inner {
   align-items: center;
   display: grid;
   gap: clamp(40px, 5vw, 72px);
   grid-template-columns: 1fr;
   margin-inline: auto;
-  max-width: 1360px;
+  max-width: 1500px;
   padding-inline: var(--nav-gutter);
 }
 
@@ -336,7 +340,7 @@ button {
 
 .eyebrow {
   color: var(--ink-muted);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   margin: 0 0 20px;
@@ -344,7 +348,7 @@ button {
 }
 
 .hero h1 {
-  font-size: clamp(2.5rem, 4.4vw, 3.9rem);
+  font-size: clamp(2.75rem, 4.85vw, 4.3rem);
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.03;
@@ -354,7 +358,7 @@ button {
 
 .hero-sub {
   color: var(--ink-soft);
-  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  font-size: clamp(1.1875rem, 1.45vw, 1.3125rem);
   line-height: 1.5;
   margin: 24px 0 0;
   max-width: 46ch;
@@ -403,7 +407,7 @@ button {
 
 .hero-note {
   color: var(--ink-muted);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   margin: 28px 0 0;
 }
 
@@ -428,8 +432,10 @@ button {
   container-type: inline-size;
 }
 
+/* Wider than it is tall, because what it holds is a laptop screen and a phone
+   beside it rather than a square poster. */
 .stage {
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 3 / 2;
   font-size: 1.62cqw;
   position: relative;
 }
@@ -440,33 +446,22 @@ button {
   position: absolute;
 }
 
-.sk {
-  background: rgb(20 21 26 / 9%);
-  border-radius: 0.35em;
-  display: block;
-  height: 0.85em;
-}
-
-.sk[data-tone='strong'] {
-  background: rgb(20 21 26 / 22%);
-  height: 1.15em;
-}
-
-.sk[data-tone='accent'] {
-  background: var(--accent-tint);
-}
-
 /* Desktop */
 
 .mock-desktop {
+  /* A height of its own: without one the window grows to whatever the dashboard
+     inside it happens to be, and the scene stops being a scene. The ratio is a
+     laptop's, near 16:10 -  at 55 by 44 the window read as a square. */
+  height: 36em;
+
   border: 1px solid var(--line);
   border-radius: 1.1em;
   box-shadow:
     0 1px 2px rgb(20 21 26 / 5%),
     0 3em 5em -2em rgb(20 21 26 / 22%);
   right: 0;
-  top: 1.5em;
-  width: 55em;
+  top: 1em;
+  width: 58em;
 }
 
 .mock-bar {
@@ -497,88 +492,40 @@ button {
   background: #28c840;
 }
 
-.mock-body {
-  display: grid;
-  grid-template-columns: 12em 1fr;
-  height: 38em;
-}
-
-.mock-side {
-  border-right: 1px solid var(--line-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5em;
-  padding: 1.6em 1.4em;
-}
-
-.mock-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1.6em;
-  padding: 1.8em;
-}
-
-.mock-stats {
-  display: grid;
-  gap: 1em;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.mock-tile {
-  border: 1px solid var(--line-soft);
-  border-radius: 0.7em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7em;
-  padding: 1em;
-}
-
-.mock-chart {
-  border: 1px solid var(--line-soft);
-  border-radius: 0.7em;
-  flex: 1;
-  min-height: 11em;
-  padding: 1em;
-}
-
 .mock-chart svg {
   display: block;
   height: 100%;
   width: 100%;
 }
 
-.mock-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.mock-row {
-  align-items: center;
-  border-top: 1px solid var(--line-soft);
-  display: grid;
-  gap: 1em;
-  grid-template-columns: 2fr 1fr 0.8fr;
-  padding-block: 0.85em;
-}
-
 /* Phone */
 
 .mock-phone {
+  /* An iPhone's proportions, which are the device's and not the screen's: the
+     display is 19.5:9, but the body around it lands near 2.06, and at 2.17 the
+     frame read as a stretched one. Sized to the content it holds. */
+  height: 26em;
+
   background: #101116;
   border-radius: 2.6em;
-  bottom: -0.5em;
+  bottom: -1em;
   box-shadow:
     0 0 0 0.15em rgb(255 255 255 / 60%),
     0 2.5em 4em -1.5em rgb(20 21 26 / 38%);
-  left: -1em;
+  /* Far enough left that it clips the corner of the window rather than the
+     numbers inside it: at -1em it sat squarely over the collection card's
+     percentage. */
+  left: -2.5em;
   padding: 0.55em;
-  width: 20em;
+  width: 12.5em;
 }
 
 .phone-screen {
   background: var(--surface);
   border-radius: 2.1em;
+  /* Definite height, so the card inside can fill it and push its button to the
+     bottom edge instead of floating halfway up. */
+  height: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -592,32 +539,6 @@ button {
   top: 0.7em;
   transform: translateX(-50%);
   width: 6em;
-}
-
-.phone-body {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  min-height: 40em;
-  padding: 3.6em 1.4em 1.6em;
-}
-
-.phone-card {
-  border: 1px solid var(--line-soft);
-  border-radius: 0.8em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7em;
-  padding: 1em;
-}
-
-.phone-cta {
-  background: var(--accent);
-  border-radius: 0.6em;
-  display: block;
-  height: 2.8em;
-  margin-top: auto;
-  opacity: 0.85;
 }
 
 @media (max-width: 999px) {
@@ -1181,7 +1102,6 @@ button {
     min-width: 520px;
   }
 }
-
 
 /* ==========================================================================
    The halo behind the dashboard -  concentric rings, in the spirit of the
@@ -3104,4 +3024,136 @@ button {
   .missing-links {
     gap: 0 clamp(16px, 5vw, 28px);
   }
+}
+
+/* ==========================================================================
+   The dashboard in the hero
+
+   The window holds the real dashboard component. Everything below only resizes
+   it: `--u` is the dashboard's own unit, and setting it here in `cqw` ties the
+   whole scene to the hero's container query.
+
+   `cqw`, never `em`. An em would be resolved against each descendant's own
+   font-size and compound down the tree, which is the exact drift `--u` exists
+   to prevent; a container unit is resolved against `.hero-visual` once, so
+   every part of the scene shrinks by the same factor.
+
+   `.hero-dash-frame .dash`, not a single class: the dashboard stylesheet loads
+   after this one, so a one-class rule would lose the tie on `--u` and the
+   miniature would render at full size.
+   ========================================================================== */
+
+.mock-screen {
+  height: calc(100% - 2.2em);
+  overflow: hidden;
+}
+
+/* Zoomed in far enough to be read. At 1.02cqw the whole overview fitted in the
+   window and none of it was legible; the window now shows the top of the page
+   at a size where the figures can actually be made out, and the frame crops the
+   rest the way a window does. */
+.hero-dash-frame .dash {
+  --u: 1.42cqw;
+
+  border-radius: 0;
+  min-height: 100%;
+}
+
+/* The chrome is sized for a browser tab, not for a 630px window: the sticky
+   bars and the full-height column have nothing to stick to in here. */
+.hero-dash-frame .dash-side {
+  height: auto;
+  position: static;
+}
+
+.hero-dash-frame .dash-top {
+  position: static;
+}
+
+/* A window shows the top of a page. The view keeps its own height so the cards
+   below the fold are cut by the frame rather than squeezed into it. */
+.hero-dash-frame .dash-view {
+  padding-bottom: 0;
+}
+
+/* The real screen truncates a KPI label that will not fit; in here the cards
+   are narrow relative to the type, and four cards ending in an ellipsis read as
+   a rendering fault rather than as a product. Let them wrap instead. */
+.hero-dash-frame .dash-kpi-label {
+  /* A notch smaller than on the real screen: "Subscriptions" overran its card
+     by two pixels here, and one clipped label out of four looks like a fault. */
+  font-size: calc(var(--u) * 0.7);
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+/* --- The phone -------------------------------------------------------------
+   The same account from the subscriber's side: one delegation, and the product
+   knows whether to let them in.
+   ========================================================================== */
+
+.dash.hero-phone-dash {
+  --u: 1.6cqw;
+
+  background: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  /* Fills the screen it sits in, so the button lands at the bottom instead of
+     leaving a phone's worth of black under the card. */
+  height: 100%;
+  min-height: 0;
+  /* Clears the island. It sits at 0.7em with a height of 1.3em, so anything
+     starting above 2em runs under the notch. */
+  padding: calc(var(--u) * 2.75) var(--s4) var(--s4);
+}
+
+.hero-phone-title {
+  color: var(--ink);
+  font-size: var(--t-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.hero-phone-dash .dash-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: var(--s3);
+}
+
+.hero-phone-plan {
+  font-size: var(--t-md);
+  font-weight: 600;
+}
+
+.hero-phone-amount {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+
+.hero-phone-dash .dash-pill {
+  align-self: flex-start;
+  margin-top: var(--s1);
+}
+
+.hero-phone-row {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  font-size: var(--t-sm);
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: var(--s3);
+}
+
+.hero-phone-cta {
+  background: var(--ink);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  margin-top: auto;
+  padding: var(--s2);
+  text-align: center;
 }

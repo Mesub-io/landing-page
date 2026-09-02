@@ -1,0 +1,3672 @@
+/* ==========================================================================
+   Mesub -  the dashboard.
+
+   Everything here is scoped under `.dash`. That is not tidiness for its own
+   sake: this block has to be droppable into the landing page's hero as a
+   product shot, so it cannot depend on anything outside itself, and it must not
+   leak anything into the page around it.
+
+   The scale knob is `--u`. Every size, gap, radius and font-size below is a
+   multiple of it, and nothing uses `em`, which would compound through nesting
+   and make the scene drift as it shrinks. Set `--u` to 16px for the real app or
+   to a few pixels for a thumbnail, and the whole composition follows.
+
+   Elevation is one language: hairline borders for structure. Nothing in a
+   dashboard floats, so nothing here carries a shadow -  except the drawer,
+   which genuinely is above the page.
+   ========================================================================== */
+
+.dash {
+  --u: 16px;
+
+  /* Space, on a 4px grid at full size. */
+  --s1: calc(var(--u) * 0.25);
+  --s2: calc(var(--u) * 0.5);
+  --s3: calc(var(--u) * 0.75);
+  --s4: var(--u);
+  --s5: calc(var(--u) * 1.5);
+  --s6: calc(var(--u) * 2);
+  --s7: calc(var(--u) * 3);
+
+  /* Five type sizes. Hierarchy comes from weight and colour before size. */
+  --t-xs: calc(var(--u) * 0.75);
+  --t-sm: calc(var(--u) * 0.8125);
+  --t-md: calc(var(--u) * 0.875);
+  --t-lg: calc(var(--u) * 1.375);
+  --t-xl: calc(var(--u) * 1.75);
+
+  --r-sm: calc(var(--u) * 0.375);
+  --r-md: calc(var(--u) * 0.625);
+
+  --side-width: calc(var(--u) * 14);
+  --bar-height: calc(var(--u) * 3.75);
+
+  /* Three tones chosen against the salmon accent rather than the usual traffic
+     light. Teal sits opposite it on the wheel, so a settled arc and a retry arc
+     separate at a glance; the deep rose is the same warm family as the accent,
+     several steps darker, so a failure reads as serious without introducing a
+     fourth hue. The accent itself carries "in progress", which is the one state
+     the brand colour genuinely belongs on. */
+  --tone-settled: #0e9384;
+  --tone-retry: var(--accent);
+  --tone-lost: #a5124a;
+
+  /* Text-safe versions of the same two, for numbers and labels. */
+  --good: #0b7a6e;
+  --bad: #8f1040;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The dashboard runs on a low-chroma ground of its own.
+     The marketing pages sit on warm paper, which is right for them and wrong
+     here: a warm cream under this much data reads as a colour cast, and every
+     accent on top of it looks like part of a wash. An app surface wants
+     neutrals to dominate so the accent can mean something. The landing page is
+     untouched -  these three lines only apply inside `.dash`. */
+  --paper: #f7f8f8;
+  --surface: #ffffff;
+  --surface-sunk: #f0f2f2;
+
+  /* One local stacking context, so the sticky header, the sidebar and the
+     drawer can use 1, 2 and 3 without ever reaching into the page around them. */
+  isolation: isolate;
+
+  background: var(--paper);
+  color: var(--ink);
+  display: grid;
+  font-size: var(--t-md);
+  grid-template-columns: var(--side-width) minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.dash button {
+  font-family: inherit;
+}
+
+/* --- Sidebar --------------------------------------------------------------- */
+
+.dash-side {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  height: 100dvh;
+  padding: var(--s5) var(--s4);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.dash-brand {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: calc(var(--u) * 1.0625);
+  font-weight: 600;
+  gap: var(--s2);
+  letter-spacing: -0.025em;
+  padding-inline: var(--s2);
+}
+
+.dash-brand .mark {
+  height: calc(var(--u) * 1.5);
+}
+
+.dash-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+
+.dash-nav-item {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--t-md);
+  font-weight: 500;
+  gap: var(--s3);
+  padding: var(--s2) var(--s3);
+  text-align: left;
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out;
+  width: 100%;
+}
+
+.dash-nav-item svg {
+  flex: none;
+  height: calc(var(--u) * 1.0625);
+  opacity: 0.75;
+  width: calc(var(--u) * 1.0625);
+}
+
+.dash-nav-item:hover {
+  background: var(--surface-sunk);
+  color: var(--ink);
+}
+
+.dash-nav-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-nav-item[aria-current='page'] {
+  background: var(--surface-sunk);
+  color: var(--ink);
+}
+
+.dash-nav-item[aria-current='page'] svg {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.dash-side-foot {
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+  padding-top: var(--s4);
+}
+
+.dash-account {
+  align-items: center;
+  display: flex;
+  gap: var(--s3);
+  padding: var(--s2) var(--s3);
+}
+
+.dash-avatar {
+  align-items: center;
+  background: var(--ink);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  display: flex;
+  flex: none;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  height: calc(var(--u) * 1.75);
+  justify-content: center;
+  width: calc(var(--u) * 1.75);
+}
+
+.dash-account-name {
+  display: block;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-account-plan {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-xs);
+  line-height: 1.3;
+}
+
+/* --- Header ---------------------------------------------------------------- */
+
+.dash-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dash-top {
+  align-items: center;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: var(--s4);
+  height: var(--bar-height);
+  padding-inline: var(--s5);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.dash-title {
+  font-size: var(--t-md);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.dash-top-spacer {
+  flex: 1;
+}
+
+.dash-search {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--ink-muted);
+  display: flex;
+  font-size: var(--t-sm);
+  gap: var(--s2);
+  padding: calc(var(--u) * 0.3125) var(--s3);
+  transition: border-color 140ms ease-out;
+  width: calc(var(--u) * 17);
+}
+
+.dash-search svg {
+  flex: none;
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-search input {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font: inherit;
+  min-width: 0;
+  outline: none;
+  width: 100%;
+}
+
+.dash-search:focus-within {
+  border-color: var(--accent);
+}
+
+/* --- View ------------------------------------------------------------------ */
+
+.dash-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  padding: var(--s5);
+}
+
+.dash-view-head h2 {
+  font-size: var(--t-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.dash-view-head p {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  margin: var(--s2) 0 0;
+  max-width: 72ch;
+}
+
+/* --- Cards ----------------------------------------------------------------- */
+
+.dash-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dash-card-head {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  justify-content: space-between;
+  padding: var(--s3) var(--s4);
+}
+
+.dash-card-head h3 {
+  font-size: var(--t-md);
+  font-weight: 600;
+  margin: 0;
+}
+
+.dash-card-note {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+}
+
+.dash-card-body {
+  padding: var(--s4);
+}
+
+/* Both cards in a row are the same height, and their contents spread to fill
+   it. Letting the short one keep its natural height was the other way to solve
+   this, and it left a 250px hole in the column beside the tall one. */
+.dash-split {
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+}
+
+/* ==========================================================================
+   The page grid
+
+   Two columns and two rows, laid out as one grid rather than as two independent
+   columns. That is what makes the right-hand cards line up with the left-hand
+   ones instead of merely sitting beside them: the counts and the collection
+   split share the chart's row, and the outlook matches the calendar's.
+
+   Order matters here -  the children are placed in DOM order, so it reads
+   chart, stack, calendar, outlook.
+   ========================================================================== */
+
+.dash-grid {
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+}
+
+.dash-grid > * {
+  min-width: 0;
+}
+
+/* A card placed straight in the grid fills the row height, and its body
+   spreads: without this the calendar kept its natural height and left a
+   hundred pixels of nothing under itself. */
+.dash-grid > .dash-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-grid > .dash-card > .dash-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* The two cards that share the chart's row, half of it each.
+
+   Named `dash-pair`: `dash-stack` and `dash-col` are both already taken by the
+   chart, where they are absolutely positioned bar segments. Reusing either
+   pulled this block clean out of the grid. */
+.dash-pair {
+  display: grid;
+  gap: var(--s4);
+  grid-template-rows: 1fr 1fr;
+  min-height: 0;
+}
+
+.dash-pair > * {
+  min-height: 0;
+}
+
+/* Two by two in the narrow column. */
+.dash-pair .dash-kpis-4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+}
+
+.dash-pair .dash-kpi {
+  gap: var(--s1);
+  padding: var(--s3) var(--s4);
+}
+
+.dash-pair .dash-kpi-value {
+  font-size: var(--t-md);
+}
+
+@media (max-width: 1200px) {
+  .dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-pair {
+    grid-template-rows: auto auto;
+  }
+}
+
+/* Two equal halves, for a row whose cards carry comparable weight. */
+.dash-split-even {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* And a row where they do not: a tall chart beside a three-number card.
+   Forcing them to match would put the emptiness inside the short card, which
+   is worse than leaving it on the page beneath it. */
+.dash-split-top {
+  align-items: start;
+}
+
+.dash-split > .dash-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-split > .dash-card > .dash-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* --- KPIs ------------------------------------------------------------------ */
+
+/* There are six of these, so the column count is fixed at a divisor of six.
+   `auto-fit` would happily leave five on one row and one stranded below. */
+.dash-kpis {
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 1500px) {
+  .dash-kpis {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .dash-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* A KPI is a button wherever the list behind it exists, and a plain card
+   where it does not yet. The two share everything but the affordance. */
+.dash-kpi {
+  /* Fills its grid cell, so cards on the same row line up even when one of
+     them wraps onto a second line. */
+  height: 100%;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s4);
+  text-align: left;
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+  width: 100%;
+}
+
+button.dash-kpi {
+  cursor: pointer;
+}
+
+button.dash-kpi:hover {
+  border-color: var(--line-strong);
+}
+
+.dash-kpi:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-kpi-head {
+  align-items: center;
+  display: flex;
+  gap: var(--s2);
+}
+
+/* A tinted tile, so four cards of the same shape are told apart before their
+   labels are read. */
+.dash-kpi-icon {
+  align-items: center;
+  border-radius: calc(var(--u) * 0.375);
+  display: flex;
+  flex: none;
+  height: calc(var(--u) * 1.5);
+  justify-content: center;
+  width: calc(var(--u) * 1.5);
+}
+
+.dash-kpi-icon svg {
+  height: calc(var(--u) * 0.875);
+  width: calc(var(--u) * 0.875);
+}
+
+.dash-kpi[data-tone='good'] .dash-kpi-icon {
+  background: color-mix(in srgb, var(--tone-settled) 12%, transparent);
+  color: var(--good);
+}
+
+.dash-kpi[data-tone='accent'] .dash-kpi-icon {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.dash-kpi[data-tone='bad'] .dash-kpi-icon {
+  background: color-mix(in srgb, var(--tone-lost) 10%, transparent);
+  color: var(--bad);
+}
+
+.dash-kpi-label {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The proportion each card can honestly carry: how much of the cycle has
+   arrived, how many of the upcoming pulls are clean. Never a decoration -  a
+   card with nothing real to measure would not have one. */
+.dash-kpi-track {
+  background: var(--surface-sunk);
+  border-radius: 999px;
+  height: calc(var(--u) * 0.25);
+  margin-top: var(--s1);
+  overflow: hidden;
+}
+
+.dash-kpi-fill {
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.dash-kpi[data-tone='good'] .dash-kpi-fill {
+  background: var(--tone-settled);
+}
+
+.dash-kpi[data-tone='accent'] .dash-kpi-fill {
+  background: var(--accent);
+}
+
+.dash-kpi[data-tone='bad'] .dash-kpi-fill {
+  background: var(--tone-lost);
+}
+
+.dash-kpi-go {
+  color: var(--ink-muted);
+  height: var(--t-md);
+  opacity: 0;
+  transition:
+    opacity 140ms ease-out,
+    transform 140ms ease-out;
+  width: var(--t-md);
+}
+
+.dash-kpi:hover .dash-kpi-go {
+  color: var(--accent);
+  opacity: 1;
+  transform: translateX(calc(var(--u) * 0.125));
+}
+
+.dash-kpi-value {
+  font-size: var(--t-lg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.dash-kpi-foot {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.dash-kpi-sub {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+}
+
+.dash-delta {
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dash-delta[data-tone='up'] {
+  color: var(--good);
+}
+
+.dash-delta[data-tone='down'] {
+  color: var(--bad);
+}
+
+.dash-delta[data-tone='flat'],
+.dash-delta[data-tone='none'] {
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+
+/* --- Tabs and segmented controls ------------------------------------------- */
+
+/* Three views of the panel below, so the underline marks which is on screen. */
+.dash-tabs {
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  gap: var(--s5);
+  width: 100%;
+}
+
+.dash-tab {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: var(--t-md);
+  font-weight: 500;
+  margin-bottom: -1px;
+  padding: 0 0 var(--s2);
+  transition:
+    border-color 140ms ease-out,
+    color 140ms ease-out;
+}
+
+.dash-tab:hover {
+  color: var(--ink);
+}
+
+.dash-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-tab[aria-selected='true'] {
+  border-bottom-color: var(--accent);
+  color: var(--ink);
+}
+
+.dash-chart-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  justify-content: space-between;
+}
+
+.dash-seg {
+  background: var(--surface-sunk);
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  gap: calc(var(--u) * 0.125);
+  padding: calc(var(--u) * 0.125);
+}
+
+.dash-seg-item {
+  background: none;
+  border: 0;
+  border-radius: calc(var(--u) * 0.25);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  padding: calc(var(--u) * 0.25) var(--s3);
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out;
+}
+
+.dash-seg-item:hover {
+  color: var(--ink);
+}
+
+.dash-seg-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dash-seg-item[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* --- Chart ----------------------------------------------------------------- */
+
+.dash-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+/* The readout stands in for a floating tooltip: it holds the period totals
+   until a column is hovered, then that day's numbers. Nothing moves. */
+.dash-readout {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--t-sm);
+  gap: var(--s2) var(--s4);
+  min-height: calc(var(--u) * 1.25);
+}
+
+.dash-readout-day {
+  color: var(--ink);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin: 0;
+}
+
+.dash-readout-item {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--s2);
+}
+
+.dash-readout-item strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Big enough to read as the colour of an arc rather than as punctuation: these
+   are the key to the ring beside them, so the eye has to match them to a stroke
+   22px thick. */
+.dash-swatch {
+  border-radius: calc(var(--u) * 0.25);
+  flex: none;
+  height: calc(var(--u) * 0.875);
+  width: calc(var(--u) * 0.875);
+}
+
+/* A short line, because the series it names is a line -  and thick enough to
+   be matched to the stroke on the chart rather than squinted at. */
+.dash-rule {
+  border-radius: 2px;
+  flex: none;
+  height: 3px;
+  width: calc(var(--u) * 1.75);
+}
+
+.dash-readout-item[data-tone='accent'] .dash-rule {
+  background: var(--accent);
+}
+
+/* The dash pattern is scaled with the swatch, so the legend and the curve read
+   as the same dashed line. */
+.dash-readout-item[data-tone='ghost'] .dash-rule {
+  background: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, var(--accent) 45%, transparent) 0 7px,
+    transparent 7px 12px
+  );
+}
+
+.dash-readout-item[data-tone='good'] .dash-rule {
+  background: var(--tone-settled);
+}
+
+.dash-readout-item[data-tone='bad'] .dash-rule {
+  background: var(--tone-lost);
+}
+
+.dash-readout-item[data-tone='accent'] .dash-swatch {
+  background: var(--accent);
+}
+
+.dash-readout-item[data-tone='ghost'] .dash-swatch {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.dash-readout-item[data-tone='good'] .dash-swatch {
+  background: var(--tone-settled);
+}
+
+.dash-readout-item[data-tone='bad'] .dash-swatch {
+  background: var(--tone-lost);
+}
+
+/* --- The plot -------------------------------------------------------------- */
+
+.dash-graph {
+  display: flex;
+  gap: var(--s3);
+  height: calc(var(--u) * 9);
+}
+
+.dash-graph[data-tall] {
+  height: calc(var(--u) * 13);
+}
+
+/* The value axis. Each label is pinned to the exact height of the gridline it
+   names, rather than spread by the layout and nudged to fit -  nudging left
+   the zero sitting above its own baseline. */
+.dash-axis-y {
+  color: var(--ink-muted);
+  flex: none;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  text-align: right;
+  width: calc(var(--u) * 2.25);
+}
+
+.dash-axis-y span {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.dash-canvas {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.dash-gridlines {
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.dash-gridlines span {
+  background: var(--line-soft);
+  height: 1px;
+}
+
+.dash-curves {
+  display: block;
+  height: 100%;
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.dash-area {
+  fill: url(#dash-area-fill);
+}
+
+.dash-line {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.dash-line[data-tone='accent'] {
+  stroke: var(--accent);
+}
+
+/* Attempted is drawn dashed and pale: it is context for the solid line, not a
+   second claim of its own. */
+.dash-line[data-tone='ghost'] {
+  stroke: color-mix(in srgb, var(--accent) 40%, transparent);
+  stroke-dasharray: 5 4;
+  stroke-width: 1.5;
+}
+
+.dash-line[data-tone='good'] {
+  stroke: var(--tone-settled);
+}
+
+.dash-line[data-tone='bad'] {
+  stroke: var(--tone-lost);
+}
+
+/* One invisible column per day. Buttons rather than a single mousemove handler,
+   so the chart answers to a keyboard as well as a cursor. */
+.dash-hits {
+  display: flex;
+  inset: 0;
+  position: absolute;
+}
+
+.dash-hit {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+}
+
+.dash-hit:focus-visible {
+  background: var(--accent-soft);
+  outline: none;
+}
+
+.dash-marker {
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}
+
+.dash-marker-line {
+  background: var(--line-strong);
+  bottom: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.dash-dot {
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  height: calc(var(--u) * 0.625);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: calc(var(--u) * 0.625);
+}
+
+.dash-dot[data-tone='accent'] {
+  background: var(--accent);
+}
+
+.dash-dot[data-tone='ghost'] {
+  background: color-mix(in srgb, var(--accent) 45%, var(--surface));
+}
+
+.dash-dot[data-tone='good'] {
+  background: var(--tone-settled);
+}
+
+.dash-dot[data-tone='bad'] {
+  background: var(--tone-lost);
+}
+
+/* The value, pinned above its own point. */
+.dash-tip {
+  background: var(--accent);
+  border-radius: var(--r-sm);
+  color: #fff;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  left: 0;
+  padding: calc(var(--u) * 0.1875) var(--s2);
+  position: absolute;
+  transform: translate(-50%, calc(-100% - var(--u) * 0.75));
+  white-space: nowrap;
+}
+
+/* At either end of the plot the bubble would hang outside the card, so it
+   moves over its point instead of sitting centred on it. */
+.dash-marker[data-edge='start'] .dash-tip {
+  transform: translate(calc(-50% + var(--u) * 1.5), calc(-100% - var(--u) * 0.75));
+}
+
+.dash-marker[data-edge='end'] .dash-tip {
+  transform: translate(calc(-50% - var(--u) * 1.5), calc(-100% - var(--u) * 0.75));
+}
+
+.dash-tip::after {
+  border: calc(var(--u) * 0.25) solid transparent;
+  border-top-color: var(--accent);
+  content: '';
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+}
+
+.dash-axis {
+  color: var(--ink-muted);
+  display: flex;
+  font-size: var(--t-xs);
+  justify-content: space-between;
+}
+
+.dash-axis-peak {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Causes ---------------------------------------------------------------- */
+
+.dash-causes {
+  border-top: 1px solid var(--line-soft);
+  padding-top: var(--s4);
+}
+
+.dash-causes-head {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--s3);
+}
+
+.dash-causes-head h4 {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin: 0;
+}
+
+.dash-causes ul {
+  display: grid;
+  gap: var(--s2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-causes li {
+  align-items: center;
+  display: grid;
+  gap: var(--s2);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.dash-cause-owner {
+  border-radius: calc(var(--u) * 0.1875);
+  font-size: calc(var(--u) * 0.625);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.3125);
+  text-transform: uppercase;
+}
+
+.dash-cause-owner[data-owner='subscriber'] {
+  background: var(--surface-sunk);
+  color: var(--ink-soft);
+}
+
+.dash-cause-owner[data-owner='merchant'] {
+  background: color-mix(in srgb, var(--tone-lost) 10%, transparent);
+  color: var(--bad);
+}
+
+.dash-cause-owner[data-owner='infrastructure'] {
+  background: var(--surface-sunk);
+  color: var(--ink-soft);
+}
+
+.dash-cause-label {
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-cause-count {
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+
+.dash-causes-foot {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--t-xs);
+  gap: var(--s2);
+  margin: var(--s3) 0 0;
+  padding-top: var(--s3);
+}
+
+/* --- Heatmap --------------------------------------------------------------- */
+
+.dash-heat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.dash-heat-grid {
+  display: grid;
+  gap: calc(var(--u) * 0.125);
+  grid-template-columns: calc(var(--u) * 2.25) repeat(24, minmax(0, 1fr));
+  min-width: calc(var(--u) * 30);
+}
+
+.dash-heat-corner {
+  content: '';
+}
+
+.dash-heat-hour,
+.dash-heat-day {
+  color: var(--ink-muted);
+  font-size: calc(var(--u) * 0.625);
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-heat-day {
+  align-items: center;
+  display: flex;
+}
+
+.dash-heat-cell {
+  aspect-ratio: 1;
+  border-radius: calc(var(--u) * 0.125);
+  transition: outline-color 120ms ease-out;
+}
+
+/* Volume is read in ink, failure rate in the accent: two readings, two
+   colours, so a glance can never confuse them. */
+.dash-heat-cell[data-reading='volume'] {
+  background: color-mix(in srgb, var(--ink) calc(var(--fill) * 72%), var(--surface-sunk));
+}
+
+.dash-heat-cell[data-reading='rate'] {
+  background: color-mix(in srgb, var(--accent) calc(var(--fill) * 100%), var(--surface-sunk));
+}
+
+/* Too few pulls to rate: drawn hollow, so it reads as "no evidence" rather
+   than as "no problem". */
+.dash-heat-cell[data-hollow] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.dash-heat-cell:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+/* --- Funnel ---------------------------------------------------------------- */
+
+.dash-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-funnel-bar {
+  align-items: center;
+  background: var(--surface-sunk);
+  border: 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  display: flex;
+  gap: var(--s3);
+  overflow: hidden;
+  padding: var(--s3) var(--s4);
+  position: relative;
+  transition: background-color 140ms ease-out;
+  width: 100%;
+}
+
+.dash-funnel-fill {
+  background: var(--accent-soft);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.dash-funnel-bar:hover .dash-funnel-fill {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.dash-funnel-bar:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-funnel-text {
+  align-items: baseline;
+  display: flex;
+  flex: 1;
+  gap: var(--s3);
+  justify-content: space-between;
+  min-width: 0;
+  position: relative;
+}
+
+.dash-funnel-label {
+  font-size: var(--t-sm);
+  font-weight: 500;
+}
+
+.dash-funnel-value {
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.dash-funnel-arrow {
+  color: var(--ink-muted);
+  flex: none;
+  height: var(--t-md);
+  opacity: 0;
+  position: relative;
+  transition: opacity 140ms ease-out;
+  width: var(--t-md);
+}
+
+.dash-funnel-bar:hover .dash-funnel-arrow {
+  opacity: 1;
+}
+
+.dash-funnel-drop {
+  align-items: baseline;
+  display: flex;
+  font-size: var(--t-xs);
+  gap: var(--s2);
+  margin: 0;
+  padding: 0 var(--s4) var(--s1) var(--s4);
+}
+
+.dash-funnel-lost {
+  color: var(--bad);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  flex: none;
+}
+
+/* --- Alerts ---------------------------------------------------------------- */
+
+.dash-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-alert {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  /* Severity is carried by a rule on the leading edge, not by a coloured
+     panel: four tinted blocks in a column would shout over each other. */
+  border-left: calc(var(--u) * 0.1875) solid var(--line-strong);
+}
+
+.dash-alert[data-severity='high'] {
+  border-left-color: var(--tone-lost);
+}
+
+.dash-alert[data-severity='medium'] {
+  border-left-color: var(--accent);
+}
+
+.dash-alert[data-severity='low'] {
+  border-left-color: var(--line-strong);
+}
+
+.dash-alert-body h4 {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin: 0 0 var(--s1);
+}
+
+.dash-alert-body p {
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dash-alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.dash-btn {
+  align-items: center;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  gap: var(--s2);
+  padding: calc(var(--u) * 0.375) var(--s3);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out,
+    color 140ms ease-out;
+}
+
+.dash-btn svg {
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.dash-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-btn-quiet {
+  background: none;
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+.dash-btn-quiet:hover {
+  background: none;
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+/* --- Filters --------------------------------------------------------------- */
+
+.dash-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.dash-filter {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--t-sm);
+  padding: calc(var(--u) * 0.25) var(--s3);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out,
+    color 140ms ease-out;
+}
+
+.dash-filter:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.dash-filter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-filter[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* --- Tables ---------------------------------------------------------------- */
+
+.dash-table-wrap {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.dash-table {
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+  min-width: calc(var(--u) * 44);
+  width: 100%;
+}
+
+.dash-table th {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink-muted);
+  font-size: calc(var(--u) * 0.6875);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: var(--s3) var(--s4);
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dash-table td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: var(--s3) var(--s4);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.dash-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A row is a link into the thing behind it. */
+.dash-table tbody tr {
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.dash-table tbody tr:hover {
+  background: var(--surface-sunk);
+}
+
+.dash-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-muted {
+  color: var(--ink-muted);
+}
+
+.dash-late {
+  color: var(--bad);
+  font-weight: 500;
+}
+
+.dash-mismatch {
+  color: var(--bad);
+  font-weight: 500;
+}
+
+.dash-wallet {
+  color: var(--ink-soft);
+  cursor: help;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+}
+
+.dash-sig {
+  align-items: center;
+  color: var(--ink-muted);
+  display: inline-flex;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  gap: var(--s1);
+  transition: color 120ms ease-out;
+}
+
+.dash-sig svg {
+  height: calc(var(--u) * 0.75);
+  width: calc(var(--u) * 0.75);
+}
+
+.dash-sig:hover {
+  color: var(--accent);
+}
+
+.dash-sig:focus-visible {
+  border-radius: calc(var(--u) * 0.125);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-cause {
+  color: var(--ink-soft);
+}
+
+.dash-share {
+  align-items: center;
+  display: flex;
+  gap: var(--s2);
+}
+
+.dash-share-track {
+  background: var(--surface-sunk);
+  border-radius: 999px;
+  height: calc(var(--u) * 0.3125);
+  overflow: hidden;
+  width: calc(var(--u) * 5);
+}
+
+.dash-share-fill {
+  background: var(--accent);
+  display: block;
+  height: 100%;
+}
+
+/* --- Pills and tags -------------------------------------------------------- */
+
+.dash-pill {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  padding: calc(var(--u) * 0.125) calc(var(--u) * 0.5);
+  white-space: nowrap;
+}
+
+.dash-pill[data-status='active'] {
+  background: color-mix(in srgb, var(--tone-settled) 12%, transparent);
+  color: var(--good);
+}
+
+.dash-pill[data-status='past_due'] {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.dash-pill[data-status='delinquent'] {
+  background: color-mix(in srgb, var(--tone-lost) 10%, transparent);
+  color: var(--bad);
+}
+
+.dash-pill[data-status='canceled'] {
+  background: var(--surface-sunk);
+  color: var(--ink-muted);
+}
+
+/* Access is an outline, never a filled pill, so it is never mistaken for the
+   billing status sitting next to it. */
+.dash-ent {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  display: inline-block;
+  font-size: calc(var(--u) * 0.6875);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.375);
+  white-space: nowrap;
+}
+
+.dash-ent[data-ent='granted'] {
+  border-color: color-mix(in srgb, var(--tone-settled) 45%, transparent);
+  color: var(--good);
+}
+
+.dash-ent[data-ent='revoked'] {
+  border-color: color-mix(in srgb, var(--tone-lost) 45%, transparent);
+  color: var(--bad);
+}
+
+.dash-result {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--t-sm);
+  gap: var(--s2);
+  white-space: nowrap;
+}
+
+.dash-result-dot {
+  border-radius: 50%;
+  flex: none;
+  height: calc(var(--u) * 0.4375);
+  width: calc(var(--u) * 0.4375);
+}
+
+.dash-result[data-result='settled'] .dash-result-dot {
+  background: var(--tone-settled);
+}
+
+.dash-result[data-result='retrying'] .dash-result-dot {
+  background: var(--accent);
+}
+
+.dash-result[data-result='failed'] .dash-result-dot {
+  background: var(--tone-lost);
+}
+
+.dash-result[data-result='scheduled'] .dash-result-dot {
+  background: var(--ink-muted);
+}
+
+.dash-risk {
+  border-radius: calc(var(--u) * 0.1875);
+  font-size: calc(var(--u) * 0.625);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.3125);
+  text-transform: uppercase;
+}
+
+.dash-risk[data-risk='high'] {
+  background: color-mix(in srgb, var(--tone-lost) 10%, transparent);
+  color: var(--bad);
+}
+
+.dash-risk[data-risk='medium'] {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.dash-risk[data-risk='low'] {
+  background: var(--surface-sunk);
+  color: var(--ink-muted);
+}
+
+.dash-risk-reason {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-xs);
+  margin-top: var(--s1);
+  max-width: calc(var(--u) * 15);
+  white-space: normal;
+}
+
+.dash-webhook {
+  font-size: var(--t-xs);
+  font-weight: 500;
+}
+
+.dash-webhook[data-state='delivered'] {
+  color: var(--good);
+}
+
+.dash-webhook[data-state='failed'] {
+  color: var(--bad);
+}
+
+.dash-webhook[data-state='pending'] {
+  color: var(--ink-muted);
+}
+
+/* --- Feed ------------------------------------------------------------------ */
+
+.dash-feed {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-feed-item {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  gap: var(--s2) var(--s3);
+  grid-template-columns: auto max-content minmax(0, 1fr);
+  padding: var(--s3) 0;
+}
+
+.dash-feed-item:last-child {
+  border-bottom: 0;
+}
+
+.dash-feed-dot {
+  border-radius: 50%;
+  flex: none;
+  height: calc(var(--u) * 0.4375);
+  position: relative;
+  top: calc(var(--u) * 0.25);
+  width: calc(var(--u) * 0.4375);
+}
+
+[data-tone='ok'] > .dash-feed-dot {
+  background: var(--tone-settled);
+}
+
+[data-tone='warn'] > .dash-feed-dot {
+  background: var(--accent);
+}
+
+[data-tone='error'] > .dash-feed-dot {
+  background: var(--tone-lost);
+}
+
+.dash-feed-type {
+  align-items: center;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  gap: var(--s1);
+  padding: 0;
+  transition: color 140ms ease-out;
+}
+
+.dash-feed-type svg {
+  color: var(--ink-muted);
+  height: var(--t-xs);
+  width: var(--t-xs);
+}
+
+.dash-feed-type:hover {
+  color: var(--accent);
+}
+
+.dash-feed-type:focus-visible {
+  border-radius: calc(var(--u) * 0.125);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-feed-detail {
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  margin: var(--s1) 0 0;
+}
+
+.dash-feed-meta {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--t-xs);
+  gap: var(--s3);
+  justify-content: flex-end;
+  /* Let the meta column give way first: the event's name is the part that has
+     to stay readable. */
+  min-width: 0;
+}
+
+/* --- Empty state ----------------------------------------------------------- */
+
+.dash-empty {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  padding: var(--s7) var(--s4);
+  text-align: center;
+}
+
+.dash-empty strong {
+  color: var(--ink);
+  display: block;
+  font-size: var(--t-md);
+  font-weight: 600;
+  margin-bottom: var(--s1);
+}
+
+/* --- Link out of a card ---------------------------------------------------- */
+
+.dash-more {
+  align-items: center;
+  align-self: flex-start;
+  background: none;
+  border: 0;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  gap: var(--s1);
+  padding: 0;
+  transition: color 140ms ease-out;
+}
+
+.dash-more svg {
+  height: var(--t-md);
+  transition: transform 140ms ease-out;
+  width: var(--t-md);
+}
+
+.dash-more:hover {
+  color: var(--accent);
+}
+
+.dash-more:hover svg {
+  transform: translateX(calc(var(--u) * 0.125));
+}
+
+.dash-more:focus-visible {
+  border-radius: calc(var(--u) * 0.125);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Drawer ---------------------------------------------------------------- */
+
+.dash-drawer {
+  inset: 0;
+  position: fixed;
+  z-index: 3;
+}
+
+.dash-drawer-scrim {
+  background: rgb(20 21 26 / 28%);
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+/* The one thing on the screen that genuinely floats, so the one thing that
+   carries a shadow. */
+.dash-drawer-panel {
+  animation: dash-slide 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  bottom: 0;
+  box-shadow: 0 0 calc(var(--u) * 4) rgb(20 21 26 / 16%);
+  display: flex;
+  flex-direction: column;
+  max-width: calc(var(--u) * 30);
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+@keyframes dash-slide {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--u) * 1.5));
+  }
+}
+
+.dash-drawer-head {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--s4) var(--s5);
+}
+
+.dash-drawer-head h3 {
+  font-size: var(--t-md);
+  font-weight: 600;
+  margin: 0;
+}
+
+.dash-icon-btn {
+  align-items: center;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex;
+  height: calc(var(--u) * 2);
+  justify-content: center;
+  transition:
+    border-color 140ms ease-out,
+    color 140ms ease-out;
+  width: calc(var(--u) * 2);
+}
+
+.dash-icon-btn svg {
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-icon-btn:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.dash-icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-drawer-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  overflow-y: auto;
+  padding: var(--s5);
+}
+
+.dash-callout {
+  background: var(--accent-soft);
+  border-left: calc(var(--u) * 0.1875) solid var(--accent);
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  margin: 0;
+  padding: var(--s3) var(--s4);
+}
+
+.dash-callout strong {
+  color: var(--ink);
+}
+
+.dash-fields {
+  display: grid;
+  gap: var(--s3) var(--s4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.dash-field dt {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+  margin-bottom: var(--s1);
+}
+
+.dash-field dd {
+  font-size: var(--t-sm);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.dash-drawer-section h4 {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin: 0 0 var(--s3);
+}
+
+.dash-drawer-note {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.dash-mini {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-mini li {
+  align-items: center;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--t-xs);
+  gap: var(--s2) var(--s3);
+  padding: var(--s2) 0;
+}
+
+.dash-mini li:last-child {
+  border-bottom: 0;
+}
+
+.dash-mini li[data-current] {
+  background: var(--accent-soft);
+  border-radius: var(--r-sm);
+  margin-inline: calc(var(--u) * -0.5);
+  padding-inline: var(--s2);
+}
+
+/* --- Narrow screens --------------------------------------------------------
+   The sidebar becomes a scrolling strip above the content. It keeps the same
+   items in the same order, so the map of the product does not change with the
+   width of the window.
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .dash-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 899px) {
+  .dash {
+    display: block;
+  }
+
+  .dash-side {
+    border-bottom: 1px solid var(--line);
+    border-right: 0;
+    flex-direction: row;
+    gap: var(--s4);
+    height: auto;
+    padding: var(--s3) var(--s4);
+    position: static;
+  }
+
+  .dash-nav {
+    flex-direction: row;
+    gap: var(--s1);
+    margin-left: auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .dash-nav-item {
+    min-height: calc(var(--u) * 2.75);
+    padding-inline: var(--s2);
+    white-space: nowrap;
+  }
+
+  /* Labels go, icons stay: the strip has to hold nine sections. The name is
+     carried by aria-label on the button, so hiding this text costs nothing. */
+  .dash-nav-item span {
+    display: none;
+  }
+
+  /* Anything touched rather than clicked gets a thumb-sized target. */
+  .dash-seg-item,
+  .dash-btn,
+  .dash-filter {
+    min-height: calc(var(--u) * 2.5);
+  }
+
+  .dash-more,
+  .dash-feed-type,
+  .dash-sig {
+    min-height: calc(var(--u) * 2.25);
+  }
+
+  .dash-side-foot {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .dash-account {
+    padding: 0;
+  }
+
+  .dash-account-text,
+  .dash-search {
+    display: none;
+  }
+
+  .dash-top {
+    padding-inline: var(--s4);
+  }
+
+  .dash-view {
+    gap: var(--s4);
+    padding: var(--s4);
+  }
+
+  .dash-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-feed-item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .dash-feed-meta {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+
+  .dash-drawer-panel {
+    max-width: none;
+    top: auto;
+    height: 88dvh;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    border-radius: var(--r-md) var(--r-md) 0 0;
+  }
+
+  @keyframes dash-slide {
+    from {
+      opacity: 0;
+      transform: translateY(calc(var(--u) * 1.5));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash *,
+  .dash *::before,
+  .dash *::after {
+    animation-delay: 0ms !important;
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+
+  .dash-more:hover svg,
+  .dash-kpi:hover .dash-kpi-go {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   The lifecycle blocks
+   ========================================================================== */
+
+/* --- Scope bar ------------------------------------------------------------- */
+
+.dash-select {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  gap: var(--s2);
+  padding: calc(var(--u) * 0.25) var(--s3);
+  transition: border-color 140ms ease-out;
+}
+
+.dash-select:focus-within {
+  border-color: var(--accent);
+}
+
+.dash-select-label {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+  white-space: nowrap;
+}
+
+.dash-select select {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  outline: none;
+  padding: calc(var(--u) * 0.125) 0;
+}
+
+.dash-kpis-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1200px) {
+  .dash-kpis-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Processor vitals ------------------------------------------------------ */
+
+.dash-vitals {
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--u) * 9), 1fr));
+  margin-bottom: var(--s3);
+}
+
+.dash-vitals strong {
+  display: block;
+  font-size: var(--t-md);
+  font-weight: 600;
+}
+
+.dash-label {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-xs);
+  margin-bottom: var(--s1);
+}
+
+/* --- Pipeline -------------------------------------------------------------- */
+
+/* Stages, not outcomes: the row reads left to right in the order a pull
+   travels, so a pile-up is visible as a shape rather than as a number. */
+.dash-pipeline {
+  display: grid;
+  gap: var(--s2);
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--u) * 10), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-stage {
+  background: var(--surface-sunk);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  height: 100%;
+  padding: var(--s3);
+  text-align: left;
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+  width: 100%;
+}
+
+.dash-stage:hover {
+  border-color: var(--line-strong);
+}
+
+.dash-stage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dash-stage-count {
+  font-size: var(--t-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.dash-stage-label {
+  font-size: var(--t-sm);
+  font-weight: 500;
+}
+
+.dash-stage-note {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+}
+
+.dash-stage[data-stage='failed'] .dash-stage-count {
+  color: var(--bad);
+}
+
+.dash-stage[data-stage='retrying'] .dash-stage-count {
+  color: var(--accent);
+}
+
+.dash-stage[data-stage='confirmed'] .dash-stage-count {
+  color: var(--good);
+}
+
+/* --- Causes, full width ---------------------------------------------------- */
+
+.dash-causes-full {
+  display: grid;
+  gap: var(--s3);
+  list-style: none;
+  margin: 0 0 var(--s4);
+  padding: 0;
+}
+
+.dash-causes-full li {
+  align-items: center;
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+/* --- Plan cards ------------------------------------------------------------ */
+
+.dash-plan-cards {
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--u) * 20), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-plan-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  height: 100%;
+  padding: var(--s4);
+}
+
+.dash-plan-card[data-selected] {
+  border-color: var(--accent-tint);
+  box-shadow: inset 0 0 0 1px var(--accent-tint);
+}
+
+.dash-plan-card-head {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--s3);
+  justify-content: space-between;
+}
+
+.dash-plan-card-head h3 {
+  font-size: var(--t-md);
+  font-weight: 600;
+  margin: 0 0 var(--s1);
+}
+
+.dash-plan-card-head span {
+  font-size: var(--t-xs);
+}
+
+.dash-plan-empty {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  margin: 0;
+}
+
+.dash-plan-money-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  justify-content: space-between;
+  margin-bottom: var(--s2);
+}
+
+.dash-plan-money-head strong {
+  font-size: var(--t-md);
+  font-weight: 600;
+}
+
+.dash-plan-track {
+  background: var(--surface-sunk);
+  border-radius: 999px;
+  display: block;
+  height: calc(var(--u) * 0.375);
+  overflow: hidden;
+}
+
+.dash-plan-fill {
+  background: var(--accent);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.dash-plan-gap {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-xs);
+  margin-top: var(--s2);
+}
+
+.dash-plan-stats {
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.dash-plan-stats dt {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+}
+
+.dash-plan-stats dd {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin: var(--s1) 0 0;
+}
+
+.dash-plan-foot {
+  border-top: 1px solid var(--line-soft);
+  font-size: var(--t-xs);
+  margin-top: auto;
+  padding-top: var(--s3);
+}
+
+.dash-plan-warn {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--bad);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  gap: var(--s1);
+  padding: 0;
+}
+
+.dash-plan-warn svg {
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-plan-warn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Policy note ----------------------------------------------------------- */
+
+.dash-policy {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  margin: 0;
+  padding: var(--s3) var(--s4);
+}
+
+/* --- Recovery inbox -------------------------------------------------------- */
+
+.dash-inbox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-inbox-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: calc(var(--u) * 0.1875) solid var(--line-strong);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s4);
+}
+
+/* Severity by kind: money already lost outranks money still recoverable. */
+.dash-inbox-item[data-kind='paid_without_access'],
+.dash-inbox-item[data-kind='access_without_payment'] {
+  border-left-color: var(--tone-lost);
+}
+
+.dash-inbox-item[data-kind='retries_exhausted'] {
+  border-left-color: var(--accent);
+}
+
+.dash-inbox-head {
+  align-items: baseline;
+  display: flex;
+  gap: var(--s3);
+  justify-content: space-between;
+}
+
+.dash-inbox-kind {
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.dash-inbox-who {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--t-sm);
+  gap: var(--s2) var(--s3);
+}
+
+.dash-inbox-cause {
+  color: var(--ink-soft);
+  font-size: var(--t-xs);
+  margin: 0;
+}
+
+.dash-inbox-history {
+  border-top: 1px solid var(--line-soft);
+  font-size: var(--t-xs);
+  padding-top: var(--s3);
+}
+
+.dash-inbox-history ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  list-style: none;
+  margin: var(--s2) 0 0;
+  padding: 0;
+}
+
+.dash-inbox-history li {
+  align-items: center;
+  display: flex;
+  gap: var(--s2);
+}
+
+.dash-inbox-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+}
+
+/* An action that moves money or access asks twice. */
+.dash-btn-armed {
+  background: var(--bad);
+  border-color: var(--bad);
+  color: #fff;
+}
+
+.dash-btn-armed:hover {
+  background: var(--bad);
+  border-color: var(--bad);
+}
+
+.dash-taken {
+  align-items: center;
+  color: var(--good);
+  display: inline-flex;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  gap: var(--s2);
+}
+
+.dash-taken svg {
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+/* --- The lifecycle chain --------------------------------------------------- */
+
+/* Always the same six steps in the same order, on a subscription and on a
+   pull alike. Learn the shape once, read any case at a glance. */
+.dash-chain {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-chain-step {
+  display: grid;
+  gap: 0 var(--s3);
+  grid-template-columns: calc(var(--u) * 0.75) minmax(0, 1fr);
+  padding-bottom: var(--s3);
+  position: relative;
+}
+
+/* The rail joins the markers rather than sitting behind them, so a failed step
+   visibly breaks the chain. */
+.dash-chain-step:not(:last-child)::before {
+  background: var(--line);
+  bottom: 0;
+  content: '';
+  left: calc(var(--u) * 0.3125);
+  position: absolute;
+  top: calc(var(--u) * 0.875);
+  width: 1px;
+}
+
+.dash-chain-marker {
+  border: 2px solid var(--line-strong);
+  border-radius: 50%;
+  height: calc(var(--u) * 0.75);
+  margin-top: calc(var(--u) * 0.25);
+  width: calc(var(--u) * 0.75);
+}
+
+.dash-chain-step[data-state='done'] .dash-chain-marker {
+  background: var(--tone-settled);
+  border-color: var(--tone-settled);
+}
+
+.dash-chain-step[data-state='failed'] .dash-chain-marker {
+  background: var(--tone-lost);
+  border-color: var(--tone-lost);
+}
+
+.dash-chain-step[data-state='pending'] .dash-chain-marker {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.dash-chain-step[data-state='skipped'] .dash-chain-marker {
+  background: var(--surface-sunk);
+  border-color: var(--line);
+}
+
+.dash-chain-label {
+  display: block;
+  font-size: var(--t-sm);
+  font-weight: 500;
+}
+
+.dash-chain-detail {
+  color: var(--ink-soft);
+  display: block;
+  font-size: var(--t-xs);
+  line-height: 1.5;
+}
+
+.dash-chain-step[data-state='failed'] .dash-chain-label {
+  color: var(--bad);
+}
+
+@media (max-width: 899px) {
+  .dash-kpis-4,
+  .dash-plan-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dash-top {
+    flex-wrap: wrap;
+    height: auto;
+    padding-block: var(--s3);
+  }
+}
+
+/* ==========================================================================
+   Scope bar additions
+   ========================================================================== */
+
+/* The MCP entry point. Claude's own colour rather than the product accent, so
+   it reads as a connection to something outside this app and not as the
+   dashboard's own primary action. */
+.dash-claude {
+  --claude: #d97757;
+
+  align-items: center;
+  background: color-mix(in srgb, var(--claude) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--claude) 38%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--claude) 76%, #000);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  gap: var(--s2);
+  padding: calc(var(--u) * 0.375) var(--s4);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+  white-space: nowrap;
+}
+
+.dash-claude:hover {
+  background: color-mix(in srgb, var(--claude) 16%, transparent);
+  border-color: color-mix(in srgb, var(--claude) 58%, transparent);
+}
+
+.dash-claude:focus-visible {
+  outline: 2px solid var(--claude);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Headline block
+   ========================================================================== */
+
+.dash-headline-card {
+  padding: var(--s5);
+}
+
+.dash-headline-top {
+  display: grid;
+  gap: var(--s5);
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  margin-bottom: var(--s5);
+}
+
+.dash-headline-number {
+  display: block;
+  font-size: calc(var(--u) * 2.75);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.dash-headline-delta {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--t-xs);
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+
+/* Six supporting figures, deliberately small: they qualify the headline rather
+   than competing with it. */
+.dash-headline-stats {
+  align-content: start;
+  border-left: 1px solid var(--line-soft);
+  display: grid;
+  gap: var(--s3) var(--s4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding-left: var(--s5);
+}
+
+.dash-headline-stats dt {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+}
+
+.dash-headline-stats dd {
+  font-size: var(--t-md);
+  font-weight: 600;
+  margin: var(--s1) 0 0;
+}
+
+.dash-plot[data-tall] {
+  height: calc(var(--u) * 14);
+}
+
+/* ==========================================================================
+   Collection gauge
+   ========================================================================== */
+
+/* A tight cluster of counts on the left, the arc they add up to on the right.
+   The arc is the shape worth looking at, so it gets the size; the numbers are
+   read, not scanned, so they stay small and close together. */
+
+.dash-swatch[data-tone='good'],
+.dash-swatch[data-tone='settled'] {
+  background: var(--tone-settled);
+}
+
+.dash-swatch[data-tone='retry'] {
+  background: var(--tone-retry);
+}
+
+.dash-swatch[data-tone='lost'] {
+  background: var(--tone-lost);
+}
+
+.dash-swatch[data-tone='bad'] {
+  background: var(--tone-lost);
+}
+
+.dash-swatch[data-tone='accent'] {
+  background: var(--accent);
+}
+
+/* ==========================================================================
+   Activity calendar
+   ========================================================================== */
+
+.dash-cal {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s3);
+  justify-content: space-between;
+}
+
+/* The weeks share the width of the card instead of huddling on its left. A
+   year in half a row means small cells, which is the size this kind of map is
+   meant to be read at anyway. */
+.dash-cal-grid {
+  display: flex;
+  gap: calc(var(--u) * 0.125);
+}
+
+/* A week column shrinks to fit a year, but never grows past a readable square:
+   at 7 or 30 days there are only a handful of columns, and letting them share
+   the full width would blow each cell up to 90px. */
+.dash-cal-week {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.125);
+  max-width: calc(var(--u) * 0.875);
+  min-width: 0;
+}
+
+.dash-cal-cell {
+  aspect-ratio: 1;
+  background: var(--surface-sunk);
+  border-radius: calc(var(--u) * 0.125);
+  width: 100%;
+}
+
+/* The legend keeps fixed squares: it is a key, not data. */
+.dash-cal-legend .dash-cal-cell {
+  aspect-ratio: auto;
+  height: calc(var(--u) * 0.75);
+  width: calc(var(--u) * 0.75);
+}
+
+/* A day the processor never ran keeps its own step, so an empty square is
+   visibly different from a quiet one. */
+.dash-cal-cell[data-level='0'] {
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+}
+
+.dash-cal-cell[data-level='void'] {
+  background: none;
+}
+
+/* Ink, not accent: this map is pull volume, and volume is not money. Reserving
+   the accent for amounts is what lets it mean anything. */
+.dash-cal-cell[data-level='1'] {
+  background: color-mix(in srgb, var(--ink) 14%, var(--surface-sunk));
+}
+
+.dash-cal-cell[data-level='2'] {
+  background: color-mix(in srgb, var(--ink) 32%, var(--surface-sunk));
+}
+
+.dash-cal-cell[data-level='3'] {
+  background: color-mix(in srgb, var(--ink) 55%, var(--surface-sunk));
+}
+
+.dash-cal-cell[data-level='4'] {
+  background: color-mix(in srgb, var(--ink) 80%, var(--surface-sunk));
+}
+
+.dash-cal-cell:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.dash-cal-legend {
+  align-items: center;
+  display: flex;
+  font-size: var(--t-xs);
+  gap: var(--s1);
+  justify-content: flex-end;
+}
+
+.dash-cal-legend .dash-muted {
+  margin-inline: var(--s1);
+}
+
+/* ==========================================================================
+   Events, as a table
+   ========================================================================== */
+
+.dash-event {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--s2);
+  white-space: nowrap;
+}
+
+.dash-event-detail {
+  max-width: calc(var(--u) * 22);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1100px) {
+  .dash-headline-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-headline-stats {
+    border-left: 0;
+    border-top: 1px solid var(--line-soft);
+    padding: var(--s4) 0 0;
+  }
+}
+
+@media (max-width: 899px) {
+  .dash-headline-stats,
+  .dash-headline-number {
+    font-size: calc(var(--u) * 2.25);
+  }
+}
+
+/* ==========================================================================
+   The scope breadcrumb
+
+   Project, plan and period read as a path because they are a hierarchy: each
+   one narrows what the next one means. Four separate labelled boxes said the
+   opposite -  that they were unrelated switches.
+   ========================================================================== */
+
+.dash-crumbs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb-icon {
+  color: var(--ink-muted);
+  flex: none;
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-crumb-sep {
+  color: var(--line-strong);
+  font-size: var(--t-md);
+  user-select: none;
+}
+
+/* The native select carries the menu and the keyboard behaviour; the chevron
+   is drawn beside it because the platform arrow cannot be positioned. */
+.dash-crumb-control {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  gap: var(--s1);
+  padding: calc(var(--u) * 0.1875) calc(var(--u) * 0.375);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+}
+
+.dash-crumb-control:hover {
+  background: var(--surface-sunk);
+}
+
+.dash-crumb-control:focus-within {
+  border-color: var(--accent);
+}
+
+.dash-crumb-control select {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  outline: none;
+  padding: 0;
+}
+
+.dash-crumb:first-child .dash-crumb-control select {
+  font-weight: 600;
+}
+
+.dash-crumb-chevron {
+  color: var(--ink-muted);
+  flex: none;
+  height: calc(var(--u) * 0.875);
+  pointer-events: none;
+  width: calc(var(--u) * 0.875);
+}
+
+/* A short fact attached to a breadcrumb segment. Only the plan's price uses
+   one now; the network moved to the account block in the sidebar. */
+.dash-badge {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--u) * 0.25);
+  color: var(--ink-muted);
+  font-size: calc(var(--u) * 0.625);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.3125);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Sections that are not built yet stay listed so the shape of the product is
+   visible, but they are plainly unavailable rather than quietly inert. */
+.dash-nav-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.dash-nav-item:disabled:hover {
+  background: none;
+  color: var(--ink-soft);
+}
+
+/* The plan's price, stated beside the plan itself rather than buried in a card
+   further down. Neutral, because unlike the network badge it is not a warning
+   about anything -  it is just the number the subscriber pays. */
+.dash-badge-price {
+  border-color: var(--line);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Next 7 days
+
+   The only forward-looking block on the screen. Three counts of things already
+   scheduled -  never a prediction dressed up as a fact.
+
+   Compact on purpose: it shares a row with the year calendar, and when this
+   card ran tall the calendar was stretched to match and left with a third of
+   itself empty. The figure and its label sit on one line with the amount under
+   them, which is three lines of information in the height of two.
+   ========================================================================== */
+
+.dash-outlook {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.dash-outlook-rows {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-outlook-row {
+  align-items: baseline;
+  column-gap: var(--s3);
+  display: grid;
+  grid-template-columns: calc(var(--u) * 1.75) minmax(0, 1fr);
+  padding-block: var(--s2);
+}
+
+.dash-outlook-row + .dash-outlook-row {
+  border-top: 1px solid var(--line-soft);
+}
+
+.dash-outlook-row:first-child {
+  padding-top: 0;
+}
+
+/* The number carries the colour, so the three lines are told apart before any
+   of them is read. */
+.dash-outlook-value {
+  font-size: calc(var(--u) * 1.75);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-align: right;
+}
+
+.dash-outlook-row[data-tone='accent'] .dash-outlook-value {
+  color: var(--accent);
+}
+
+.dash-outlook-row[data-tone='bad'] .dash-outlook-value {
+  color: var(--bad);
+}
+
+.dash-outlook-row[data-tone='good'] .dash-outlook-value {
+  color: var(--good);
+}
+
+.dash-outlook-text {
+  display: block;
+  min-width: 0;
+}
+
+.dash-outlook-label {
+  color: var(--ink);
+  display: block;
+  font-size: var(--t-md);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.dash-outlook-note {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  margin-top: calc(var(--u) * 0.125);
+}
+
+.dash-outlook-foot {
+  border-top: 1px solid var(--line);
+  padding-top: var(--s3);
+}
+
+/* The one action on the screen, so it takes the accent rather than the ink
+   used by neutral buttons elsewhere. */
+.dash-outlook-foot .dash-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  justify-content: center;
+  width: 100%;
+}
+
+.dash-outlook-foot .dash-btn:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.dash-outlook-clear,
+.dash-outlook-done {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  margin: 0;
+  text-align: center;
+}
+
+.dash-outlook-done {
+  color: var(--good);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   The scope breadcrumb
+
+   Project, plan and period read as a path because they are a hierarchy: each
+   one narrows what the next one means. Four separate labelled boxes said the
+   opposite -  that they were unrelated switches.
+   ========================================================================== */
+
+.dash-crumbs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb-icon {
+  color: var(--ink-muted);
+  flex: none;
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-crumb-sep {
+  color: var(--line-strong);
+  font-size: var(--t-md);
+  user-select: none;
+}
+
+/* The native select carries the menu and the keyboard behaviour; the chevron
+   is drawn beside it because the platform arrow cannot be positioned. */
+.dash-crumb-control {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  gap: var(--s1);
+  padding: calc(var(--u) * 0.1875) calc(var(--u) * 0.375);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+}
+
+.dash-crumb-control:hover {
+  background: var(--surface-sunk);
+}
+
+.dash-crumb-control:focus-within {
+  border-color: var(--accent);
+}
+
+.dash-crumb-control select {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  outline: none;
+  padding: 0;
+}
+
+.dash-crumb:first-child .dash-crumb-control select {
+  font-weight: 600;
+}
+
+.dash-crumb-chevron {
+  color: var(--ink-muted);
+  flex: none;
+  height: calc(var(--u) * 0.875);
+  pointer-events: none;
+  width: calc(var(--u) * 0.875);
+}
+
+/* A short fact attached to a breadcrumb segment. Only the plan's price uses
+   one now; the network moved to the account block in the sidebar. */
+.dash-badge {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--u) * 0.25);
+  color: var(--ink-muted);
+  font-size: calc(var(--u) * 0.625);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.3125);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Sections that are not built yet stay listed so the shape of the product is
+   visible, but they are plainly unavailable rather than quietly inert. */
+.dash-nav-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.dash-nav-item:disabled:hover {
+  background: none;
+  color: var(--ink-soft);
+}
+
+/* The plan's price, stated beside the plan itself rather than buried in a card
+   further down. Neutral, because unlike the network badge it is not a warning
+   about anything -  it is just the number the subscriber pays. */
+.dash-badge-price {
+  border-color: var(--line);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Next 7 days
+
+   The only forward-looking block on the screen. Three counts of things already
+   scheduled -  never a prediction dressed up as a fact.
+
+   A big figure with its label set beside it rather than under it, hairline
+   rules between the rows, and a single closing line. The number is what the
+   eye lands on; the label tells it what it just read.
+   ========================================================================== */
+
+.dash-outlook {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dash-outlook-rows {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-outlook-row {
+  align-items: baseline;
+  column-gap: var(--s3);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding-block: var(--s3);
+}
+
+.dash-outlook-row + .dash-outlook-row {
+  border-top: 1px solid var(--line-soft);
+}
+
+.dash-outlook-row:first-child {
+  padding-top: 0;
+}
+
+/* The number carries the colour, so the three lines are told apart before any
+   of them is read. */
+.dash-outlook-value {
+  font-size: calc(var(--u) * 2.25);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.dash-outlook-row[data-tone='accent'] .dash-outlook-value {
+  color: var(--accent);
+}
+
+.dash-outlook-row[data-tone='bad'] .dash-outlook-value {
+  color: var(--bad);
+}
+
+.dash-outlook-row[data-tone='good'] .dash-outlook-value {
+  color: var(--good);
+}
+
+.dash-outlook-label {
+  color: var(--ink-soft);
+  font-size: var(--t-md);
+}
+
+.dash-outlook-note {
+  color: var(--ink-muted);
+  font-size: var(--t-xs);
+  grid-column: 2;
+  line-height: 1.5;
+  margin-top: var(--s1);
+}
+
+.dash-outlook-foot {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--t-sm);
+  gap: var(--s2);
+  margin: 0;
+  padding-top: var(--s4);
+}
+
+.dash-outlook-cue {
+  background: var(--accent);
+  border-radius: 50%;
+  flex: none;
+  height: calc(var(--u) * 0.5);
+  width: calc(var(--u) * 0.5);
+}
+
+/* ==========================================================================
+   The scope breadcrumb
+
+   Project, plan and period read as a path because they are a hierarchy: each
+   one narrows what the next one means. Four separate labelled boxes said the
+   opposite -  that they were unrelated switches.
+   ========================================================================== */
+
+.dash-crumbs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.dash-crumb-icon {
+  color: var(--ink-muted);
+  flex: none;
+  height: var(--t-md);
+  width: var(--t-md);
+}
+
+.dash-crumb-sep {
+  color: var(--line-strong);
+  font-size: var(--t-md);
+  user-select: none;
+}
+
+/* The native select carries the menu and the keyboard behaviour; the chevron
+   is drawn beside it because the platform arrow cannot be positioned. */
+.dash-crumb-control {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  gap: var(--s1);
+  padding: calc(var(--u) * 0.1875) calc(var(--u) * 0.375);
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
+}
+
+.dash-crumb-control:hover {
+  background: var(--surface-sunk);
+}
+
+.dash-crumb-control:focus-within {
+  border-color: var(--accent);
+}
+
+.dash-crumb-control select {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  outline: none;
+  padding: 0;
+}
+
+.dash-crumb:first-child .dash-crumb-control select {
+  font-weight: 600;
+}
+
+.dash-crumb-chevron {
+  color: var(--ink-muted);
+  flex: none;
+  height: calc(var(--u) * 0.875);
+  pointer-events: none;
+  width: calc(var(--u) * 0.875);
+}
+
+/* A short fact attached to a breadcrumb segment. Only the plan's price uses
+   one now; the network moved to the account block in the sidebar. */
+.dash-badge {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--u) * 0.25);
+  color: var(--ink-muted);
+  font-size: calc(var(--u) * 0.625);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: calc(var(--u) * 0.0625) calc(var(--u) * 0.3125);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Sections that are not built yet stay listed so the shape of the product is
+   visible, but they are plainly unavailable rather than quietly inert. */
+.dash-nav-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.dash-nav-item:disabled:hover {
+  background: none;
+  color: var(--ink-soft);
+}
+
+/* The plan's price, stated beside the plan itself rather than buried in a card
+   further down. Neutral, because unlike the network badge it is not a warning
+   about anything -  it is just the number the subscriber pays. */
+.dash-badge-price {
+  border-color: var(--line);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Next 7 days
+
+   The only forward-looking block on the screen. Three counts of things already
+   scheduled -  never a prediction dressed up as a fact.
+   ========================================================================== */
+
+/* Three across: the card runs the full width, and a column of three lines in
+   it would be mostly empty space. */
+/* Stacked: at half width, three columns would give each number a third of a
+   half, which is not enough room for the line under it. */
+.dash-outlook {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s4);
+  justify-content: space-between;
+}
+
+.dash-outlook-row {
+  align-items: baseline;
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.dash-outlook-row + .dash-outlook-row {
+  border-top: 1px solid var(--line-soft);
+  padding-top: var(--s4);
+}
+
+/* The number carries the colour, so the three lines are told apart before any
+   of them is read. */
+.dash-outlook-value {
+  font-size: calc(var(--u) * 2);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  min-width: calc(var(--u) * 2);
+}
+
+.dash-outlook-row[data-tone='accent'] .dash-outlook-value {
+  color: var(--accent);
+}
+
+.dash-outlook-row[data-tone='bad'] .dash-outlook-value {
+  color: var(--bad);
+}
+
+.dash-outlook-row[data-tone='good'] .dash-outlook-value {
+  color: var(--good);
+}
+
+.dash-outlook-label {
+  display: block;
+  font-size: var(--t-md);
+  font-weight: 600;
+}
+
+.dash-outlook-note {
+  color: var(--ink-soft);
+  display: block;
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  margin-top: var(--s1);
+}
+
+/* The calendar's month ruler. Each label sits over the week that first reaches
+   its month, so the spacing is the data's, not a guess. */
+.dash-cal-months {
+  display: flex;
+  gap: calc(var(--u) * 0.125);
+}
+
+.dash-cal-month {
+  color: var(--ink-muted);
+  flex: 1 1 0;
+  font-size: calc(var(--u) * 0.625);
+  max-width: calc(var(--u) * 0.875);
+  min-width: 0;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+@media (max-width: 899px) {
+  .dash-gauge-block {
+    gap: var(--s4);
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  /* the outlook already stacks at every width */
+}
+
+/* The collection card fills the half-row it was given, with its contents
+   centred in whatever height that turns out to be. */
+.dash-pair .dash-card-body {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
+/* ==========================================================================
+   Collection ring
+   ========================================================================== */
+
+.dash-gauge-block {
+  align-items: center;
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: 100%;
+}
+
+.dash-gauge-read {
+  min-width: 0;
+}
+
+.dash-gauge-rate {
+  display: block;
+  font-size: calc(var(--u) * 2.5);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.dash-gauge-caption {
+  color: var(--ink-muted);
+  display: block;
+  font-size: var(--t-md);
+  margin-top: var(--s1);
+}
+
+/* Stacked, not side by side. Three columns in the two hundred pixels left of
+   the ring put "Retry scheduled" straight through "No attempt left"; a column
+   gives every label the width of the block. */
+.dash-gauge-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  list-style: none;
+  margin: var(--s5) 0 0;
+  padding: 0;
+}
+
+.dash-gauge-stat {
+  align-items: baseline;
+  display: grid;
+  gap: var(--s2);
+  grid-template-columns: auto auto minmax(0, 1fr);
+}
+
+.dash-gauge-stat .dash-swatch {
+  align-self: center;
+}
+
+.dash-gauge-stat-value {
+  font-size: var(--t-md);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  min-width: calc(var(--u) * 2.5);
+}
+
+.dash-gauge-stat-label {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+
+.dash-ring {
+  display: block;
+  flex: none;
+  height: auto;
+  width: calc(var(--u) * 12.5);
+}
+
+/* The measured edge. */
+.dash-ring-ticks line {
+  stroke: color-mix(in srgb, var(--ink) 18%, transparent);
+  stroke-width: 1.5;
+}
+
+.dash-ring-ticks line[data-major] {
+  stroke: color-mix(in srgb, var(--ink) 45%, transparent);
+  stroke-width: 2;
+}
+
+.dash-ring-track {
+  fill: none;
+  stroke: var(--surface-sunk);
+  stroke-width: 22;
+}
+
+/* Each arc sweeps in from its own start, one after the other. `pathLength` on
+   the element normalises every path to 100, so a single dash pattern covers all
+   three whatever their real length. */
+.dash-ring-arc {
+  animation: dash-ring-draw 620ms var(--ease) both;
+  fill: none;
+  stroke-dasharray: 100;
+  stroke-linecap: butt;
+  stroke-width: 22;
+}
+
+@keyframes dash-ring-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The track and the ticks settle in behind them rather than appearing with a
+   snap, so the whole instrument reads as one movement. */
+.dash-ring-track,
+.dash-ring-ticks {
+  animation: dash-ring-settle 420ms var(--ease) both;
+}
+
+@keyframes dash-ring-settle {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.dash-ring-arc[data-tone='settled'] {
+  stroke: var(--tone-settled);
+}
+
+.dash-ring-arc[data-tone='retry'] {
+  stroke: var(--tone-retry);
+}
+
+.dash-ring-arc[data-tone='lost'] {
+  stroke: var(--tone-lost);
+}
+
+@media (max-width: 1200px) {
+  .dash-gauge-block {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .dash-gauge-stats {
+    justify-content: center;
+  }
+}
