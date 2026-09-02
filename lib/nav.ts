@@ -16,9 +16,9 @@ export interface NavLink {
 }
 
 export const links: NavLink[] = [
-  { label: 'Product', href: PLACEHOLDER },
-  { label: 'Developers', href: PLACEHOLDER },
-  { label: 'Resources', href: PLACEHOLDER },
+  { label: 'Product', href: '#product' },
+  { label: 'Developers', href: '#developers' },
+  { label: 'FAQ', href: '#faq' },
 ]
 
 export const cta = { label: 'Join waitlist', href: PLACEHOLDER }

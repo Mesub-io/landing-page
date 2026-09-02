@@ -1,5 +1,6 @@
 import { Builders } from '@/components/builders'
 import { Closing } from '@/components/closing'
+import { Faq } from '@/components/faq'
 import { Hero } from '@/components/hero'
 import { Integrate } from '@/components/integrate'
 import { Pillars } from '@/components/pillars'
@@ -18,6 +19,7 @@ export default function Page() {
         <Pillars />
         <Builders />
         <Integrate />
+        <Faq />
         <Closing />
       </main>
       <SiteFooter />

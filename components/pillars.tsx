@@ -66,7 +66,7 @@ function Art({ kind }: { kind: string }) {
 
 export function Pillars() {
   return (
-    <section className="pillars">
+    <section className="pillars" id="product">
       <div className="pillars-inner">
         <header className="pillars-head">
           <h2>{pillars.title}</h2>

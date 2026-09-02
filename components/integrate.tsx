@@ -87,7 +87,7 @@ export function Integrate() {
   const done = shown >= TOTAL
 
   return (
-    <section className="integrate" data-seen={seen} ref={ref}>
+    <section className="integrate" data-seen={seen} id="developers" ref={ref}>
       <div className="integrate-inner">
         <div className="integrate-visual">
           <div className="code-stage">

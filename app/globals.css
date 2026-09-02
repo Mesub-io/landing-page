@@ -2107,3 +2107,132 @@ button {
 .record-row a:hover svg {
   transform: translateX(3px);
 }
+
+/* ==========================================================================
+   FAQ — the questions people type, in the words they type them.
+
+   Native <details>, so every answer is in the HTML whether or not it is open:
+   crawlers and answer engines read the closed ones too.
+   ========================================================================== */
+
+.faq {
+  background: var(--surface-sunk);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(72px, 9vw, 120px);
+}
+
+.faq-inner {
+  display: grid;
+  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: 1fr;
+  margin-inline: auto;
+  max-width: 1240px;
+  padding-inline: var(--nav-gutter);
+}
+
+@media (min-width: 1000px) {
+  .faq-inner {
+    align-items: start;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+
+  .faq-head {
+    position: sticky;
+    top: calc(var(--nav-height) + 32px);
+  }
+}
+
+.faq h2 {
+  font-size: clamp(1.875rem, 3vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  margin: 20px 0 0;
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+/* The definition sentence: what an answer engine lifts when asked "what is Mesub". */
+.faq-definition {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 18px 0 0;
+  max-width: 46ch;
+}
+
+.faq-list {
+  border-top: 1px solid var(--line);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-item summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  list-style: none;
+  padding-block: 20px;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item h3 {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0;
+  transition: color var(--fast) var(--ease);
+}
+
+.faq-item summary:hover h3 {
+  color: var(--accent);
+}
+
+/* A plus that becomes a minus, drawn rather than iconed. */
+.faq-sign {
+  flex: none;
+  height: 14px;
+  position: relative;
+  width: 14px;
+}
+
+.faq-sign::before,
+.faq-sign::after {
+  background: var(--ink-muted);
+  content: '';
+  inset: 50% 0 auto;
+  position: absolute;
+  transform: translateY(-50%);
+  height: 1.5px;
+  transition: transform var(--base) var(--ease);
+}
+
+.faq-sign::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.faq-item[open] .faq-sign::after {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.faq-item[open] .faq-sign::before,
+.faq-item[open] .faq-sign::after {
+  background: var(--accent);
+}
+
+.faq-item > p {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 68ch;
+  padding-bottom: 22px;
+}
