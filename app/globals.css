@@ -2008,102 +2008,307 @@ button {
   min-height: 46px;
 }
 
-/* --- The record ------------------------------------------------------------
-   Identifiers in a table, on the page itself: no panel, no card. */
+/* --- The proof panels -----------------------------------------------------
+   Square panels with ticked corners, each carrying one checkable fact. The
+   figure inside sits on the same warm light the footer uses. */
 
-.record {
-  margin: clamp(64px, 8vw, 100px) auto 0;
-  max-width: 880px;
+.proof {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+  margin: clamp(56px, 7vw, 88px) auto 0;
+  max-width: 1000px;
   padding-inline: var(--nav-gutter);
   position: relative;
 }
 
-.record-head {
-  align-items: baseline;
-  border-bottom: 1px solid var(--ink);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 20px;
-  justify-content: space-between;
-  padding-bottom: 12px;
-}
+@media (min-width: 900px) {
+  .proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-.record-head h3 {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.record-head p {
-  color: var(--ink-muted);
-  font-size: 0.8125rem;
-  margin: 0;
-}
-
-.record-rows {
-  margin: 0;
-}
-
-.record-row {
-  align-items: baseline;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  gap: 4px 24px;
-  grid-template-columns: 1fr auto;
-  padding-block: 15px;
-  text-align: left;
-}
-
-@media (min-width: 720px) {
-  .record-row {
-    grid-template-columns: 9.5rem 1fr auto;
+  .proof-wide {
+    grid-column: span 2;
   }
 }
 
-.record-row dt {
+.proof-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* The ticked corners: four short accent brackets, outside the border. */
+.tick {
+  height: 9px;
+  position: absolute;
+  width: 9px;
+}
+
+.tick-tl {
+  border-left: 2px solid var(--accent);
+  border-top: 2px solid var(--accent);
+  left: -1px;
+  top: -1px;
+}
+
+.tick-tr {
+  border-right: 2px solid var(--accent);
+  border-top: 2px solid var(--accent);
+  right: -1px;
+  top: -1px;
+}
+
+.tick-bl {
+  border-bottom: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  bottom: -1px;
+  left: -1px;
+}
+
+.tick-br {
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  bottom: -1px;
+  right: -1px;
+}
+
+.panel-heading {
+  padding: clamp(22px, 2.6vw, 28px);
+}
+
+.panel-label {
+  align-items: center;
   color: var(--ink-muted);
+  display: flex;
   font-size: 0.8125rem;
-  letter-spacing: 0.03em;
+  gap: 8px;
 }
 
-.record-value {
+.panel-label svg {
+  height: 16px;
+  width: 16px;
+}
+
+.panel-title {
   color: var(--ink);
-  font-size: 0.9375rem;
-  margin: 0;
-  min-width: 0;
-  overflow-wrap: anywhere;
+  font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin: 26px 0 0;
+  max-width: 20ch;
 }
 
-/* Addresses and commit hashes are identifiers: monospace, a touch smaller so a
-   44-character key still fits one line. */
-.record-value.is-mono {
+/* --- The figure ----------------------------------------------------------- */
+
+.proof-figure {
+  border-top: 1px dashed var(--line-strong);
+  flex: 1;
+  overflow: hidden;
+  padding: clamp(22px, 2.6vw, 28px);
+  position: relative;
+}
+
+/* The footer's light, reused: it rises from the bottom of the figure. */
+.proof-glow {
+  background:
+    radial-gradient(
+      70% 62% at 50% 118%,
+      color-mix(in srgb, var(--accent) 54%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 20%, transparent) 44%,
+      transparent 74%
+    );
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.proof-address {
+  color: var(--ink);
+  display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.8125rem;
   letter-spacing: -0.01em;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  position: relative;
 }
 
-.record-row a {
-  align-items: center;
+.proof-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 22px 0 0;
+  position: relative;
+}
+
+.proof-meta dt {
   color: var(--ink-muted);
-  display: inline-flex;
-  font-size: 0.8125rem;
-  gap: 5px;
-  grid-column: -2;
-  grid-row: 1;
-  transition: color var(--fast) var(--ease);
-  white-space: nowrap;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
 }
 
-.record-row a:hover {
+.proof-meta dd {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 3px 0 0;
+}
+
+/* Three reviews, the latest one filled. */
+.proof-runs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.proof-runs li {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.proof-run-index {
+  color: var(--ink-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+}
+
+.proof-run-bar {
+  background: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--ink) 22%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+  border: 1px solid var(--line-strong);
+  flex: 1;
+  height: 14px;
+}
+
+.proof-run-bar[data-latest='true'] {
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 1px, transparent 1px 5px);
+  border-color: var(--accent);
+}
+
+/* --- The wide panel ------------------------------------------------------- */
+
+.proof-statement {
+  color: var(--ink);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+  margin: clamp(26px, 3vw, 34px) auto 0;
+  max-width: 34ch;
+  padding-inline: clamp(22px, 2.6vw, 28px);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.proof-states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(18px, 3vw, 34px);
+  justify-content: center;
+  list-style: none;
+  margin: clamp(26px, 3vw, 34px) 0 0;
+  padding: 0 clamp(22px, 2.6vw, 28px);
+}
+
+.proof-states li {
+  text-align: center;
+}
+
+.proof-dial {
+  align-items: center;
+  background: linear-gradient(to bottom, var(--line), transparent);
+  border-radius: 16px;
+  display: flex;
+  padding: 1px;
+}
+
+.proof-dial > span {
+  margin-right: -14px;
+}
+
+.proof-dial::after {
+  content: '';
+}
+
+.proof-disc {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  display: block;
+  height: 30px;
+  width: 30px;
+}
+
+.proof-disc[data-pattern='solid'] {
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 1px, transparent 1px 4px);
+}
+
+.proof-disc[data-pattern='hatched'] {
+  background: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--ink) 24%, transparent) 0 1px,
+    transparent 1px 4px
+  );
+  border-color: var(--line-strong);
+}
+
+.proof-disc[data-pattern='ring'] {
+  border-color: var(--line-strong);
+}
+
+.proof-disc[data-pattern='empty'] {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.proof-state-label {
+  color: var(--ink-muted);
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  margin-top: 10px;
+}
+
+/* --- The link at the foot of each panel ------------------------------------ */
+
+.proof-link {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  display: flex;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 7px;
+  margin-top: auto;
+  padding: 15px clamp(22px, 2.6vw, 28px);
+  transition: color var(--fast) var(--ease);
+}
+
+.proof-link-centred {
+  justify-content: center;
+  margin-top: clamp(26px, 3vw, 34px);
+}
+
+.proof-link:hover {
   color: var(--accent);
 }
 
-.record-row a svg {
+.proof-link svg {
   transition: transform var(--base) var(--ease);
 }
 
-.record-row a:hover svg {
+.proof-link:hover svg {
   transform: translateX(3px);
 }
