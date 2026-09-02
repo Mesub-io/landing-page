@@ -1306,9 +1306,8 @@ button {
 /* --- The stage ------------------------------------------------------------
    An accent panel hatched with diagonal rules, with the editor floating on it. */
 
-/* Clouds rather than a flat slab or a ruled grid: four soft radial fields at
-   different densities, overlapping on a tinted base. The dark editor stays the
-   subject, but the ground has weight. */
+/* A rounded panel, filled with four soft radial fields at different densities
+   so the ground has depth without a ruled grid or a flat slab. */
 .code-stage {
   background:
     radial-gradient(
@@ -1337,6 +1336,8 @@ button {
 }
 
 .code-window {
+  position: relative;
+  z-index: 1;
   background: #131417;
   border-radius: 14px;
   box-shadow:
@@ -1411,7 +1412,9 @@ button {
 }
 
 .caret {
-  animation: caret 1s steps(2, start) infinite;
+  /* step-end holds each value until the next stop: a hard on/off, like an IDE,
+     instead of the intermediate opacities a stepped interpolation produces. */
+  animation: caret 1.06s step-end infinite;
   background: var(--accent);
   display: inline-block;
   height: 1.1em;
@@ -1421,6 +1424,10 @@ button {
 }
 
 @keyframes caret {
+  0% {
+    opacity: 1;
+  }
+
   50% {
     opacity: 0;
   }
