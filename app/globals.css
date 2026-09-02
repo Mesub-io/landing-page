@@ -222,6 +222,11 @@ button {
 .cta {
   align-items: center;
   background: var(--accent);
+  /* Explicitly none, because this class is worn by both an <a> and a <button>.
+     A button keeps the user agent's default `2px outset` otherwise -  a literal
+     3D bevel -  so the same class rendered flat in the nav and embossed on the
+     waitlist form. */
+  border: 0;
   border-radius: var(--radius-sm);
   box-shadow:
     0 1px 2px rgb(20 21 26 / 8%),
