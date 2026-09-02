@@ -3,6 +3,7 @@ import { Closing } from '@/components/closing'
 import { Hero } from '@/components/hero'
 import { Integrate } from '@/components/integrate'
 import { Pillars } from '@/components/pillars'
+import { SketchDivider } from '@/components/sketch-divider'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteNav } from '@/components/site-nav'
 
@@ -16,6 +17,7 @@ export default function Page() {
       <main id="main">
         <Hero />
         <Pillars />
+        <SketchDivider />
         <Builders />
         <Integrate />
         <Closing />
