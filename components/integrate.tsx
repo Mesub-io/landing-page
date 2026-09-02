@@ -79,7 +79,8 @@ function useTypedText(text: string, run: boolean, startDelay: number, speed = 22
 export function Integrate() {
   const { ref, seen } = useReveal<HTMLElement>(0.2)
   const shown = useTypewriter(seen)
-  const said = useTypedText(integrate.mcp.line, seen, 900)
+  const codeDone = shown >= TOTAL
+  const said = useTypedText(integrate.mcp.line, codeDone, 400)
 
   // Walk the lines, handing each one the characters it is still owed.
   let budget = shown
@@ -150,10 +151,6 @@ export function Integrate() {
 
           {/* The bubble grows out of the avatar, comic-style. */}
           <div className="claude-say">
-            <span className="claude-avatar">
-              <ClaudeMark size={22} />
-            </span>
-
             <div className="bubble">
               <span className="bubble-speaker">{integrate.mcp.speaker}</span>
               <p className="bubble-line">
@@ -167,8 +164,11 @@ export function Integrate() {
                 </svg>
               </a>
             </div>
-          </div>
 
+            <span className="claude-avatar">
+              <ClaudeMark size={24} />
+            </span>
+          </div>
         </div>
       </div>
     </section>

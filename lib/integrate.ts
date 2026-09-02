@@ -28,7 +28,7 @@ export const integrate = {
   /** Claude, speaking from a bubble pinned to the editor. */
   mcp: {
     speaker: 'Claude',
-    line: 'Want me to write it? Connect me to the MCP server and I’ll wire the subscribe flow and the guard for you.',
+    line: 'Want me to write it? Point me at the MCP server, hand me the Mesub skills, and I’ll wire the subscribe flow and the guard for you.',
     action: 'Connect Claude',
     href: PLACEHOLDER,
   },

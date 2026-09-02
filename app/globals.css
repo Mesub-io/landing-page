@@ -1625,15 +1625,16 @@ button {
 }
 
 /* --- Claude, in a bubble --------------------------------------------------
-   The mark sits in a round avatar and the bubble grows out of it, comic-style:
-   the tail is drawn twice so its outline stays continuous. */
+   Claude sits on the right and the bubble points back at him, so the eye
+   lands on the sentence first. The tail is drawn twice — the border triangle,
+   then the fill on top — or its outline breaks at the join. */
 
 .claude-say {
   align-items: flex-start;
   display: flex;
   gap: 12px;
   margin-top: clamp(30px, 3.5vw, 40px);
-  max-width: 30rem;
+  max-width: 31rem;
 }
 
 .claude-avatar {
@@ -1643,56 +1644,48 @@ button {
   color: #d97757;
   display: flex;
   flex: none;
-  height: 44px;
+  height: 46px;
   justify-content: center;
-  width: 44px;
+  order: 2;
+  width: 46px;
 }
 
 .bubble {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--accent);
   border-radius: 16px;
   box-shadow:
-    0 1px 2px rgb(20 21 26 / 4%),
-    0 16px 32px -22px rgb(20 21 26 / 28%);
-  padding: 14px 16px 13px;
+    0 1px 2px rgb(20 21 26 / 6%),
+    0 16px 32px -20px var(--accent-shadow);
+  color: #fff;
+  flex: 1;
+  padding: 14px 17px 13px;
   position: relative;
 }
 
-.bubble::before,
 .bubble::after {
+  border-color: transparent transparent transparent var(--accent);
   border-style: solid;
+  border-width: 7px 0 7px 11px;
   content: '';
   height: 0;
   position: absolute;
-  top: 15px;
+  right: -10px;
+  top: 16px;
   width: 0;
 }
 
-.bubble::before {
-  border-color: transparent var(--line) transparent transparent;
-  border-width: 8px 12px 8px 0;
-  left: -12px;
-}
-
-.bubble::after {
-  border-color: transparent var(--surface) transparent transparent;
-  border-width: 7px 11px 7px 0;
-  left: -10px;
-}
-
 .bubble-speaker {
-  color: #d97757;
+  color: color-mix(in srgb, #fff 78%, transparent);
   display: block;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-/* The line keeps its full height while it types, so nothing jumps below it. */
+/* The line holds its full height while it types, so nothing jumps below it. */
 .bubble-line {
-  color: var(--ink);
+  color: #fff;
   font-size: 0.9375rem;
   line-height: 1.5;
   margin: 7px 0 0;
@@ -1701,7 +1694,7 @@ button {
 
 .type-caret {
   animation: caret 1.06s step-end infinite;
-  background: #d97757;
+  background: #fff;
   display: inline-block;
   height: 1.05em;
   margin-left: 2px;
@@ -1711,13 +1704,16 @@ button {
 
 .bubble a {
   align-items: center;
-  color: var(--accent);
+  color: #fff;
   display: inline-flex;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   gap: 6px;
   margin-top: 8px;
   opacity: 0;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, #fff 45%, transparent);
+  text-underline-offset: 3px;
   transition: opacity var(--base) var(--ease);
 }
 
