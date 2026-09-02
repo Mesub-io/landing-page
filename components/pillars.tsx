@@ -1,62 +1,61 @@
 import { pillars } from '@/lib/pillars'
 
-/**
- * Card illustrations. Line drawings on a faint grid, one per idea:
- * the billing cycle, the state that follows it, the recovery path.
- */
+/** One continuous thread, shaped around each part of the subscription lifecycle. */
 function Art({ kind }: { kind: string }) {
   return (
     <div className="card-art" aria-hidden="true">
-      <div className="card-grid" />
-      <svg viewBox="0 0 220 120" fill="none">
+      <svg className="card-diagram" viewBox="0 0 360 190" fill="none">
         {kind === 'cycle' ? (
           <g>
-            <path d="M20 60h180" stroke="var(--line-strong)" strokeWidth="1" strokeDasharray="4 6" />
-            {[20, 65, 110, 155, 200].map((x, i) => (
+            <path className="art-thread-soft" d="M28 105h304" />
+            <path className="art-thread" d="M28 105h232" />
+            <path className="art-thread-future" d="M260 105h72" />
+            {[64, 130, 196].map((x) => (
               <g key={x}>
-                <circle
-                  cx={x}
-                  cy="60"
-                  r={i === 4 ? 6.5 : 7}
-                  fill={i === 4 ? 'transparent' : 'var(--accent)'}
-                  fillOpacity={i === 4 ? 0 : 1 - i * 0.16}
-                  stroke={i === 4 ? 'var(--line-strong)' : 'none'}
-                  strokeWidth={i === 4 ? 1.5 : undefined}
-                  strokeDasharray={i === 4 ? '3 3' : undefined}
-                />
-                <rect x={x - 11} y="78" width="22" height="4" rx="2" fill="var(--line)" />
+                <circle className="art-node" cx={x} cy="105" r="8" />
+                <path className="art-node-check" d={`m${x - 3.5} 105 2.2 2.2 4.5-5`} />
               </g>
             ))}
+            <circle className="art-node is-next" cx="260" cy="105" r="9" />
+            <circle className="art-node is-future" cx="326" cy="105" r="6" />
+            <path className="art-hairline" d="M64 75v15M130 75v15M196 75v15M260 75v15" />
+            <text className="art-label" x="64" y="65" textAnchor="middle">SEP</text>
+            <text className="art-label" x="130" y="65" textAnchor="middle">OCT</text>
+            <text className="art-label" x="196" y="65" textAnchor="middle">NOV</text>
+            <text className="art-label is-accent" x="260" y="65" textAnchor="middle">NEXT</text>
+            <text className="art-caption" x="64" y="137" textAnchor="middle">settled</text>
+            <text className="art-caption" x="130" y="137" textAnchor="middle">settled</text>
+            <text className="art-caption" x="196" y="137" textAnchor="middle">settled</text>
+            <text className="art-caption is-accent" x="260" y="137" textAnchor="middle">due</text>
           </g>
         ) : null}
 
-        {kind === 'state' ? (
+        {kind === 'tokens' ? (
           <g>
-            <rect x="26" y="30" width="76" height="60" rx="10" stroke="var(--line-strong)" strokeWidth="1.2" />
-            <rect x="118" y="30" width="76" height="60" rx="10" stroke="var(--line-strong)" strokeWidth="1.2" />
-            <path d="M102 60h16" stroke="var(--accent)" strokeWidth="1.6" strokeDasharray="3 4" />
-            <rect x="40" y="46" width="48" height="5" rx="2.5" fill="var(--line)" />
-            <rect x="40" y="58" width="34" height="5" rx="2.5" fill="var(--line)" />
-            <rect x="40" y="70" width="26" height="6" rx="3" fill="var(--accent)" />
-            <rect x="132" y="46" width="48" height="5" rx="2.5" fill="var(--line)" />
-            <rect x="132" y="58" width="40" height="5" rx="2.5" fill="var(--line)" />
-            <circle cx="137" cy="73" r="4" fill="var(--accent)" />
-            <rect x="146" y="70" width="30" height="6" rx="3" fill="var(--line)" />
+            <circle className="art-sol-coin" cx="151" cy="95" r="40" />
+            <image className="art-sol-token" href="/sol-token.png" x="117" y="61" width="68" height="68" />
+            <image className="art-usdc-token" href="/USDC-Nobg.png" x="173" y="54" width="82" height="82" />
           </g>
         ) : null}
 
-        {kind === 'recovery' ? (
+        {kind === 'authority' ? (
           <g>
-            <path
-              d="M24 84c22 0 26-46 52-46s30 46 56 46 28-46 54-46"
-              stroke="var(--line-strong)"
-              strokeWidth="1.2"
-              strokeDasharray="4 5"
-            />
-            <circle cx="76" cy="38" r="6" fill="var(--accent)" fillOpacity="0.35" />
-            <circle cx="132" cy="84" r="7" fill="none" stroke="var(--accent)" strokeWidth="1.8" />
-            <path d="M128.5 84l2.6 2.6 4.6-5.2" stroke="var(--accent)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="186" cy="38" r="6" fill="var(--accent)" />
+            <path className="art-authority-line" d="M67 95h54M149 88C188 88 211 50 270 50M149 95h121M149 102c39 0 62 38 121 38" />
+            <circle className="art-account-node" cx="55" cy="95" r="12" />
+            <circle className="art-account-core" cx="55" cy="95" r="3" />
+            <circle className="art-authority-node" cx="135" cy="95" r="15" />
+            <circle className="art-authority-core" cx="135" cy="95" r="5" />
+            {[50, 95, 140].map((y) => (
+              <g key={y}>
+                <circle className="art-plan-node" cx="278" cy={y} r="8" />
+                <circle className="art-plan-core" cx="278" cy={y} r="2.5" />
+              </g>
+            ))}
+            <text className="art-topology-label" x="55" y="124" textAnchor="middle">TOKEN ACCOUNT</text>
+            <text className="art-topology-label is-accent" x="135" y="124" textAnchor="middle">AUTHORITY</text>
+            <text className="art-plan-label" x="296" y="53">PLAN 01</text>
+            <text className="art-plan-label" x="296" y="98">PLAN 02</text>
+            <text className="art-plan-label" x="296" y="143">PLAN 03</text>
           </g>
         ) : null}
       </svg>
