@@ -1,6 +1,7 @@
 import { closing } from '@/lib/closing'
 
 import { Logo } from './logo'
+import { TalkToUs } from './talk-to-us'
 
 function Arrow({ className }: { className?: string }) {
   return (
@@ -26,9 +27,7 @@ export function Closing() {
             {closing.primary.label}
             <Arrow className="cta-arrow" />
           </a>
-          <a className="pill" href={closing.secondary.href}>
-            {closing.secondary.label}
-          </a>
+          <TalkToUs />
         </div>
 
         {/* The ground it stands on, said plainly. */}

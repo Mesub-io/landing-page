@@ -1848,3 +1848,99 @@ button {
 .foundations-address a:hover {
   color: var(--accent);
 }
+
+/* --- Talk to us -----------------------------------------------------------
+   Two ways to reach a human, behind one button. */
+
+.talk {
+  position: relative;
+}
+
+/* It sits next to the primary action, so it takes the same shape: a pill
+   beside a rounded rectangle reads as two unrelated buttons. */
+.talk-trigger {
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding-inline: 20px;
+}
+
+.talk-chevron {
+  transition: transform var(--base) var(--ease);
+}
+
+.talk-trigger[aria-expanded='true'] .talk-chevron {
+  transform: rotate(180deg);
+}
+
+.talk-menu {
+  animation: talk-in var(--base) var(--ease) both;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 5%),
+    0 18px 36px -14px rgb(20 21 26 / 22%);
+  left: 50%;
+  padding: 6px;
+  position: absolute;
+  text-align: left;
+  top: calc(100% + 10px);
+  transform: translateX(-50%);
+  width: max-content;
+  z-index: 20;
+}
+
+@keyframes talk-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+}
+
+.talk-option {
+  align-items: center;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  transition: background-color var(--fast) var(--ease);
+}
+
+.talk-option:hover {
+  background: var(--surface-sunk);
+}
+
+.talk-icon {
+  align-items: center;
+  background: var(--surface-sunk);
+  border-radius: 9px;
+  color: var(--ink);
+  display: flex;
+  flex: none;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.talk-option:hover .talk-icon {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.talk-icon svg {
+  height: 16px;
+  width: 16px;
+}
+
+.talk-label {
+  color: var(--ink);
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.talk-detail {
+  color: var(--ink-muted);
+  display: block;
+  font-size: 0.8125rem;
+}

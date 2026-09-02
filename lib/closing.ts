@@ -15,7 +15,13 @@ export const closing = {
   title: 'Start today. Collect on the next cycle.',
   subhead: 'Wire the subscribe flow, add the guard, and let the processor take the calendar from there.',
   primary: { label: 'Join waitlist', href: PLACEHOLDER },
-  secondary: { label: 'Talk to us', href: PLACEHOLDER },
+  secondary: {
+    label: 'Talk to us',
+    options: [
+      { icon: 'mail', label: 'Email us', detail: 'contact@mesub.io', href: 'mailto:contact@mesub.io' },
+      { icon: 'x', label: 'Message us on X', detail: '@mesub_io', href: 'https://x.com/mesub_io' },
+    ],
+  },
   foundations: {
     program: { label: 'Solana Subscriptions program', href: REPO },
     licence: { label: 'MIT licence', href: `${REPO}/blob/main/LICENSE` },
