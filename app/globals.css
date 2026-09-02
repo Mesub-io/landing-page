@@ -2109,26 +2109,46 @@ button {
 }
 
 /* --- The arc between two sections -----------------------------------------
-   The next section's ground rises as a wide dome through this one, and its rim
-   is lit in the accent. The container clips everything below the curve. */
+   The next section's ground rises as a wide dome through this one. The halo is
+   a blurred copy of the same dome rather than a box-shadow: on a light ground a
+   shadow washes out long before it reads as light. */
+
+/* The straight rule would fight the curve, so it goes. */
+.pillars:has(+ .arc) {
+  border-bottom: 0;
+}
 
 .arc {
   background: var(--surface-sunk);
-  height: clamp(90px, 11vw, 150px);
+  height: clamp(120px, 14vw, 200px);
   overflow: hidden;
   position: relative;
 }
 
-.arc-dome {
-  background: var(--paper);
+.arc > span {
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  bottom: -120%;
-  box-shadow:
-    0 -1px 0 1px var(--accent),
-    0 -14px 30px -4px color-mix(in srgb, var(--accent) 55%, transparent),
-    0 -40px 70px -10px color-mix(in srgb, var(--accent) 32%, transparent);
+  bottom: -140%;
+  display: block;
   left: -25%;
   position: absolute;
   right: -25%;
-  top: 42%;
+  top: 48%;
+}
+
+.arc-halo {
+  background: var(--accent);
+  filter: blur(22px);
+  opacity: 0.75;
+  transform: translateY(-4px);
+}
+
+.arc-halo-wide {
+  filter: blur(60px);
+  opacity: 0.55;
+  transform: translateY(-16px) scaleX(1.04);
+}
+
+.arc-dome {
+  background: var(--paper);
+  border-top: 2px solid var(--accent);
 }
