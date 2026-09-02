@@ -1,4 +1,3 @@
-import { ArcDivider } from '@/components/arc-divider'
 import { Builders } from '@/components/builders'
 import { Closing } from '@/components/closing'
 import { Hero } from '@/components/hero'
@@ -17,7 +16,6 @@ export default function Page() {
       <main id="main">
         <Hero />
         <Pillars />
-        <ArcDivider />
         <Builders />
         <Integrate />
         <Closing />
