@@ -1631,10 +1631,24 @@ button {
 
 .claude-say {
   align-items: flex-start;
+  animation: claude-in 520ms var(--ease) both;
   display: flex;
   gap: 12px;
   margin-top: clamp(30px, 3.5vw, 40px);
   max-width: 31rem;
+}
+
+@keyframes claude-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .claude-say {
+    animation: none;
+  }
 }
 
 .claude-avatar {

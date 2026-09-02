@@ -149,26 +149,29 @@ export function Integrate() {
             {integrate.link.label}
           </a>
 
-          {/* The bubble grows out of the avatar, comic-style. */}
-          <div className="claude-say">
-            <div className="bubble">
-              <span className="bubble-speaker">{integrate.mcp.speaker}</span>
-              <p className="bubble-line">
-                {said.text}
-                {said.done ? null : <span className="type-caret" />}
-              </p>
-              <a data-ready={said.done} href={integrate.mcp.href}>
-                {integrate.mcp.action}
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-            </div>
+          {/* Claude turns up only once the file has finished writing itself:
+              an empty bubble waiting on the page says nothing. */}
+          {codeDone ? (
+            <div className="claude-say">
+              <div className="bubble">
+                <span className="bubble-speaker">{integrate.mcp.speaker}</span>
+                <p className="bubble-line">
+                  {said.text}
+                  {said.done ? null : <span className="type-caret" />}
+                </p>
+                <a data-ready={said.done} href={integrate.mcp.href}>
+                  {integrate.mcp.action}
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              </div>
 
-            <span className="claude-avatar">
-              <ClaudeMark size={24} />
-            </span>
-          </div>
+              <span className="claude-avatar">
+                <ClaudeMark size={24} />
+              </span>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
