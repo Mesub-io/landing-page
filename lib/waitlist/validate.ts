@@ -9,7 +9,7 @@ import { referralSourceIds } from './sources'
 
 export const LIMITS = {
   email: 254,
-  handle: 15,
+  handle: 20,
   note: 500,
 }
 
@@ -20,8 +20,8 @@ export const LIMITS = {
  */
 const EMAIL = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/
 
-/** X handles are 1-15 characters, letters, digits and underscore only. */
-const HANDLE = /^[A-Za-z0-9_]{1,15}$/
+/** Letters, digits and underscore only, up to LIMITS.handle characters. */
+const HANDLE = /^[A-Za-z0-9_]{1,20}$/
 
 export interface WaitlistSubmission {
   email?: string
