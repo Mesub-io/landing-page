@@ -21,12 +21,18 @@ export function Faq() {
           {faq.map((item, index) => (
             <details className="faq-item" key={item.question} open={index === 0}>
               <summary>
+                <span className="faq-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{item.question}</h3>
                 <span className="faq-sign" aria-hidden="true" />
               </summary>
               <p>{item.answer}</p>
             </details>
           ))}
+
+          <p className="faq-more">
+            Still have a question?{' '}
+            <a href={`mailto:${site.email}`}>Email us</a> — we answer.
+          </p>
         </div>
       </div>
     </section>
