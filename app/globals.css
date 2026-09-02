@@ -1878,14 +1878,14 @@ button {
 .icon-button {
   align-items: center;
   border-radius: var(--radius-sm);
-  color: var(--ink-muted);
+  color: var(--ink-soft);
   display: inline-flex;
-  height: 36px;
+  height: 38px;
   justify-content: center;
   transition:
     background-color var(--fast) var(--ease),
     color var(--fast) var(--ease);
-  width: 36px;
+  width: 38px;
 }
 
 .icon-button:hover {
@@ -1894,8 +1894,8 @@ button {
 }
 
 .icon-button svg {
-  height: 17px;
-  width: 17px;
+  height: 20px;
+  width: 20px;
 }
 
 /* --- Copying the address -------------------------------------------------- */

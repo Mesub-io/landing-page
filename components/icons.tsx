@@ -6,7 +6,7 @@ export function MailIcon() {
       <path
         d="M2.6 4.6h12.8v8.8H2.6zM2.7 5l6.3 4.5L15.3 5"
         stroke="currentColor"
-        strokeWidth="1.45"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -32,7 +32,7 @@ export function CopyIcon() {
       <path
         d="M6.4 6.4h7.2v7.2H6.4zM4.4 11.6V4.4h7.2"
         stroke="currentColor"
-        strokeWidth="1.45"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
