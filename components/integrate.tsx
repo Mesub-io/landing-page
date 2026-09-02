@@ -22,7 +22,7 @@ function Icon({ kind }: { kind: string }) {
   )
 }
 
-const CHAR_MS = 5
+const CHAR_MS = 8
 const TOTAL = codeLines.reduce((sum, line) => sum + line.reduce((n, t) => n + t.text.length, 0) + 1, 0)
 
 /** Types the snippet out once, at a steady pace, when it comes into view. */
