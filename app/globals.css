@@ -1306,24 +1306,31 @@ button {
 /* --- The stage ------------------------------------------------------------
    An accent panel hatched with diagonal rules, with the editor floating on it. */
 
+/* A tinted ground rather than a saturated slab: the dark editor is the subject,
+   the panel only has to hold it. The hatch keeps the accent present. */
 .code-stage {
   background:
     repeating-linear-gradient(
       45deg,
-      color-mix(in srgb, var(--ink) 10%, transparent) 0 1px,
+      color-mix(in srgb, var(--accent) 26%, transparent) 0 1px,
       transparent 1px 34px
     ),
     repeating-linear-gradient(
       0deg,
-      color-mix(in srgb, var(--ink) 8%, transparent) 0 1px,
+      color-mix(in srgb, var(--accent) 16%, transparent) 0 1px,
       transparent 1px 68px
     ),
     repeating-linear-gradient(
       90deg,
-      color-mix(in srgb, var(--ink) 8%, transparent) 0 1px,
+      color-mix(in srgb, var(--accent) 16%, transparent) 0 1px,
       transparent 1px 68px
     ),
-    var(--accent);
+    linear-gradient(
+      152deg,
+      color-mix(in srgb, var(--accent) 24%, var(--paper)) 0%,
+      color-mix(in srgb, var(--accent) 9%, var(--paper)) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
   border-radius: 26px;
   padding: clamp(22px, 3.4vw, 46px);
 }
