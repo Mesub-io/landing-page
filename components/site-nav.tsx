@@ -50,7 +50,9 @@ export function SiteNav() {
     <header className="nav" data-scrolled={scrolled}>
       <div className="nav-inner">
         <a className="brand" href="/" aria-label={`${brand.name} home`}>
-          <Logo />
+          <span className="brand-tile">
+            <Logo />
+          </span>
           {brand.name}
         </a>
 

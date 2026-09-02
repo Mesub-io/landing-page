@@ -24,7 +24,9 @@ export function SiteFooter() {
         <div className="footer-top">
           <div>
             <a className="footer-brand" href="/">
-              <Logo />
+              <span className="brand-tile">
+                <Logo />
+              </span>
               {brand.name}
             </a>
             <p className="footer-claim">{footer.claim}</p>
