@@ -2107,22 +2107,3 @@ button {
 .record-row a:hover svg {
   transform: translateX(3px);
 }
-
-/* --- A drawn rule between two sections ------------------------------------
-   The stroke is the accent; the path is deliberately uneven so it reads as a
-   pencil line rather than a border. */
-
-.sketch {
-  background: var(--paper);
-  color: var(--accent);
-  line-height: 0;
-  padding-block: clamp(28px, 4vw, 44px);
-}
-
-.sketch svg {
-  display: block;
-  height: clamp(16px, 2vw, 26px);
-  margin-inline: auto;
-  max-width: 1240px;
-  width: calc(100% - 2 * var(--nav-gutter));
-}
