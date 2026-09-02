@@ -1,6 +1,8 @@
 import { faq } from '@/lib/faq'
 import { site } from '@/lib/site'
 
+import { EmailAction } from './email-action'
+
 /**
  * The questions people actually type, answered in 40-60 words each.
  *
@@ -19,7 +21,9 @@ export function Faq() {
 
         <div className="faq-list">
           {faq.map((item, index) => (
-            <details className="faq-item" key={item.question} open={index === 0}>
+            /* A shared `name` makes these an exclusive accordion natively:
+               opening one closes the rest, with no JavaScript. */
+            <details className="faq-item" key={item.question} name="faq">
               <summary>
                 <span className="faq-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{item.question}</h3>
@@ -30,8 +34,7 @@ export function Faq() {
           ))}
 
           <p className="faq-more">
-            Still have a question?{' '}
-            <a href={`mailto:${site.email}`}>Email us</a> — we answer.
+            Still have a question? <EmailAction />
           </p>
         </div>
       </div>

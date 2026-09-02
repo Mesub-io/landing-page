@@ -7,6 +7,8 @@
    ========================================================================== */
 
 :root {
+  interpolate-size: allow-keywords;
+
   /* Ground */
   --paper: #fbfaf7;
   --surface: #ffffff;
@@ -2294,6 +2296,23 @@ button {
   color: var(--accent);
 }
 
+/* Animating open: `interpolate-size` lets height transition to auto, and
+   `allow-discrete` carries content-visibility along with it. Browsers without
+   it simply snap open — the content is never hidden from anyone. */
+.faq-item::details-content {
+  block-size: 0;
+  content-visibility: hidden;
+  overflow: hidden;
+  transition:
+    block-size var(--base) var(--ease),
+    content-visibility var(--base) allow-discrete;
+}
+
+.faq-item[open]::details-content {
+  block-size: auto;
+  content-visibility: visible;
+}
+
 .faq-item > p {
   color: var(--ink-soft);
   font-size: 0.9375rem;
@@ -2301,4 +2320,173 @@ button {
   margin: 0;
   max-width: 64ch;
   padding: 0 40px clamp(18px, 2vw, 22px) 34px;
+}
+
+/* ==========================================================================
+   404 — the same ground as the closing section, with one way back.
+   ========================================================================== */
+
+.missing {
+  align-items: center;
+  background: var(--paper);
+  display: flex;
+  justify-content: center;
+  min-height: 78vh;
+  padding-block: calc(var(--nav-height) + clamp(56px, 8vw, 96px)) clamp(64px, 8vw, 104px);
+  position: relative;
+}
+
+.missing::before {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--ink) 22%, transparent) 1.2px,
+    transparent 0
+  );
+  background-size: 20px 20px;
+  content: '';
+  inset: 0;
+  mask-image: radial-gradient(110% 80% at 50% 50%, transparent 22%, #000 78%);
+  pointer-events: none;
+  position: absolute;
+}
+
+.missing-inner {
+  margin-inline: auto;
+  max-width: 640px;
+  padding-inline: var(--nav-gutter);
+  position: relative;
+  text-align: center;
+}
+
+.missing-mark {
+  color: var(--accent);
+  height: 30px;
+  margin: 0 auto 26px;
+}
+
+.missing-code {
+  color: var(--ink-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  margin: 0 0 18px;
+}
+
+.missing h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.missing-sub {
+  color: var(--ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  margin: 18px auto 0;
+  max-width: 42ch;
+}
+
+.missing-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.missing-actions .cta {
+  display: inline-flex;
+  margin: 0;
+}
+
+.missing-links {
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  justify-content: center;
+  list-style: none;
+  margin: clamp(36px, 5vw, 52px) 0 0;
+  padding: clamp(22px, 3vw, 30px) 0 0;
+}
+
+.missing-links a {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+  transition: color var(--fast) var(--ease);
+}
+
+.missing-links a:hover {
+  color: var(--accent);
+}
+
+/* --- The email address, always copyable ------------------------------------
+   `mailto:` is silent on a device with no mail handler, so the address is shown
+   in full and copied on the same click. */
+
+.email-action {
+  align-items: baseline;
+  color: var(--ink);
+  display: inline-flex;
+  gap: 8px;
+}
+
+.email-address {
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  transition:
+    color var(--fast) var(--ease),
+    text-decoration-color var(--fast) var(--ease);
+}
+
+.email-action:hover .email-address {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.email-hint {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  opacity: 0;
+  transition:
+    color var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+
+.email-action:hover .email-hint,
+.email-hint[data-copied='true'] {
+  opacity: 1;
+}
+
+.email-hint[data-copied='true'] {
+  color: #15803d;
+}
+
+/* The confirmation inside the contact menu. */
+.talk-copied {
+  align-items: center;
+  color: var(--ink-muted);
+  display: flex;
+  flex: none;
+  height: 30px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--fast) var(--ease);
+  width: 30px;
+}
+
+.talk-row:hover .talk-copied,
+.talk-copied[data-shown='true'] {
+  opacity: 1;
+}
+
+.talk-copied[data-shown='true'] {
+  color: #15803d;
+}
+
+.talk-copied svg {
+  height: 16px;
+  width: 16px;
 }

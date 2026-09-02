@@ -67,7 +67,13 @@ export function TalkToUs() {
               <a
                 className="talk-option"
                 href={option.href}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  if ('copy' in option && option.copy) {
+                    copy(option.copy)
+                    return
+                  }
+                  setOpen(false)
+                }}
                 role="menuitem"
                 {...(option.href.startsWith('http') ? { rel: 'noreferrer', target: '_blank' } : {})}
               >
@@ -78,16 +84,12 @@ export function TalkToUs() {
                 </span>
               </a>
 
-              {/* A mail client is not guaranteed to exist: the address stays copyable. */}
+              {/* A mail client is not guaranteed to exist, so the address is
+                  copied on the same tap — no second target to miss. */}
               {'copy' in option && option.copy ? (
-                <button
-                  aria-label={copied ? 'Address copied' : `Copy ${option.copy}`}
-                  className="talk-copy"
-                  onClick={() => copy(option.copy)}
-                  type="button"
-                >
+                <span className="talk-copied" data-shown={copied}>
                   {copied ? <CheckIcon /> : <CopyIcon />}
-                </button>
+                </span>
               ) : null}
             </div>
           ))}
