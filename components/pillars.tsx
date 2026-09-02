@@ -13,11 +13,11 @@ function Art({ kind }: { kind: string }) {
             {[64, 130, 196].map((x) => (
               <g key={x}>
                 <circle className="art-node" cx={x} cy="105" r="10" />
-                <image className="art-cycle-token" href="/sol-token.png" x={x - 9} y="96" width="18" height="18" />
+                <image className="art-cycle-token" href="/sol-token.png" x={x - 7} y="98" width="14" height="14" />
               </g>
             ))}
             <circle className="art-node is-next" cx="260" cy="105" r="10" />
-            <image className="art-cycle-token is-next" href="/sol-token.png" x="251" y="96" width="18" height="18" />
+            <image className="art-cycle-token is-next" href="/sol-token.png" x="253" y="98" width="14" height="14" />
             <circle className="art-node is-future" cx="326" cy="105" r="6" />
             <path className="art-hairline" d="M64 75v15M130 75v15M196 75v15M260 75v15" />
             <text className="art-label" x="64" y="65" textAnchor="middle">SEP</text>
