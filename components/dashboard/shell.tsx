@@ -28,6 +28,10 @@ import type { Detail } from './tables'
  * a set of routes on purpose: nearly every action here is "show me the rows
  * behind that number", and a route change would throw away the scope the reader
  * just set.
+ *
+ * There is no route for this. It renders in exactly one place -  the landing
+ * page's hero, inside a laptop window -  and is not something a visitor can
+ * open. Give it a page again when there is real data behind it.
  */
 
 const NAV: { icon: string; label: string; ready?: boolean }[] = [

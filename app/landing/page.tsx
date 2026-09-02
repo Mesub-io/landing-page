@@ -1,6 +1,10 @@
 /* Scoped entirely under `.dash`, so loading it here cannot touch the rest of
-   the page -  the hero renders the real dashboard rather than a picture of it. */
-import '../dashboard/dashboard.css'
+   the page -  the hero renders the real dashboard rather than a picture of it.
+
+   The stylesheet sits outside any route folder on purpose: there is no
+   /dashboard page, and a file under app/dashboard/ is one `page.tsx` away from
+   publishing one by accident. */
+import '../dashboard.css'
 
 import { Builders } from '@/components/builders'
 import { Closing } from '@/components/closing'
