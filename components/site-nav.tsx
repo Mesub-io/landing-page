@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 
-import { brand, cta, links } from '@/lib/nav'
+import { brand, contact, cta, links } from '@/lib/nav'
 
+import { MailIcon, XIcon } from './icons'
 import { Logo } from './logo'
 
 function Burger({ open }: { open: boolean }) {
@@ -49,12 +50,23 @@ export function SiteNav() {
   return (
     <header className="nav" data-scrolled={scrolled}>
       <div className="nav-inner">
-        <a className="brand" href="/" aria-label={`${brand.name} home`}>
-          <span className="brand-tile">
-            <Logo />
+        <div className="nav-left">
+          <a className="brand" href="/" aria-label={`${brand.name} home`}>
+            <span className="brand-tile">
+              <Logo />
+            </span>
+            {brand.name}
+          </a>
+
+          <span className="nav-social">
+            <a aria-label={contact.x.label} className="icon-button" href={contact.x.href} rel="noreferrer" target="_blank">
+              <XIcon />
+            </a>
+            <a aria-label={contact.email.label} className="icon-button" href={contact.email.href}>
+              <MailIcon />
+            </a>
           </span>
-          {brand.name}
-        </a>
+        </div>
 
         <nav className="nav-links" aria-label="Main">
           {links.map((link) => (

@@ -152,9 +152,8 @@ button {
     grid-template-columns: 1fr auto 1fr;
   }
 
-  .brand {
+  .nav-left {
     justify-self: start;
-    margin-right: 0;
   }
 
   .nav-links {
@@ -179,7 +178,7 @@ button {
   font-weight: 600;
   gap: 11px;
   letter-spacing: -0.025em;
-  margin-right: 28px;
+  margin-right: 14px;
 }
 
 /* Painted with a mask so the mark inherits the text colour. */
@@ -1948,4 +1947,87 @@ button {
   color: var(--ink-muted);
   display: block;
   font-size: 0.8125rem;
+}
+
+/* --- Icon buttons in the bar ---------------------------------------------- */
+
+/* The brand and its two shortcuts travel together in the first grid track. */
+.nav-left {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.nav-social {
+  align-items: center;
+  display: none;
+  gap: 2px;
+}
+
+@media (min-width: 860px) {
+  .nav-social {
+    display: inline-flex;
+  }
+}
+
+.icon-button {
+  align-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+  width: 36px;
+}
+
+.icon-button:hover {
+  background: var(--surface-sunk);
+  color: var(--ink);
+}
+
+.icon-button svg {
+  height: 17px;
+  width: 17px;
+}
+
+/* --- Copying the address -------------------------------------------------- */
+
+.talk-row {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+}
+
+.talk-row .talk-option {
+  flex: 1;
+}
+
+.talk-copy {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--ink-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: none;
+  height: 34px;
+  justify-content: center;
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+  width: 34px;
+}
+
+.talk-copy:hover {
+  background: var(--surface-sunk);
+  color: var(--ink);
+}
+
+.talk-copy svg {
+  height: 16px;
+  width: 16px;
 }

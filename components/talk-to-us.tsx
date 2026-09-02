@@ -4,28 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 
 import { closing } from '@/lib/closing'
 
-const ICONS: Record<string, React.ReactNode> = {
-  mail: (
-    <path
-      d="M2.4 4.8h13.2v8.4H2.4zM2.4 5.2l6.6 4.6 6.6-4.6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  ),
-  // The X mark, drawn rather than fetched so it inherits the text colour.
-  x: (
-    <path
-      d="M10.6 7.7 15.5 2h-1.2l-4.3 4.9L6.6 2H2.5l5.2 7.4-5.2 5.9h1.2l4.5-5.2 3.6 5.2h4.1l-5.3-7.6Zm-1.6 1.8-.5-.8-4.2-5.8h1.8l3.4 4.7.5.8 4.4 6.1h-1.8L9 9.5Z"
-      fill="currentColor"
-    />
-  ),
-}
+import { CheckIcon, CopyIcon, MailIcon, XIcon } from './icons'
 
 export function TalkToUs() {
   const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -47,6 +30,21 @@ export function TalkToUs() {
     }
   }, [open])
 
+  useEffect(() => {
+    if (!copied) return
+    const timer = window.setTimeout(() => setCopied(false), 1800)
+    return () => window.clearTimeout(timer)
+  }, [copied])
+
+  const copy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopied(true)
+    } catch {
+      // Clipboard access can be refused; the address stays visible either way.
+    }
+  }
+
   return (
     <div className="talk" ref={ref}>
       <button
@@ -65,22 +63,33 @@ export function TalkToUs() {
       {open ? (
         <div className="talk-menu" role="menu">
           {closing.secondary.options.map((option) => (
-            <a
-              className="talk-option"
-              href={option.href}
-              key={option.label}
-              onClick={() => setOpen(false)}
-              role="menuitem"
-              {...(option.href.startsWith('http') ? { rel: 'noreferrer', target: '_blank' } : {})}
-            >
-              <span className="talk-icon">
-                <svg viewBox="0 0 18 18" aria-hidden="true">{ICONS[option.icon]}</svg>
-              </span>
-              <span>
-                <span className="talk-label">{option.label}</span>
-                <span className="talk-detail">{option.detail}</span>
-              </span>
-            </a>
+            <div className="talk-row" key={option.label}>
+              <a
+                className="talk-option"
+                href={option.href}
+                onClick={() => setOpen(false)}
+                role="menuitem"
+                {...(option.href.startsWith('http') ? { rel: 'noreferrer', target: '_blank' } : {})}
+              >
+                <span className="talk-icon">{option.icon === 'mail' ? <MailIcon /> : <XIcon />}</span>
+                <span>
+                  <span className="talk-label">{option.label}</span>
+                  <span className="talk-detail">{option.detail}</span>
+                </span>
+              </a>
+
+              {/* A mail client is not guaranteed to exist: the address stays copyable. */}
+              {'copy' in option && option.copy ? (
+                <button
+                  aria-label={copied ? 'Address copied' : `Copy ${option.copy}`}
+                  className="talk-copy"
+                  onClick={() => copy(option.copy)}
+                  type="button"
+                >
+                  {copied ? <CheckIcon /> : <CopyIcon />}
+                </button>
+              ) : null}
+            </div>
           ))}
         </div>
       ) : null}
