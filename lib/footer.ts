@@ -38,5 +38,5 @@ export const footer = {
     { label: 'Privacy', href: PLACEHOLDER },
     { label: 'Terms', href: PLACEHOLDER },
   ],
-  note: 'Built on the open-source Solana Subscriptions program.',
+  note: 'Built on the open-source-audited Solana Subscriptions program.',
 }

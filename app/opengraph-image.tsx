@@ -47,14 +47,14 @@ export default function OpengraphImage() {
             Recurring revenue on Solana, without building the billing.
           </div>
           <div style={{ color: '#4a4f5a', fontSize: 28, lineHeight: 1.4, maxWidth: 900 }}>
-            Collect on schedule, recover failed payments, and gate access from one subscription state.
+            Scheduled collections, failed-payment retries, and access control in one subscription layer.
           </div>
         </div>
 
         <div style={{ color: '#767c88', display: 'flex', fontSize: 24, gap: 28 }}>
           <span>mesub.io</span>
           <span>·</span>
-          <span>Built on the open-source Solana Subscriptions program</span>
+          <span>Built on the open-source-audited Solana Subscriptions program</span>
         </div>
       </div>
     ),

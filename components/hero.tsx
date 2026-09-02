@@ -29,7 +29,7 @@ export function Hero() {
             </a>
           </div>
           <p className="hero-note">
-            Built on the open-source{' '}
+            Built on the open-source-audited{' '}
             <a href={hero.note.href} rel="noreferrer" target="_blank">
               {hero.note.linkLabel}
             </a>{' '}
