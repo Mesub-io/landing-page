@@ -12,21 +12,22 @@ function Art({ kind }: { kind: string }) {
             <path className="art-thread-future" d="M260 105h72" />
             {[64, 130, 196].map((x) => (
               <g key={x}>
-                <circle className="art-node" cx={x} cy="105" r="8" />
-                <path className="art-node-check" d={`m${x - 3.5} 105 2.2 2.2 4.5-5`} />
+                <circle className="art-node" cx={x} cy="105" r="10" />
+                <image className="art-cycle-token" href="/sol-token.png" x={x - 9} y="96" width="18" height="18" />
               </g>
             ))}
-            <circle className="art-node is-next" cx="260" cy="105" r="9" />
+            <circle className="art-node is-next" cx="260" cy="105" r="10" />
+            <image className="art-cycle-token is-next" href="/sol-token.png" x="251" y="96" width="18" height="18" />
             <circle className="art-node is-future" cx="326" cy="105" r="6" />
             <path className="art-hairline" d="M64 75v15M130 75v15M196 75v15M260 75v15" />
             <text className="art-label" x="64" y="65" textAnchor="middle">SEP</text>
             <text className="art-label" x="130" y="65" textAnchor="middle">OCT</text>
             <text className="art-label" x="196" y="65" textAnchor="middle">NOV</text>
-            <text className="art-label is-accent" x="260" y="65" textAnchor="middle">NEXT</text>
+            <text className="art-label" x="260" y="65" textAnchor="middle">NEXT</text>
             <text className="art-caption" x="64" y="137" textAnchor="middle">settled</text>
             <text className="art-caption" x="130" y="137" textAnchor="middle">settled</text>
             <text className="art-caption" x="196" y="137" textAnchor="middle">settled</text>
-            <text className="art-caption is-accent" x="260" y="137" textAnchor="middle">due</text>
+            <text className="art-caption" x="260" y="137" textAnchor="middle">due</text>
           </g>
         ) : null}
 
