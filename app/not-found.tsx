@@ -29,11 +29,12 @@ export default function NotFound() {
         <div className="missing-inner">
           <Logo className="missing-mark" />
 
-          <p className="missing-code">404</p>
-          <h1>This page has been revoked.</h1>
-          <p className="missing-sub">
-            The address you followed does not exist on {site.name}. The links below still do.
+          {/* The number is the picture; the heading is what a screen reader gets. */}
+          <p className="missing-code" aria-hidden="true">
+            404
           </p>
+          <h1>Page not found</h1>
+          <p className="missing-sub">This address does not exist on {site.name}. Here is the way back.</p>
 
           <div className="missing-actions">
             <a className="cta" href={site.home}>

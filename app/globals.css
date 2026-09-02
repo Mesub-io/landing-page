@@ -2360,30 +2360,36 @@ button {
 
 .missing-mark {
   color: var(--accent);
-  height: 30px;
-  margin: 0 auto 26px;
+  height: 28px;
+  margin: 0 auto clamp(28px, 4vw, 44px);
 }
 
 .missing-code {
-  color: var(--ink-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.8125rem;
-  letter-spacing: 0.14em;
-  margin: 0 0 18px;
+  color: var(--ink);
+  font-size: clamp(7rem, 22vw, 15rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+  margin: 0;
+  /* The light the rest of the page uses, pooled behind the number. */
+  background: radial-gradient(70% 90% at 50% 60%, var(--accent) 0%, var(--ink) 62%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .missing h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.06;
-  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: clamp(20px, 3vw, 30px) 0 0;
   text-wrap: balance;
 }
 
 .missing-sub {
   color: var(--ink-soft);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.55;
   margin: 18px auto 0;
   max-width: 42ch;
