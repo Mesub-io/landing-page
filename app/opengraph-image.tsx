@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+
 import { ImageResponse } from 'next/og'
 
 import { site } from '@/lib/site'
@@ -7,7 +10,12 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 /** The share card, generated at build time — no design file to keep in sync. */
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  // The mark is inlined: a generated image cannot fetch from a site that is
+  // not serving yet, and CSS masks do not exist in this renderer.
+  const mark = await readFile(join(process.cwd(), 'public/mesub-mark-paper.png'))
+  const markSrc = `data:image/png;base64,${mark.toString('base64')}`
+
   return new ImageResponse(
     (
       <div
@@ -27,17 +35,15 @@ export default function OpengraphImage() {
             style={{
               alignItems: 'center',
               background: '#f46036',
-              borderRadius: 18,
-              color: '#fbfaf7',
+              borderRadius: 20,
               display: 'flex',
-              fontSize: 44,
-              fontWeight: 700,
               height: 76,
               justifyContent: 'center',
               width: 76,
             }}
           >
-            m
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" src={markSrc} width={44} height={29} />
           </div>
           <div style={{ fontSize: 44, fontWeight: 700, letterSpacing: -1.5 }}>{site.name}</div>
         </div>
