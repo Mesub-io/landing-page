@@ -80,7 +80,7 @@ export function Integrate() {
   const { ref, seen } = useReveal<HTMLElement>(0.2)
   const shown = useTypewriter(seen)
   const codeDone = shown >= TOTAL
-  const said = useTypedText(integrate.mcp.line, codeDone, 400)
+  const said = useTypedText(integrate.mcp.line, codeDone, 260, 12)
 
   // Walk the lines, handing each one the characters it is still owed.
   let budget = shown
