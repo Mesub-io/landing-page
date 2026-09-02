@@ -26,9 +26,8 @@ export const integrate = {
   ],
   link: { label: 'Browse the API reference', href: PLACEHOLDER },
   mcp: {
-    title: 'Or point your agent at our MCP server',
-    body: 'Connect Claude, hand it our skills, and let it wire the subscribe flow and the guard for you.',
-    action: 'Connect Claude',
+    title: 'Or let Claude wire it for you',
+    body: 'Connect our MCP server and its skills',
     href: PLACEHOLDER,
   },
   file: 'app/api/reports/route.ts',

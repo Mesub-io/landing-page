@@ -120,20 +120,17 @@ export function Integrate() {
             {integrate.link.label}
           </a>
 
-          <a className="mcp-card" href={integrate.mcp.href}>
+          <a className="mcp-row" href={integrate.mcp.href}>
             <span className="mcp-mark">
-              <ClaudeMark />
+              <ClaudeMark size={18} />
             </span>
             <span className="mcp-text">
               <span className="mcp-title">{integrate.mcp.title}</span>
               <span className="mcp-body">{integrate.mcp.body}</span>
-              <span className="mcp-action">
-                {integrate.mcp.action}
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
             </span>
+            <svg className="mcp-arrow" width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </a>
         </div>
       </div>
