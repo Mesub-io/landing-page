@@ -2,7 +2,7 @@
  * Existence check for an X handle.
  *
  * X's own API needs a paid key, but its public oEmbed endpoint answers 200 for
- * a real account and 404 for one that does not exist — enough to reject a made
+ * a real account and 404 for one that does not exist - enough to reject a made
  * up handle without a subscription.
  *
  * It fails open on purpose: a timeout or an outage on X's side must not cost us

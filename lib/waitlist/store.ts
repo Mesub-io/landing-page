@@ -1,7 +1,7 @@
 /**
  * Persistence for waitlist entries.
  *
- * Talks to Supabase over PostgREST with plain fetch — no SDK, no dependency.
+ * Talks to Supabase over PostgREST with plain fetch - no SDK, no dependency.
  *
  * The table has RLS enabled and no policy, so nothing can read or write it from
  * a browser. Only a secret key can, and that key is read from the environment
@@ -9,7 +9,7 @@
  * every visitor.
  *
  * Either key name works: SUPABASE_SECRET_KEY for the modern `sb_secret_...`
- * key, or SUPABASE_SERVICE_ROLE_KEY for the legacy one. Prefer the secret key —
+ * key, or SUPABASE_SERVICE_ROLE_KEY for the legacy one. Prefer the secret key -
  * it answers 401 when used from a browser, and rotates on its own.
  */
 

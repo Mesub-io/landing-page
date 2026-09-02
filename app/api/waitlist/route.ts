@@ -77,7 +77,7 @@ export async function POST(request: Request) {
   }
 
   // The format was valid; now check the account is real. Only an explicit
-  // "missing" rejects — see checkXHandle for why this fails open.
+  // "missing" rejects - see checkXHandle for why this fails open.
   if (result.value.handle) {
     const status = await checkXHandle(result.value.handle)
     if (status === 'missing') {

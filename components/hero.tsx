@@ -15,10 +15,8 @@ export function Hero() {
     <section className="hero">
       <div className="hero-inner">
         <div className="hero-copy">
-          <p className="eyebrow">{hero.eyebrow}</p>
           <h1>{hero.headline}</h1>
           <p className="hero-sub">{hero.subhead}</p>
-          <p className="hero-detail">{hero.detail}</p>
           <div className="hero-actions">
             <a className="cta" href={hero.primary.href}>
               {hero.primary.label}

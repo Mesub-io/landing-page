@@ -314,8 +314,10 @@ button {
    Hero
    ========================================================================== */
 
+/* Tighter above than below: the nav still needs clearing, but with the eyebrow
+   gone the headline was sitting a long way down an otherwise empty screen. */
 .hero {
-  padding-block: calc(var(--nav-height) + clamp(48px, 7vw, 96px)) clamp(56px, 8vw, 112px);
+  padding-block: calc(var(--nav-height) + clamp(20px, 3.2vw, 44px)) clamp(56px, 8vw, 112px);
 }
 
 /* The hero runs about a tenth larger than the rest of the page: it is the only
@@ -456,9 +458,14 @@ button {
 
   border: 1px solid var(--line);
   border-radius: 1.1em;
+  /* Three layers rather than one: a hairline that seats the window on the page,
+     a close shadow that gives it thickness, and a wide low one that lifts it
+     off the ground. Deep, but still soft and low-alpha - a single dark blur
+     would read as a drop shadow rather than as height. */
   box-shadow:
-    0 1px 2px rgb(20 21 26 / 5%),
-    0 3em 5em -2em rgb(20 21 26 / 22%);
+    0 1px 2px rgb(20 21 26 / 6%),
+    0 1.5em 2.5em -1.2em rgb(20 21 26 / 20%),
+    0 4.5em 7em -2.5em rgb(20 21 26 / 32%);
   right: 0;
   top: 1em;
   width: 58em;
@@ -3052,6 +3059,16 @@ button {
    window and none of it was legible; the window now shows the top of the page
    at a size where the figures can actually be made out, and the frame crops the
    rest the way a window does. */
+/* The window is a laptop, so it always shows the wide layout however small the
+   frame is. Dropping the container type is what does it: with no ancestor
+   answering to the name, none of the dashboard's breakpoints match and the
+   default -  the desktop composition -  is what renders. `--u` already makes it
+   small; it should not also make it narrow. */
+.hero-dash-frame .dash-root {
+  container-type: normal;
+  height: 100%;
+}
+
 .hero-dash-frame .dash {
   --u: 1.42cqw;
 

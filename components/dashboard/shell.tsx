@@ -85,142 +85,147 @@ export function DashboardShell() {
       : `${formatMoney(Math.min(...amounts))} - ${formatMoney(Math.max(...amounts))} / month`
 
   return (
-    <div className="dash">
-      <aside className="dash-side">
-        <div className="dash-brand">
-          <Logo />
-          Mesub
-        </div>
-
-        <nav className="dash-nav" aria-label="Dashboard sections">
-          {NAV.map((item) => (
-            <button
-              /* The label is hidden on narrow screens where the strip only has
-                 room for icons, so the accessible name has to come from the
-                 attribute -  a button with a display:none label has no name at
-                 all to a screen reader. */
-              aria-current={item.ready ? 'page' : undefined}
-              aria-label={item.ready ? item.label : `${item.label}, not built yet`}
-              className="dash-nav-item"
-              disabled={!item.ready}
-              key={item.label}
-              title={item.ready ? item.label : `${item.label} - not built yet`}
-              type="button"
-            >
-              <Icon kind={item.icon} />
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="dash-side-foot">
-          <div className="dash-account">
-            <span className="dash-avatar" aria-hidden="true">
-              {project.name.slice(0, 2).toUpperCase()}
-            </span>
-            <span className="dash-account-text">
-              <span className="dash-account-name">{project.name}</span>
-              <span className="dash-account-plan">{project.environment}</span>
-            </span>
+    /* The size container has to be the wrapper, not `.dash` itself: an element
+       cannot answer a container query it declares, so every rule that restyles
+       the root at a breakpoint would silently never apply. */
+    <div className="dash-root">
+      <div className="dash">
+        <aside className="dash-side">
+          <div className="dash-brand">
+            <Logo />
+            Mesub
           </div>
-        </div>
-      </aside>
 
-      <div className="dash-main">
-        {/* The scope bar, as one breadcrumb rather than a row of labelled boxes.
-            Project, plan and period are a hierarchy -  each one narrows what the
-            next one means -  so they read as a path and not as unrelated
-            switches. */}
-        <header className="dash-top">
-          <nav className="dash-crumbs" aria-label="Scope">
-            <span className="dash-crumb">
-              <Icon className="dash-crumb-icon" kind="plans" />
-              <span className="dash-crumb-control">
-                <select
-                  aria-label="Project"
-                  onChange={(event) => switchProject(event.target.value)}
-                  value={projectId}
-                >
-                  {projects.map((entry) => (
-                    <option key={entry.id} value={entry.id}>
-                      {entry.name}
-                    </option>
-                  ))}
-                </select>
-                <Icon className="dash-crumb-chevron" kind="updown" />
-              </span>
-            </span>
-
-            <span className="dash-crumb-sep" aria-hidden="true">
-              /
-            </span>
-
-            <span className="dash-crumb">
-              <span className="dash-crumb-control">
-                <select
-                  aria-label="Plan"
-                  onChange={(event) => setPlanId(event.target.value)}
-                  value={planId}
-                >
-                  <option value="all">All plans</option>
-                  {projectPlans.map((plan) => (
-                    <option key={plan!.id} value={plan!.id}>
-                      {plan!.name}
-                    </option>
-                  ))}
-                </select>
-                <Icon className="dash-crumb-chevron" kind="updown" />
-              </span>
-              {priceLabel && <span className="dash-badge dash-badge-price">{priceLabel}</span>}
-            </span>
-
-            <span className="dash-crumb-sep" aria-hidden="true">
-              /
-            </span>
-
-            <span className="dash-crumb">
-              <span className="dash-crumb-control">
-                <select
-                  aria-label="Period"
-                  onChange={(event) => setPeriod(Number(event.target.value) as Period)}
-                  value={period}
-                >
-                  {PERIODS.map((value) => (
-                    <option key={value} value={value}>
-                      Last {value} days
-                    </option>
-                  ))}
-                </select>
-                <Icon className="dash-crumb-chevron" kind="updown" />
-              </span>
-            </span>
+          <nav className="dash-nav" aria-label="Dashboard sections">
+            {NAV.map((item) => (
+              <button
+                /* The label is hidden on narrow screens where the strip only has
+                   room for icons, so the accessible name has to come from the
+                   attribute -  a button with a display:none label has no name at
+                   all to a screen reader. */
+                aria-current={item.ready ? 'page' : undefined}
+                aria-label={item.ready ? item.label : `${item.label}, not built yet`}
+                className="dash-nav-item"
+                disabled={!item.ready}
+                key={item.label}
+                title={item.ready ? item.label : `${item.label} - not built yet`}
+                type="button"
+              >
+                <Icon kind={item.icon} />
+                <span>{item.label}</span>
+              </button>
+            ))}
           </nav>
 
-          <span className="dash-top-spacer" />
-
-          {/* The MCP entry point: point Claude at this account and ask it
-              questions in words instead of assembling the query by hand. */}
-          <button className="dash-claude" type="button">
-            <ClaudeMark size={16} />
-            Connect me
-          </button>
-        </header>
-
-        <div className="dash-view">
-          <div className="dash-view-head">
-            <h2>Overview</h2>
+          <div className="dash-side-foot">
+            <div className="dash-account">
+              <span className="dash-avatar" aria-hidden="true">
+                {project.name.slice(0, 2).toUpperCase()}
+              </span>
+              <span className="dash-account-text">
+                <span className="dash-account-name">{project.name}</span>
+                <span className="dash-account-plan">{project.environment}</span>
+              </span>
+            </div>
           </div>
+        </aside>
 
-          <Overview
-            onOpenDetail={setDetail}
-            onPeriodChange={setPeriod}
-            period={period}
-            planId={planId}
-          />
+        <div className="dash-main">
+          {/* The scope bar, as one breadcrumb rather than a row of labelled boxes.
+              Project, plan and period are a hierarchy -  each one narrows what the
+              next one means -  so they read as a path and not as unrelated
+              switches. */}
+          <header className="dash-top">
+            <nav className="dash-crumbs" aria-label="Scope">
+              <span className="dash-crumb">
+                <Icon className="dash-crumb-icon" kind="plans" />
+                <span className="dash-crumb-control">
+                  <select
+                    aria-label="Project"
+                    onChange={(event) => switchProject(event.target.value)}
+                    value={projectId}
+                  >
+                    {projects.map((entry) => (
+                      <option key={entry.id} value={entry.id}>
+                        {entry.name}
+                      </option>
+                    ))}
+                  </select>
+                  <Icon className="dash-crumb-chevron" kind="updown" />
+                </span>
+              </span>
+
+              <span className="dash-crumb-sep" aria-hidden="true">
+                /
+              </span>
+
+              <span className="dash-crumb">
+                <span className="dash-crumb-control">
+                  <select
+                    aria-label="Plan"
+                    onChange={(event) => setPlanId(event.target.value)}
+                    value={planId}
+                  >
+                    <option value="all">All plans</option>
+                    {projectPlans.map((plan) => (
+                      <option key={plan!.id} value={plan!.id}>
+                        {plan!.name}
+                      </option>
+                    ))}
+                  </select>
+                  <Icon className="dash-crumb-chevron" kind="updown" />
+                </span>
+                {priceLabel && <span className="dash-badge dash-badge-price">{priceLabel}</span>}
+              </span>
+
+              <span className="dash-crumb-sep" aria-hidden="true">
+                /
+              </span>
+
+              <span className="dash-crumb">
+                <span className="dash-crumb-control">
+                  <select
+                    aria-label="Period"
+                    onChange={(event) => setPeriod(Number(event.target.value) as Period)}
+                    value={period}
+                  >
+                    {PERIODS.map((value) => (
+                      <option key={value} value={value}>
+                        Last {value} days
+                      </option>
+                    ))}
+                  </select>
+                  <Icon className="dash-crumb-chevron" kind="updown" />
+                </span>
+              </span>
+            </nav>
+
+            <span className="dash-top-spacer" />
+
+            {/* The MCP entry point: point Claude at this account and ask it
+                questions in words instead of assembling the query by hand. */}
+            <button className="dash-claude" type="button">
+              <ClaudeMark size={16} />
+              Connect me
+            </button>
+          </header>
+
+          <div className="dash-view">
+            <div className="dash-view-head">
+              <h2>Overview</h2>
+            </div>
+
+            <Overview
+              onOpenDetail={setDetail}
+              onPeriodChange={setPeriod}
+              period={period}
+              planId={planId}
+            />
+          </div>
         </div>
-      </div>
 
-      {detail && <DetailPanel detail={detail} onClose={() => setDetail(null)} />}
+        {detail && <DetailPanel detail={detail} onClose={() => setDetail(null)} />}
+      </div>
     </div>
   )
 }

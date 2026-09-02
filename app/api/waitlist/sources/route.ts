@@ -7,7 +7,7 @@ import { referralSources } from '@/lib/waitlist/sources'
  *
  * Served so there is exactly one list, and the same one the submission is
  * validated against. (It is a compiled constant, so changing it still needs a
- * deploy — the point is the single source, not hot reloading.)
+ * deploy - the point is the single source, not hot reloading.)
  */
 export function GET() {
   return NextResponse.json(

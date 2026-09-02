@@ -16,6 +16,22 @@
    which genuinely is above the page.
    ========================================================================== */
 
+/* The layout answers to its own width, not the window's.
+   Every breakpoint below is a container query for one reason: this component is
+   also rendered inside the landing page's hero, in a laptop window a few hundred
+   pixels wide. Keyed to the viewport, a visitor on a phone got the dashboard's
+   mobile layout -  a horizontal icon strip, a block column -  stuffed inside a
+   laptop frame with the content spilling out of it. On the real screen the
+   container and the viewport are the same width, so nothing changes there.
+
+   The container is this wrapper and not `.dash`, because an element cannot
+   answer a query it declares itself: every rule that restyles the root at a
+   breakpoint would never apply. */
+.dash-root {
+  container-name: dash;
+  container-type: inline-size;
+}
+
 .dash {
   --u: 16px;
 
@@ -407,7 +423,7 @@
   font-size: var(--t-md);
 }
 
-@media (max-width: 1200px) {
+@container dash (max-width: 1200px) {
   .dash-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -453,13 +469,13 @@
   padding: 0;
 }
 
-@media (min-width: 1500px) {
+@container dash (min-width: 1500px) {
   .dash-kpis {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 760px) {
+@container dash (max-width: 760px) {
   .dash-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1964,13 +1980,13 @@ button.dash-kpi:hover {
    width of the window.
    ========================================================================== */
 
-@media (max-width: 1100px) {
+@container dash (max-width: 1100px) {
   .dash-split {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-@media (max-width: 899px) {
+@container dash (max-width: 899px) {
   .dash {
     display: block;
   }
@@ -2128,7 +2144,7 @@ button.dash-kpi:hover {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-@media (max-width: 1200px) {
+@container dash (max-width: 1200px) {
   .dash-kpis-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2577,7 +2593,7 @@ button.dash-kpi:hover {
   color: var(--bad);
 }
 
-@media (max-width: 899px) {
+@container dash (max-width: 899px) {
   .dash-kpis-4,
   .dash-plan-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2823,7 +2839,7 @@ button.dash-kpi:hover {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 1100px) {
+@container dash (max-width: 1100px) {
   .dash-headline-top {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2835,7 +2851,7 @@ button.dash-kpi:hover {
   }
 }
 
-@media (max-width: 899px) {
+@container dash (max-width: 899px) {
   .dash-headline-stats,
   .dash-headline-number {
     font-size: calc(var(--u) * 2.25);
@@ -3499,14 +3515,14 @@ button.dash-kpi:hover {
   white-space: nowrap;
 }
 
-@media (max-width: 899px) {
+@container dash (max-width: 899px) {
   .dash-gauge-block {
     gap: var(--s4);
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-@media (max-width: 1100px) {
+@container dash (max-width: 1100px) {
   /* the outlook already stacks at every width */
 }
 
@@ -3659,7 +3675,7 @@ button.dash-kpi:hover {
   stroke: var(--tone-lost);
 }
 
-@media (max-width: 1200px) {
+@container dash (max-width: 1200px) {
   .dash-gauge-block {
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
