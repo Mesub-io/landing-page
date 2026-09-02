@@ -11,6 +11,8 @@ function Arrow({ className }: { className?: string }) {
 }
 
 export function Closing() {
+  const { audits, address, diff, licence, program } = closing.foundations
+
   return (
     <section className="closing">
       <div className="closing-inner">
@@ -28,52 +30,31 @@ export function Closing() {
             {closing.secondary.label}
           </a>
         </div>
-      </div>
 
-      {/* One identifier, its credentials, one footnote. The dark card echoes
-          the editor upstairs, so the two read as the same product. */}
-      <div className="attest">
-        <div className="program-card">
-          <div className="program-head">
-            <span className="program-label">
-              <Logo className="program-logo" />
-              {closing.program.label}
-            </span>
-            <span className="program-badge">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M2.8 7.4 5.6 10.2 11.2 4.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {closing.program.badge}
-            </span>
-          </div>
+        {/* The ground it stands on, said plainly. */}
+        <p className="foundations">
+          Built on the open-source{' '}
+          <a href={program.href} rel="noreferrer" target="_blank">
+            {program.label}
+          </a>
+          , published by the Solana Foundation under the{' '}
+          <a href={licence.href} rel="noreferrer" target="_blank">
+            {licence.label}
+          </a>{' '}
+          and{' '}
+          <a href={audits.href} rel="noreferrer" target="_blank">
+            {audits.label}
+          </a>
+          . Non-custodial by construction: subscribers authorize a pull capped per period, and revoke it whenever they
+          want.
+        </p>
 
-          <p className="program-address">
-            <span className="program-prefix">{closing.program.prefix}</span>
-            {closing.program.rest}
-          </p>
-
-          <p className="program-note">{closing.program.note}</p>
-
-          <ul className="program-credentials">
-            {closing.program.credentials.map((credential) => (
-              <li key={credential.name}>
-                <a href={credential.href} rel="noreferrer" target="_blank">
-                  <span className="credential-name">{credential.name}</span>
-                  <span className="credential-role">{credential.role}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <p className="program-foot">
-            <span>{closing.program.foot.label}</span>
-            <code>{closing.program.foot.value.slice(0, 12)}…</code>
-            <a href={closing.program.foot.link.href} rel="noreferrer" target="_blank">
-              {closing.program.foot.link.label}
-              <Arrow />
-            </a>
-          </p>
-        </div>
+        <p className="foundations-address">
+          <code>{address}</code>
+          <a href={diff.href} rel="noreferrer" target="_blank">
+            {diff.label}
+          </a>
+        </p>
       </div>
     </section>
   )

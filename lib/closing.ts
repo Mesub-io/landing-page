@@ -1,9 +1,9 @@
 /**
  * The closing section.
  *
- * The program address, the reviews and the licence are all checkable in the
- * open-source repository. None of it is a claim about Mesub's own funding,
- * customers or volume.
+ * The claims in `foundations` are checkable in the open-source repository:
+ * the publisher, the licence, the audits and the delegation model. None of it
+ * is a claim about Mesub's own funding, customers or volume.
  */
 
 import { PLACEHOLDER } from './nav'
@@ -16,24 +16,11 @@ export const closing = {
   subhead: 'Wire the subscribe flow, add the guard, and let the processor take the calendar from there.',
   primary: { label: 'Join waitlist', href: PLACEHOLDER },
   secondary: { label: 'Talk to us', href: PLACEHOLDER },
-
-  /** The card under the fold: one identifier, its credentials, one footnote. */
-  program: {
-    label: 'Solana program',
-    badge: 'Audited',
-    /** The address is a vanity key: it opens on `De1eg`. */
-    prefix: 'De1eg',
-    rest: 'AFMkMWZSN5rYXRj9CAdheBamobVNubTsi9avR44',
-    note: 'Capped, revocable delegation. Subscribers keep custody of their funds — we never hold keys.',
-    credentials: [
-      { name: 'Solana Foundation', role: 'publisher', href: REPO },
-      { name: 'Cantina × 3', role: 'security reviews', href: `${REPO}/blob/main/audits/AUDIT_STATUS.md` },
-      { name: 'MIT', role: 'licence', href: `${REPO}/blob/main/LICENSE` },
-    ],
-    foot: {
-      label: 'Audited through',
-      value: AUDITED_COMMIT,
-      link: { label: 'See the diff since', href: `${REPO}/compare/${AUDITED_COMMIT}...main` },
-    },
+  foundations: {
+    program: { label: 'Solana Subscriptions program', href: REPO },
+    licence: { label: 'MIT licence', href: `${REPO}/blob/main/LICENSE` },
+    audits: { label: 'audited three times by Cantina', href: `${REPO}/blob/main/audits/AUDIT_STATUS.md` },
+    diff: { label: 'diff since', href: `${REPO}/compare/${AUDITED_COMMIT}...main` },
+    address: 'De1egAFMkMWZSN5rYXRj9CAdheBamobVNubTsi9avR44',
   },
 }
