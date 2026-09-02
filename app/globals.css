@@ -2107,3 +2107,28 @@ button {
 .record-row a:hover svg {
   transform: translateX(3px);
 }
+
+/* --- The arc between two sections -----------------------------------------
+   The next section's ground rises as a wide dome through this one, and its rim
+   is lit in the accent. The container clips everything below the curve. */
+
+.arc {
+  background: var(--surface-sunk);
+  height: clamp(90px, 11vw, 150px);
+  overflow: hidden;
+  position: relative;
+}
+
+.arc-dome {
+  background: var(--paper);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  bottom: -120%;
+  box-shadow:
+    0 -1px 0 1px var(--accent),
+    0 -14px 30px -4px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 -40px 70px -10px color-mix(in srgb, var(--accent) 32%, transparent);
+  left: -25%;
+  position: absolute;
+  right: -25%;
+  top: 42%;
+}
