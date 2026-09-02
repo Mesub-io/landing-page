@@ -1454,6 +1454,60 @@ button {
   background: var(--paper);
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Light rising out of the bottom edge: one steady wash and one that breathes,
+   both mixed from the accent. */
+.footer-glow {
+  background:
+    radial-gradient(
+      64% 46% at 50% 104%,
+      color-mix(in srgb, var(--accent) 78%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 32%, transparent) 42%,
+      transparent 72%
+    ),
+    radial-gradient(
+      130% 62% at 50% 114%,
+      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
+      transparent 74%
+    );
+  inset: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.footer-glow::after {
+  animation: footer-breathe 11s ease-in-out infinite;
+  background: radial-gradient(
+    38% 30% at 50% 103%,
+    color-mix(in srgb, var(--accent) 82%, #fff 18%) 0%,
+    transparent 70%
+  );
+  content: '';
+  inset: 0;
+  position: absolute;
+}
+
+@keyframes footer-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-glow::after {
+    animation: none;
+  }
 }
 
 .footer-inner {
@@ -1634,5 +1688,180 @@ button {
 
 .mcp-row:hover .mcp-arrow {
   color: var(--ink);
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   Closing — the last ask, then the ground it stands on.
+
+   The trust row carries claims that can be checked in the open-source
+   repository: the licence, the audit reports, the delegation model. Nothing
+   about Mesub's own funding, customers or volume.
+   ========================================================================== */
+
+.closing {
+  background: var(--paper);
+  padding-block: clamp(80px, 10vw, 140px) clamp(64px, 8vw, 104px);
+  position: relative;
+}
+
+/* A faint dot field, fading out before it reaches the copy. */
+.closing::before {
+  background-image: radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0);
+  background-size: 22px 22px;
+  content: '';
+  inset: 0;
+  mask-image: radial-gradient(120% 90% at 50% 0%, transparent 32%, #000 82%);
+  pointer-events: none;
+  position: absolute;
+}
+
+.closing-inner {
+  margin-inline: auto;
+  max-width: 1240px;
+  padding-inline: var(--nav-gutter);
+  position: relative;
+  text-align: center;
+}
+
+.closing-mark {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--accent);
+  display: inline-flex;
+  height: 62px;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 62px;
+}
+
+.closing-mark .mark {
+  height: 26px;
+}
+
+.closing h2 {
+  font-size: clamp(2.125rem, 3.6vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0 auto;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+.closing-sub {
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.2vw, 1.0625rem);
+  line-height: 1.55;
+  margin: 18px auto 0;
+  max-width: 48ch;
+}
+
+.closing-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.closing-actions .cta,
+.closing-actions .pill {
+  display: inline-flex;
+  margin: 0;
+  min-height: 46px;
+}
+
+/* --- The ground it stands on ---------------------------------------------- */
+
+.trust {
+  border-top: 1px solid var(--line);
+  margin-top: clamp(56px, 7vw, 92px);
+  padding-top: clamp(36px, 4vw, 52px);
+}
+
+.trust-title {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin: 0 0 clamp(28px, 3vw, 40px);
+  text-transform: uppercase;
+}
+
+.trust-grid {
+  display: grid;
+  gap: clamp(24px, 3vw, 40px);
+  grid-template-columns: 1fr;
+  text-align: left;
+}
+
+@media (min-width: 860px) {
+  .trust-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.trust-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.trust-icon {
+  align-items: center;
+  background: var(--accent-soft);
+  border-radius: 10px;
+  color: var(--accent);
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  margin-bottom: 16px;
+  width: 36px;
+}
+
+.trust-icon svg {
+  height: 18px;
+  width: 18px;
+}
+
+.trust-item h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.trust-item p {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 8px 0 0;
+}
+
+.trust-item a {
+  align-items: center;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 6px;
+  margin-top: 16px;
+  transition: color var(--fast) var(--ease);
+}
+
+.trust-item a:hover {
+  color: var(--accent);
+}
+
+.trust-item a svg {
+  transition: transform var(--base) var(--ease);
+}
+
+.trust-item a:hover svg {
   transform: translateX(3px);
 }

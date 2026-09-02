@@ -18,6 +18,8 @@ function isExternal(href: string) {
 export function SiteFooter() {
   return (
     <footer className="footer">
+      <div className="footer-glow" aria-hidden="true" />
+
       <div className="footer-inner">
         <div className="footer-top">
           <div>
