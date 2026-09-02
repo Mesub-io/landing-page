@@ -8,7 +8,7 @@ export const hero = {
   subhead:
     'Mesub handles scheduled collections, failed-payment retries, and access control in one subscription layer.',
   detail: 'Keep your product in sync with clear subscription states and webhooks.',
-  primary: { label: 'Join waitlist', href: PLACEHOLDER },
+  primary: { label: 'Join waitlist', href: '/waitlist' },
   secondary: { label: 'See how it works', href: PLACEHOLDER },
   note: {
     text: 'Built on the open-source-audited Solana Subscriptions program.',

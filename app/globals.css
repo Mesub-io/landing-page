@@ -2496,3 +2496,240 @@ button {
   height: 16px;
   width: 16px;
 }
+
+/* ==========================================================================
+   Waitlist — the argument on the left, the form on its own surface.
+   ========================================================================== */
+
+.wl {
+  background: var(--surface-sunk);
+  padding-block: calc(var(--nav-height) + clamp(48px, 7vw, 88px)) clamp(64px, 8vw, 104px);
+}
+
+.wl-inner {
+  align-items: start;
+  display: grid;
+  gap: clamp(36px, 5vw, 72px);
+  grid-template-columns: 1fr;
+  margin-inline: auto;
+  max-width: 1080px;
+  padding-inline: var(--nav-gutter);
+}
+
+@media (min-width: 900px) {
+  .wl-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+}
+
+.wl-mark {
+  color: var(--accent);
+  height: 28px;
+  margin-bottom: 26px;
+}
+
+.wl h1 {
+  font-size: clamp(2rem, 3.6vw, 2.875rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0;
+  max-width: 12ch;
+}
+
+.wl-sub {
+  color: var(--ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  margin: 20px 0 0;
+  max-width: 44ch;
+}
+
+.wl-points {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.wl-points li {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  padding-left: 18px;
+  position: relative;
+}
+
+.wl-points li::before {
+  background: var(--accent);
+  content: '';
+  height: 6px;
+  left: 0;
+  position: absolute;
+  top: 0.55em;
+  width: 6px;
+}
+
+/* --- The form ------------------------------------------------------------- */
+
+.wl-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgb(20 21 26 / 4%), 0 30px 60px -44px rgb(20 21 26 / 34%);
+  padding: clamp(24px, 3vw, 34px);
+}
+
+.wl-form {
+  display: grid;
+  gap: 18px;
+}
+
+.wl-field {
+  display: grid;
+  gap: 7px;
+}
+
+.wl-field label {
+  align-items: baseline;
+  color: var(--ink);
+  display: flex;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 8px;
+}
+
+.wl-field label span {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.wl-field input,
+.wl-field select,
+.wl-field textarea {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  padding: 11px 13px;
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+  width: 100%;
+}
+
+.wl-field textarea {
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.wl-field input:focus-visible,
+.wl-field select:focus-visible,
+.wl-field textarea:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+.wl-field [aria-invalid='true'] {
+  border-color: #d92d20;
+}
+
+.wl-field select:disabled {
+  color: var(--ink-muted);
+}
+
+/* The @ sits inside the field, so the handle is typed without it. */
+.wl-prefixed {
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  display: flex;
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.wl-prefixed:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.wl-prefixed:has([aria-invalid='true']) {
+  border-color: #d92d20;
+}
+
+.wl-prefixed span {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+  padding-left: 13px;
+}
+
+.wl-prefixed input {
+  border: 0;
+  padding-left: 3px;
+}
+
+.wl-prefixed input:focus-visible {
+  box-shadow: none;
+}
+
+.wl-hint {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  margin: -6px 0 0;
+}
+
+.wl-error {
+  color: #b42318;
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.wl-error-form {
+  background: color-mix(in srgb, #d92d20 8%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+/* Off-screen rather than display:none — some bots skip hidden fields. */
+.wl-trap {
+  height: 1px;
+  left: -9999px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.wl-submit {
+  justify-content: center;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.wl-submit:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.wl-done {
+  padding-block: 12px;
+}
+
+.wl-done-title {
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.wl-done-body {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 10px 0 0;
+}

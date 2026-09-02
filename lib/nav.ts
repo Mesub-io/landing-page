@@ -21,7 +21,7 @@ export const links: NavLink[] = [
   { label: 'FAQ', href: '#faq' },
 ]
 
-export const cta = { label: 'Join waitlist', href: PLACEHOLDER }
+export const cta = { label: 'Join waitlist', href: '/waitlist' }
 
 export const contact = {
   email: { address: 'contact@mesub.io', href: 'mailto:contact@mesub.io', label: 'Email us' },

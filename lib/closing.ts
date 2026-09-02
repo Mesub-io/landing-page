@@ -14,7 +14,7 @@ const AUDITED_COMMIT = 'd6b3a5dc7ab18c4168441af733c81ab0a599d414'
 export const closing = {
   title: 'Start today. Collect on the next cycle.',
   subhead: 'Wire the subscribe flow, add the guard, and let the processor take the calendar from there.',
-  primary: { label: 'Join waitlist', href: PLACEHOLDER },
+  primary: { label: 'Join waitlist', href: '/waitlist' },
   secondary: {
     label: 'Talk to us',
     options: [

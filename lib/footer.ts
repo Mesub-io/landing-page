@@ -4,7 +4,7 @@ import { PLACEHOLDER } from './nav'
 
 export const footer = {
   claim: 'Recurring payments, connected to the product they unlock.',
-  cta: { label: 'Join waitlist', href: PLACEHOLDER },
+  cta: { label: 'Join waitlist', href: '/waitlist' },
   columns: [
     {
       title: 'Product',
