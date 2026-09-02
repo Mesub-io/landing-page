@@ -1,0 +1,1262 @@
+/* ==========================================================================
+   Mesub — foundations. Light theme.
+
+   The ground is warm paper, never pure white; the ink is never pure black.
+   One accent carries every action. Elevation comes from hairlines and a very
+   short shadow, never from an ambient glow.
+   ========================================================================== */
+
+:root {
+  /* Ground */
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --surface-sunk: #f4f3ef;
+
+  /* Ink */
+  --ink: #14151a;
+  --ink-soft: #4a4f5a;
+  --ink-muted: #767c88;
+
+  /* Hairlines */
+  --line: rgb(20 21 26 / 10%);
+  --line-soft: rgb(20 21 26 / 6%);
+  --line-strong: rgb(20 21 26 / 18%);
+
+  /* One accent.
+     Change this single line and everything below follows: hover state, tints,
+     shadows and skeletons are all mixed from it. */
+  --accent: #f46036;
+
+  --accent-hover: color-mix(in srgb, var(--accent) 84%, #000);
+  --accent-soft: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-tint: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-shadow: color-mix(in srgb, var(--accent) 55%, transparent);
+  --accent-shadow-strong: color-mix(in srgb, var(--accent) 70%, transparent);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 160ms;
+  --base: 260ms;
+
+  --nav-height: 76px;
+  --nav-gutter: clamp(20px, 2.6vw, 40px);
+  --page-max: 1240px;
+  --gutter: clamp(20px, 5vw, 48px);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 16px);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.shell {
+  margin-inline: auto;
+  max-width: var(--page-max);
+  padding-inline: var(--gutter);
+  width: 100%;
+}
+
+.skip-link {
+  background: var(--ink);
+  border-radius: 0 0 var(--radius-sm) 0;
+  color: var(--paper);
+  font-size: 0.875rem;
+  font-weight: 600;
+  left: 0;
+  padding: 12px 18px;
+  position: fixed;
+  top: 0;
+  transform: translateY(-130%);
+  transition: transform var(--fast) var(--ease);
+  z-index: 80;
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
+.nav {
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  border-bottom: 1px solid transparent;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition:
+    background-color var(--base) var(--ease),
+    border-color var(--base) var(--ease);
+  z-index: 60;
+}
+
+.nav[data-scrolled='true'] {
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom-color: var(--line);
+}
+
+/* The bar spans the full width: the mark sits at the edge, not inside the
+   centred content column. */
+.nav-inner {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  height: var(--nav-height);
+  padding-inline: var(--nav-gutter);
+}
+
+/* Three tracks with matching outer widths, so the links land on the centre of
+   the viewport whatever the brand and the action measure. */
+@media (min-width: 860px) {
+  .nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .brand {
+    justify-self: start;
+    margin-right: 0;
+  }
+
+  .nav-links {
+    justify-self: center;
+  }
+
+  .cta {
+    justify-self: end;
+    margin-left: 0;
+  }
+}
+
+.nav-sheet-inner {
+  padding-inline: var(--nav-gutter);
+}
+
+.brand {
+  align-items: center;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 1.25rem;
+  font-weight: 600;
+  gap: 11px;
+  letter-spacing: -0.025em;
+  margin-right: 28px;
+}
+
+/* Painted with a mask so the mark inherits the text colour. */
+.mark {
+  aspect-ratio: 659 / 440;
+  background: currentColor;
+  display: block;
+  height: 30px;
+  mask: url('/mesub-mark.png') center / contain no-repeat;
+  width: auto;
+  -webkit-mask: url('/mesub-mark.png') center / contain no-repeat;
+}
+
+/* --- Links ---------------------------------------------------------------- */
+
+.nav-links {
+  align-items: center;
+  display: none;
+  gap: 4px;
+}
+
+.nav-link {
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-size: 1rem;
+  padding: 9px 14px;
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.nav-link:hover {
+  background: var(--surface-sunk);
+  color: var(--ink);
+}
+
+/* --- The one action ------------------------------------------------------- */
+
+.cta {
+  align-items: center;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 8%),
+    0 8px 20px -10px var(--accent-shadow);
+  color: #fff;
+  display: none;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: 9px;
+  justify-content: center;
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0 20px;
+  transition:
+    background-color var(--fast) var(--ease),
+    box-shadow var(--base) var(--ease),
+    transform var(--fast) var(--ease);
+  white-space: nowrap;
+}
+
+.cta:hover {
+  background: var(--accent-hover);
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 10%),
+    0 12px 26px -10px var(--accent-shadow-strong);
+  transform: translateY(-1px);
+}
+
+.cta:active {
+  transform: none;
+}
+
+.cta-arrow {
+  transition: transform var(--base) var(--ease);
+}
+
+.cta:hover .cta-arrow {
+  transform: translateX(3px);
+}
+
+/* --- Mobile --------------------------------------------------------------- */
+
+.nav-toggle {
+  align-items: center;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  margin-left: auto;
+  width: 42px;
+}
+
+@media (min-width: 860px) {
+  .nav-links,
+  .cta {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+}
+
+.nav-sheet {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  max-height: calc(100dvh - var(--nav-height));
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+.nav-sheet-link {
+  border-bottom: 1px solid var(--line-soft);
+  display: block;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  padding: 16px 0;
+}
+
+.nav-sheet-cta {
+  display: flex;
+  margin: 22px 0 0;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  padding-block: calc(var(--nav-height) + clamp(48px, 7vw, 96px)) clamp(56px, 8vw, 112px);
+}
+
+.hero-inner {
+  align-items: center;
+  display: grid;
+  gap: clamp(40px, 5vw, 72px);
+  grid-template-columns: 1fr;
+  margin-inline: auto;
+  max-width: 1360px;
+  padding-inline: var(--nav-gutter);
+}
+
+@media (min-width: 1000px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+.eyebrow {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 4.4vw, 3.9rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  color: var(--ink-soft);
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: 1.5;
+  margin: 24px 0 0;
+  max-width: 46ch;
+}
+
+.hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  margin-top: 36px;
+}
+
+.hero-actions .cta {
+  display: inline-flex;
+  margin: 0;
+  min-height: 50px;
+  padding: 0 24px;
+}
+
+.text-link {
+  align-items: center;
+  color: var(--ink);
+  display: inline-flex;
+  font-weight: 500;
+  min-height: 44px;
+  position: relative;
+}
+
+.text-link::after {
+  background: var(--line-strong);
+  bottom: 12px;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--base) var(--ease);
+}
+
+.text-link:hover::after {
+  transform: scaleX(1);
+}
+
+.hero-note {
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+  margin: 28px 0 0;
+}
+
+.hero-note a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hero-note a:hover {
+  color: var(--accent);
+}
+
+/* --- The stage -------------------------------------------------------------
+   A container: the font-size follows the stage width and every device
+   dimension is expressed in em, so the scene scales without being blurred by
+   a transform. */
+
+/* The container is the wrapper, not the stage: `cqw` inside an element's own
+   font-size would resolve against the viewport instead of the container. */
+.hero-visual {
+  container-type: inline-size;
+}
+
+.stage {
+  aspect-ratio: 5 / 4;
+  font-size: 1.62cqw;
+  position: relative;
+}
+
+.mock {
+  background: var(--surface);
+  overflow: hidden;
+  position: absolute;
+}
+
+.sk {
+  background: rgb(20 21 26 / 9%);
+  border-radius: 0.35em;
+  display: block;
+  height: 0.85em;
+}
+
+.sk[data-tone='strong'] {
+  background: rgb(20 21 26 / 22%);
+  height: 1.15em;
+}
+
+.sk[data-tone='accent'] {
+  background: var(--accent-tint);
+}
+
+/* Desktop */
+
+.mock-desktop {
+  border: 1px solid var(--line);
+  border-radius: 1.1em;
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 5%),
+    0 3em 5em -2em rgb(20 21 26 / 22%);
+  right: 0;
+  top: 1.5em;
+  width: 55em;
+}
+
+.mock-bar {
+  align-items: center;
+  background: var(--surface-sunk);
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  gap: 0.5em;
+  height: 2.4em;
+  padding-inline: 1.2em;
+}
+
+.dot {
+  border-radius: 50%;
+  height: 0.7em;
+  width: 0.7em;
+}
+
+.dot[data-action='close'] {
+  background: #ff5f57;
+}
+
+.dot[data-action='minimise'] {
+  background: #febc2e;
+}
+
+.dot[data-action='zoom'] {
+  background: #28c840;
+}
+
+.mock-body {
+  display: grid;
+  grid-template-columns: 12em 1fr;
+  height: 38em;
+}
+
+.mock-side {
+  border-right: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  padding: 1.6em 1.4em;
+}
+
+.mock-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6em;
+  padding: 1.8em;
+}
+
+.mock-stats {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mock-tile {
+  border: 1px solid var(--line-soft);
+  border-radius: 0.7em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  padding: 1em;
+}
+
+.mock-chart {
+  border: 1px solid var(--line-soft);
+  border-radius: 0.7em;
+  flex: 1;
+  min-height: 11em;
+  padding: 1em;
+}
+
+.mock-chart svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.mock-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mock-row {
+  align-items: center;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 2fr 1fr 0.8fr;
+  padding-block: 0.85em;
+}
+
+/* Phone */
+
+.mock-phone {
+  background: #101116;
+  border-radius: 2.6em;
+  bottom: -0.5em;
+  box-shadow:
+    0 0 0 0.15em rgb(255 255 255 / 60%),
+    0 2.5em 4em -1.5em rgb(20 21 26 / 38%);
+  left: -1em;
+  padding: 0.55em;
+  width: 20em;
+}
+
+.phone-screen {
+  background: var(--surface);
+  border-radius: 2.1em;
+  overflow: hidden;
+  position: relative;
+}
+
+.phone-island {
+  background: #101116;
+  border-radius: 1em;
+  height: 1.3em;
+  left: 50%;
+  position: absolute;
+  top: 0.7em;
+  transform: translateX(-50%);
+  width: 6em;
+}
+
+.phone-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  min-height: 40em;
+  padding: 3.6em 1.4em 1.6em;
+}
+
+.phone-card {
+  border: 1px solid var(--line-soft);
+  border-radius: 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  padding: 1em;
+}
+
+.phone-cta {
+  background: var(--accent);
+  border-radius: 0.6em;
+  display: block;
+  height: 2.8em;
+  margin-top: auto;
+  opacity: 0.85;
+}
+
+@media (max-width: 999px) {
+  .hero-visual {
+    margin-inline: auto;
+    max-width: 720px;
+  }
+}
+
+/* ==========================================================================
+   Pillars — the three cards under the hero.
+
+   The page reads as three stacked planes: paper for the hero, a sunk band for
+   this section, white for the cards themselves. The band edge is the seam
+   between the two sections, so no decorative divider is needed.
+   ========================================================================== */
+
+.pillars {
+  background: var(--surface-sunk);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+.pillars-inner {
+  margin-inline: auto;
+  max-width: 1240px;
+  padding-inline: var(--nav-gutter);
+}
+
+.pillars-head {
+  margin-inline: auto;
+  max-width: 640px;
+  text-align: center;
+}
+
+.pillars-head h2 {
+  font-size: clamp(2.125rem, 3.4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.pillars-head p {
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.2vw, 1.0625rem);
+  line-height: 1.55;
+  margin: 18px auto 0;
+  max-width: 52ch;
+}
+
+/* A quiet, outlined action: it invites, it does not compete with the hero CTA. */
+.pill {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  gap: 8px;
+  margin-top: 30px;
+  min-height: 42px;
+  padding: 0 20px;
+  transition:
+    border-color var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.card-grid-3 {
+  display: grid;
+  gap: clamp(16px, 1.6vw, 22px);
+  grid-template-columns: 1fr;
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+@media (min-width: 760px) {
+  .card-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 0 0 26px;
+  transition:
+    border-color var(--base) var(--ease),
+    box-shadow var(--base) var(--ease),
+    transform var(--base) var(--ease);
+}
+
+.card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 1px 2px rgb(20 21 26 / 4%), 0 18px 36px -22px rgb(20 21 26 / 30%);
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 24px 26px 0;
+}
+
+.card p {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 10px 26px 0;
+}
+
+/* --- The illustrations ----------------------------------------------------
+   A faint isometric grid, and one line drawing per idea. The grid is drawn in
+   CSS gradients so it costs nothing and follows the accent when it changes. */
+
+.card-art {
+  aspect-ratio: 11 / 6;
+  border-bottom: 1px solid var(--line-soft);
+  overflow: hidden;
+  position: relative;
+}
+
+.card-grid {
+  background-image:
+    repeating-linear-gradient(60deg, var(--line-soft) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(-60deg, var(--line-soft) 0 1px, transparent 1px 26px);
+  inset: 0;
+  mask-image: radial-gradient(70% 80% at 50% 50%, #000 30%, transparent 78%);
+  opacity: 1;
+  position: absolute;
+  transition: opacity var(--base) var(--ease);
+}
+
+.card-art svg {
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.card:hover .card-grid {
+  opacity: 0.55;
+}
+
+/* ==========================================================================
+   Builders — copy on the left, the merchant's dashboard on the right.
+
+   The section arrives on scroll: the two columns rise, then the stats and the
+   rows follow in a short stagger. Nothing loops; the entrance plays once.
+   ========================================================================== */
+
+.builders {
+  overflow: hidden;
+  padding-block: clamp(72px, 9vw, 128px);
+}
+
+.builders-inner {
+  align-items: center;
+  display: grid;
+  gap: clamp(40px, 5vw, 72px);
+  grid-template-columns: 1fr;
+  margin-inline: auto;
+  max-width: 1360px;
+  padding-inline: var(--nav-gutter);
+}
+
+@media (min-width: 1000px) {
+  .builders-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+.builders-copy,
+.builders-panel {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 900ms var(--ease),
+    transform 900ms var(--ease);
+}
+
+.builders-panel {
+  transition-delay: 120ms;
+}
+
+.builders[data-seen='true'] .builders-copy,
+.builders[data-seen='true'] .builders-panel {
+  opacity: 1;
+  transform: none;
+}
+
+.builders h2 {
+  font-size: clamp(2.125rem, 3.4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 0;
+  max-width: 14ch;
+  text-wrap: balance;
+}
+
+.builders-body {
+  color: var(--ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  margin: 22px 0 0;
+  max-width: 46ch;
+}
+
+.feature-list {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+  margin: 32px 0 34px;
+  padding: 0;
+}
+
+.feature-list li {
+  align-items: center;
+  display: flex;
+  font-size: 1rem;
+  gap: 12px;
+}
+
+.feature-list svg {
+  color: var(--accent);
+  flex: none;
+  height: 18px;
+  width: 18px;
+}
+
+/* --- The dashboard --------------------------------------------------------
+   It bleeds past the right edge on wide screens, the way a window would if you
+   were looking over someone's shoulder. */
+
+.builders-panel {
+  min-width: 0;
+}
+
+@media (min-width: 1000px) {
+  .builders-panel {
+    margin-right: calc(-1 * var(--nav-gutter) - 4vw);
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 2px rgb(20 21 26 / 4%),
+    0 30px 60px -40px rgb(20 21 26 / 40%);
+  overflow: hidden;
+}
+
+.panel-head {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 18px 22px;
+}
+
+.panel-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.panel-period {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+}
+
+.panel-stats {
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.stat {
+  border-left: 1px solid var(--line-soft);
+  opacity: 0;
+  padding: 18px 22px;
+  transform: translateY(10px);
+  transition:
+    opacity 600ms var(--ease),
+    transform 600ms var(--ease);
+  transition-delay: calc(260ms + var(--i) * 90ms);
+}
+
+.stat:first-child {
+  border-left: 0;
+}
+
+.builders[data-seen='true'] .stat {
+  opacity: 1;
+  transform: none;
+}
+
+.stat-label {
+  color: var(--ink-muted);
+  display: block;
+  font-size: 0.8125rem;
+}
+
+.stat-value {
+  align-items: baseline;
+  display: flex;
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  gap: 8px;
+  letter-spacing: -0.03em;
+  margin-top: 6px;
+}
+
+.stat-delta {
+  background: color-mix(in srgb, #16a34a 12%, transparent);
+  border-radius: 999px;
+  color: #15803d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  padding: 2px 7px;
+}
+
+.panel-table {
+  font-size: 0.875rem;
+}
+
+.tr {
+  align-items: center;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1.4fr 0.9fr 1fr 1.1fr;
+  opacity: 0;
+  padding: 13px 22px;
+  transform: translateY(8px);
+  transition:
+    opacity 500ms var(--ease),
+    transform 500ms var(--ease);
+  transition-delay: calc(420ms + var(--i, 0) * 55ms);
+  white-space: nowrap;
+}
+
+.builders[data-seen='true'] .tr {
+  opacity: 1;
+  transform: none;
+}
+
+.tr.th {
+  border-top: 0;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition-delay: 340ms;
+}
+
+.tr .mono {
+  font-variant-numeric: tabular-nums;
+}
+
+.tr .muted {
+  color: var(--ink-muted);
+}
+
+.state {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 3px 9px;
+}
+
+.state[data-state='active'] {
+  background: color-mix(in srgb, #16a34a 12%, transparent);
+  color: #15803d;
+}
+
+.state[data-state='grace_period'] {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.state[data-state='past_due'] {
+  background: color-mix(in srgb, #d92d20 10%, transparent);
+  color: #b42318;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .builders-copy,
+  .builders-panel,
+  .stat,
+  .tr {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* On a narrow screen the stats stack and the table scrolls sideways, rather
+   than being silently clipped by the panel. */
+@media (max-width: 700px) {
+  .panel-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat {
+    border-left: 0;
+    border-top: 1px solid var(--line-soft);
+    padding-block: 14px;
+  }
+
+  .stat:first-child {
+    border-top: 0;
+  }
+
+  .panel-table {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .tr {
+    min-width: 520px;
+  }
+}
+
+
+/* ==========================================================================
+   The halo behind the dashboard — concentric rings, in the spirit of the
+   21st.dev "Vermilion Rings" gradient, rebuilt from our own accent so it
+   follows the brand instead of carrying a second palette.
+   ========================================================================== */
+
+.builders-panel {
+  position: relative;
+}
+
+/* The accent stage: the subscriber's view on the left, the merchant's
+   dashboard on the right, running past the edge so the panel feels like a
+   window onto something larger. */
+.builders-stage {
+  background: var(--accent);
+  isolation: isolate;
+  position: relative;
+  border-radius: 28px;
+  display: grid;
+  gap: 26px;
+  grid-template-columns: 246px minmax(0, 1fr);
+  overflow: hidden;
+  padding: 30px 0 30px 30px;
+}
+
+@media (max-width: 900px) {
+  .builders-stage {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px 0 20px 20px;
+  }
+
+  .mobile {
+    display: none;
+  }
+}
+
+/* --- The subscriber's screen ---------------------------------------------- */
+
+/* The stage's ground: concentric rings in the spirit of the 21st.dev
+   "Vermilion Rings" gradient, rebuilt from our own accent. Flat bands, then a
+   soft blur — the same recipe as the original, mixed to our palette. */
+.stage-rings {
+  --ring-cream: #fff1cf;
+
+  background-image: radial-gradient(
+      circle at 34% 42%,
+      color-mix(in srgb, var(--accent) 100%, var(--ring-cream)) 0%,
+      color-mix(in srgb, var(--accent) 100%, var(--ring-cream)) 10%,
+      color-mix(in srgb, var(--accent) 90%, var(--ring-cream)) 10%,
+      color-mix(in srgb, var(--accent) 90%, var(--ring-cream)) 20%,
+      color-mix(in srgb, var(--accent) 80%, var(--ring-cream)) 20%,
+      color-mix(in srgb, var(--accent) 80%, var(--ring-cream)) 30%,
+      color-mix(in srgb, var(--accent) 70%, var(--ring-cream)) 30%,
+      color-mix(in srgb, var(--accent) 70%, var(--ring-cream)) 40%,
+      color-mix(in srgb, var(--accent) 60%, var(--ring-cream)) 40%,
+      color-mix(in srgb, var(--accent) 60%, var(--ring-cream)) 50%,
+      color-mix(in srgb, var(--accent) 50%, var(--ring-cream)) 50%,
+      color-mix(in srgb, var(--accent) 50%, var(--ring-cream)) 60%,
+      color-mix(in srgb, var(--accent) 40%, var(--ring-cream)) 60%,
+      color-mix(in srgb, var(--accent) 40%, var(--ring-cream)) 70%,
+      color-mix(in srgb, var(--accent) 30%, var(--ring-cream)) 70%,
+      color-mix(in srgb, var(--accent) 30%, var(--ring-cream)) 80%,
+      color-mix(in srgb, var(--accent) 20%, var(--ring-cream)) 80%,
+      color-mix(in srgb, var(--accent) 20%, var(--ring-cream)) 90%,
+      color-mix(in srgb, var(--accent) 10%, var(--ring-cream)) 90%,
+      color-mix(in srgb, var(--accent) 10%, var(--ring-cream)) 100%
+  );
+  filter: blur(10px);
+  inset: -18px;
+  position: absolute;
+  z-index: -1;
+}
+
+.mobile {
+  background: var(--surface);
+  border-radius: 22px;
+  box-shadow: 0 20px 40px -26px rgb(20 21 26 / 45%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 20px;
+  position: relative;
+}
+
+.mobile-notch {
+  background: var(--ink);
+  border-radius: 999px;
+  height: 5px;
+  margin: 0 auto 4px;
+  opacity: 0.18;
+  width: 46px;
+}
+
+.mobile-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mobile-card {
+  align-items: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+}
+
+.mobile-plan {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.mobile-amount {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  margin-bottom: 4px;
+}
+
+.mobile-row {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  font-size: 0.875rem;
+  justify-content: space-between;
+  padding-top: 14px;
+}
+
+.mobile-row span:first-child {
+  color: var(--ink-muted);
+}
+
+.mobile-strong {
+  font-weight: 600;
+}
+
+.mobile-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.mobile-action {
+  background: var(--ink);
+  border-radius: 10px;
+  color: var(--paper);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Cancelling is a real option, not a hidden one — but it is not the one the
+   screen pushes. */
+.mobile-cancel {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 11px;
+  text-align: center;
+}
+
+.panel {
+  /* Wider than its track: it runs past the stage on the right. */
+  min-width: 660px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Rather than being cut off, the dashboard dissolves into the stage — the
+   whole panel is masked, so its surface, rows and shadow fade together. */
+@media (min-width: 901px) {
+  .builders-stage .panel {
+    mask-image: linear-gradient(to right, #000 62%, transparent 97%);
+  }
+}
+
+
+
+/* The dashboard gets the same window chrome as the hero mock, so both read as
+   the same product seen twice. */
+.panel-chrome {
+  align-items: center;
+  background: var(--surface-sunk);
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  gap: 7px;
+  height: 38px;
+  padding-inline: 16px;
+}
+
+.panel-chrome .dot {
+  height: 10px;
+  width: 10px;
+}
