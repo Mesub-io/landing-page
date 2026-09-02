@@ -1432,64 +1432,13 @@ button {
 }
 
 /* ==========================================================================
-   Footer — paper ground, with light rising out of the bottom edge.
-
-   Same idea as the animated gradient background, done with CSS layers instead
-   of a requestAnimationFrame loop rewriting inline styles every frame: one
-   steady wash and one that breathes on an 11s cycle.
+   Footer
    ========================================================================== */
 
 .footer {
   background: var(--paper);
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
-  isolation: isolate;
-  overflow: hidden;
-  position: relative;
-}
-
-.footer-glow {
-  background:
-    radial-gradient(
-      64% 46% at 50% 104%,
-      color-mix(in srgb, var(--accent) 78%, transparent) 0%,
-      color-mix(in srgb, var(--accent) 32%, transparent) 42%,
-      transparent 72%
-    ),
-    radial-gradient(
-      130% 62% at 50% 114%,
-      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
-      transparent 74%
-    );
-  inset: 0;
-  position: absolute;
-  z-index: -1;
-}
-
-/* The breathing pass: a brighter core that slowly swells and settles. */
-.footer-glow::after {
-  animation: footer-breathe 11s ease-in-out infinite;
-  background: radial-gradient(
-    38% 30% at 50% 103%,
-    color-mix(in srgb, var(--accent) 82%, #fff 18%) 0%,
-    transparent 70%
-  );
-  content: '';
-  inset: 0;
-  position: absolute;
-}
-
-@keyframes footer-breathe {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.85;
-    transform: scale(1.14);
-  }
 }
 
 .footer-inner {
@@ -1605,12 +1554,6 @@ button {
 
 .footer-bottom a:hover {
   color: var(--ink);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .footer-glow::after {
-    animation: none;
-  }
 }
 
 /* --- The MCP entry point --------------------------------------------------
