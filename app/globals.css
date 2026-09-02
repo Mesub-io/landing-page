@@ -741,9 +741,7 @@ button {
   margin: 10px 26px 0;
 }
 
-/* --- The illustrations ----------------------------------------------------
-   A faint isometric grid, and one line drawing per idea. The grid is drawn in
-   CSS gradients so it costs nothing and follows the accent when it changes. */
+/* --- Protocol illustrations --------------------------------------------- */
 
 .card-art {
   aspect-ratio: 11 / 6;
@@ -752,26 +750,148 @@ button {
   position: relative;
 }
 
-.card-grid {
-  background-image:
-    repeating-linear-gradient(60deg, var(--line-soft) 0 1px, transparent 1px 26px),
-    repeating-linear-gradient(-60deg, var(--line-soft) 0 1px, transparent 1px 26px);
-  inset: 0;
-  mask-image: radial-gradient(70% 80% at 50% 50%, #000 30%, transparent 78%);
-  opacity: 1;
-  position: absolute;
-  transition: opacity var(--base) var(--ease);
-}
-
-.card-art svg {
+.card-diagram {
   display: block;
   height: 100%;
-  position: relative;
   width: 100%;
 }
 
-.card:hover .card-grid {
-  opacity: 0.55;
+.art-label,
+.art-caption,
+.art-topology-label,
+.art-plan-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0;
+}
+
+.art-label {
+  fill: var(--ink-muted);
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.art-caption {
+  fill: var(--ink-muted);
+  font-size: 8px;
+  letter-spacing: 0;
+}
+
+.art-label.is-accent,
+.art-caption.is-accent {
+  fill: var(--accent-hover);
+}
+
+.art-thread-soft,
+.art-thread,
+.art-thread-future,
+.art-hairline,
+.art-authority-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.art-topology-label,
+.art-plan-label {
+  fill: var(--ink-muted);
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.art-topology-label.is-accent {
+  fill: var(--accent-hover);
+}
+
+.art-sol-coin {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.art-sol-token {
+  filter: drop-shadow(0 8px 12px rgb(20 21 26 / 8%));
+}
+
+.art-usdc-mask {
+  fill: var(--surface);
+}
+
+.art-usdc-token {
+  filter: drop-shadow(0 8px 14px rgb(20 21 26 / 13%));
+}
+
+.art-authority-line {
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+}
+
+.art-account-node,
+.art-plan-node {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+}
+
+.art-account-core,
+.art-plan-core {
+  fill: var(--ink-muted);
+}
+
+.art-authority-node {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.art-authority-core {
+  fill: var(--accent);
+}
+
+.art-thread-soft {
+  stroke: color-mix(in srgb, var(--accent) 10%, transparent);
+  stroke-width: 10;
+}
+
+.art-thread {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.art-thread-future {
+  stroke: var(--line-strong);
+  stroke-dasharray: 4 6;
+  stroke-width: 1.5;
+}
+
+.art-node {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1.8;
+}
+
+.art-node.is-next {
+  stroke: var(--line-strong);
+  stroke-width: 2.4;
+}
+
+.art-node.is-future {
+  stroke: var(--line-strong);
+  stroke-dasharray: 3 3;
+  stroke-width: 1.3;
+}
+
+.art-cycle-token {
+  filter: drop-shadow(0 1px 2px var(--accent-tint));
+}
+
+.art-cycle-token.is-next {
+  filter: grayscale(1);
+  opacity: 0.42;
+}
+
+.art-hairline {
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
 }
 
 /* ==========================================================================

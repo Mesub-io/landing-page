@@ -14,14 +14,14 @@ export const pillars = {
       body: 'Due dates watched off-chain, authorized pulls executed on time, every attempt recorded.',
     },
     {
-      art: 'state',
-      title: 'Access follows payment',
-      body: 'Each result becomes a subscription state your app reads through an API, an SDK or a webhook.',
+      art: 'tokens',
+      title: 'Built for Solana',
+      body: 'Charge in USDC or another compatible SPL Token or Token-2022 mint through the same subscription flow.',
     },
     {
-      art: 'recovery',
-      title: 'Recovery, not churn',
-      body: 'Configurable retries, reminders, suspension after repeated failures, reactivation once settled.',
+      art: 'authority',
+      title: 'One authority, many plans',
+      body: 'Multiple subscriptions can share the same token account without competing for its single delegate slot.',
     },
   ],
 } as const
