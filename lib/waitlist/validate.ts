@@ -9,13 +9,13 @@ import { referralSourceIds } from './sources'
 
 export const LIMITS = {
   email: 254,
-  handle: 15,
-  note: 280,
+  handle: 25,
+  note: 500,
 }
 
 /**
  * Pragmatic address check: one @, something either side, a dotted domain, no
- * whitespace. Deliberately not RFC 5322 — that regex accepts more than any
+ * whitespace. Deliberately not RFC 5322 -  that regex accepts more than any
  * mail server does and rejects nothing useful.
  */
 const EMAIL = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/
@@ -55,11 +55,12 @@ export function validate(input: WaitlistSubmission): ValidationResult {
     errors.email = 'That does not look like an email address.'
   }
 
-  if (handle && !HANDLE.test(handle)) {
-    errors.handle =
-      handle.length > LIMITS.handle
-        ? 'An X handle is at most 15 characters.'
-        : 'An X handle can only contain letters, numbers and underscores.'
+  // Length and charset are separate checks, so the message names the actual
+  // problem instead of guessing at it.
+  if (handle.length > LIMITS.handle) {
+    errors.handle = `An X handle is at most ${LIMITS.handle} characters.`
+  } else if (handle && !HANDLE.test(handle)) {
+    errors.handle = 'An X handle can only contain letters, numbers and underscores.'
   }
 
   // One way to reach you is the point of the list.

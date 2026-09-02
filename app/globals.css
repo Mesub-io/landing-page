@@ -1460,22 +1460,24 @@ button {
   position: relative;
 }
 
-/* Light rising out of the bottom edge: one steady wash and one that breathes,
-   both mixed from the accent. */
+/* Light rising off the bottom edge: one steady wash and one that breathes, both
+   mixed from the accent. The mask fades the last strip out so the glow meets the
+   footer edge softly instead of getting clipped into a hard line. */
 .footer-glow {
   background:
     radial-gradient(
-      64% 46% at 50% 104%,
-      color-mix(in srgb, var(--accent) 78%, transparent) 0%,
-      color-mix(in srgb, var(--accent) 32%, transparent) 42%,
+      64% 30% at 50% 104%,
+      color-mix(in srgb, var(--accent) 62%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 26%, transparent) 42%,
       transparent 72%
     ),
     radial-gradient(
-      130% 62% at 50% 114%,
-      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
+      130% 38% at 50% 110%,
+      color-mix(in srgb, var(--accent) 20%, transparent) 0%,
       transparent 74%
     );
   inset: 0;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 99%);
   position: absolute;
   z-index: -1;
 }
@@ -1483,13 +1485,14 @@ button {
 .footer-glow::after {
   animation: footer-breathe 11s ease-in-out infinite;
   background: radial-gradient(
-    38% 30% at 50% 103%,
-    color-mix(in srgb, var(--accent) 82%, #fff 18%) 0%,
+    38% 20% at 50% 104%,
+    color-mix(in srgb, var(--accent) 70%, #fff 18%) 0%,
     transparent 70%
   );
   content: '';
   inset: 0;
   position: absolute;
+  transform-origin: 50% 100%;
 }
 
 @keyframes footer-breathe {
@@ -1501,7 +1504,7 @@ button {
 
   50% {
     opacity: 0.85;
-    transform: scale(1.14);
+    transform: scale(1.08);
   }
 }
 
@@ -2498,12 +2501,12 @@ button {
 }
 
 /* ==========================================================================
-   Waitlist — the argument on the left, the form on its own surface.
+   Waitlist -  the argument on the left, the form on its own surface.
    ========================================================================== */
 
 .wl {
   background: var(--surface-sunk);
-  padding-block: calc(var(--nav-height) + clamp(48px, 7vw, 88px)) clamp(64px, 8vw, 104px);
+  padding-block: calc(var(--nav-height) + clamp(40px, 6vw, 72px)) clamp(56px, 7vw, 96px);
 }
 
 .wl-inner {
@@ -2663,14 +2666,14 @@ button {
 }
 
 .wl-prefixed span {
-  color: var(--ink-muted);
+  color: var(--ink-soft);
   font-size: 0.9375rem;
   padding-left: 13px;
 }
 
 .wl-prefixed input {
   border: 0;
-  padding-left: 3px;
+  padding-left: 1px;
 }
 
 .wl-prefixed input:focus-visible {
@@ -2695,7 +2698,7 @@ button {
   padding: 10px 12px;
 }
 
-/* Off-screen rather than display:none — some bots skip hidden fields. */
+/* Off-screen rather than display:none -  some bots skip hidden fields. */
 .wl-trap {
   height: 1px;
   left: -9999px;
@@ -2715,15 +2718,43 @@ button {
   opacity: 0.6;
 }
 
+/* The confirmation is the last thing they see: give it a moment. */
 .wl-done {
-  padding-block: 12px;
+  animation: wl-done-in 520ms var(--ease) both;
+  padding-block: clamp(14px, 2vw, 26px);
+  text-align: center;
+}
+
+@keyframes wl-done-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.wl-done-check {
+  align-items: center;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px var(--accent-soft);
+  color: #fff;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  margin-bottom: 24px;
+  width: 52px;
+}
+
+.wl-done-check svg {
+  height: 26px;
+  width: 26px;
 }
 
 .wl-done-title {
   color: var(--ink);
-  font-size: 1.25rem;
+  font-size: clamp(1.375rem, 2.4vw, 1.625rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   margin: 0;
 }
 
@@ -2731,5 +2762,85 @@ button {
   color: var(--ink-soft);
   font-size: 0.9375rem;
   line-height: 1.6;
-  margin: 10px 0 0;
+  margin: 10px auto 0;
+  max-width: 34ch;
+}
+
+/* The address, shown back so they know which one landed. */
+.wl-done-reach {
+  align-items: center;
+  background: var(--surface-sunk);
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  gap: 8px;
+  justify-content: center;
+  margin: 24px 0 0;
+  padding: 9px 14px;
+}
+
+.wl-done-reach code {
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+/* The one thing worth asking for once they are in. */
+.wl-done-follow {
+  border-top: 1px solid var(--line);
+  margin-top: 26px;
+  padding-top: 24px;
+}
+
+.wl-done-follow p {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  margin: 0 0 14px;
+}
+
+.wl-follow {
+  align-items: center;
+  background: var(--ink);
+  border-radius: var(--radius-sm);
+  color: var(--paper);
+  display: inline-flex;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 20px;
+  transition:
+    background-color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.wl-follow:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+
+.wl-follow svg {
+  height: 16px;
+  width: 16px;
+}
+
+.wl-done-back {
+  color: var(--ink-muted);
+  display: inline-block;
+  font-size: 0.875rem;
+  margin-top: 18px;
+  transition: color var(--fast) var(--ease);
+}
+
+.wl-done-back:hover {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wl-done {
+    animation: none;
+  }
 }

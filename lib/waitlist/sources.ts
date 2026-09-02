@@ -3,7 +3,7 @@
  *
  * This module is the single source of truth and it lives on the server: the
  * form fetches it, and every submission is checked against it again. A client
- * can send any string it likes — only an id present here is accepted.
+ * can send any string it likes -  only an id present here is accepted.
  */
 
 export interface ReferralSource {

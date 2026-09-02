@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { validate } from '@/lib/waitlist/validate'
+import { checkXHandle } from '@/lib/waitlist/x-account'
 
 /** Bodies larger than this are refused before they are parsed. */
 const MAX_BODY_BYTES = 4_000
@@ -40,6 +41,18 @@ export async function POST(request: Request) {
 
   if (!result.ok) {
     return NextResponse.json({ errors: result.errors }, { status: 422 })
+  }
+
+  // The format was valid; now check the account is real. Only an explicit
+  // "missing" rejects — see checkXHandle for why this fails open.
+  if (result.value.handle) {
+    const status = await checkXHandle(result.value.handle)
+    if (status === 'missing') {
+      return NextResponse.json(
+        { errors: { handle: 'We could not find that account on X. Check the spelling.' } },
+        { status: 422 },
+      )
+    }
   }
 
   // TODO(supabase): insert result.value into the waitlist table, with a unique

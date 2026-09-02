@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from 'react'
 
+import { contact } from '@/lib/nav'
+import { site } from '@/lib/site'
 import type { ReferralSource } from '@/lib/waitlist/sources'
 import { LIMITS, normaliseHandle, validate } from '@/lib/waitlist/validate'
+
+import { XIcon } from './icons'
 
 type Errors = ReturnType<typeof validate>['errors']
 
@@ -73,13 +77,41 @@ export function WaitlistForm() {
   }
 
   if (done) {
+    const reach = email.trim().toLowerCase() || `@${normaliseHandle(handle)}`
+
     return (
       <div className="wl-done" role="status">
+        <span className="wl-done-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="m5 12.5 4.5 4.5L19 7.5"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+
         <p className="wl-done-title">You are on the list.</p>
-        <p className="wl-done-body">
-          We will reach out{email ? ` at ${email.trim().toLowerCase()}` : handle ? ` to @${normaliseHandle(handle)}` : ''}{' '}
-          when there is something worth your time. No newsletter.
+        <p className="wl-done-body">We will reach out when there is something worth your time. No newsletter.</p>
+
+        <p className="wl-done-reach">
+          <span>We will use</span>
+          <code>{reach}</code>
         </p>
+
+        <div className="wl-done-follow">
+          <p></p>
+          <a className="wl-follow" href={contact.x.href} rel="noreferrer" target="_blank">
+            <XIcon />
+            Follow {contact.x.handle}
+          </a>
+        </div>
+
+        <a className="wl-done-back" href={site.home}>
+          Back to the site
+        </a>
       </div>
     )
   }
@@ -96,7 +128,7 @@ export function WaitlistForm() {
           inputMode="email"
           maxLength={LIMITS.email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@company.com"
+          placeholder="you@email.com"
           type="email"
           value={email}
         />
@@ -117,7 +149,7 @@ export function WaitlistForm() {
             autoCapitalize="none"
             autoCorrect="off"
             id="wl-handle"
-            maxLength={LIMITS.handle + 1}
+            maxLength={LIMITS.handle}
             onChange={(event) => setHandle(event.target.value)}
             placeholder="mesub_io"
             spellCheck={false}
@@ -131,7 +163,7 @@ export function WaitlistForm() {
         ) : null}
       </div>
 
-      <p className="wl-hint">One of the two is enough — whichever you actually read.</p>
+      <p className="wl-hint">One of the two is enough -  whichever you actually read.</p>
 
       <div className="wl-field">
         <label htmlFor="wl-source">How did you hear about us?</label>
