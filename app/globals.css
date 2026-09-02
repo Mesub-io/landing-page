@@ -2158,43 +2158,77 @@ button {
   margin: 3px 0 0;
 }
 
-/* Three reviews, the latest one filled. */
-.proof-runs {
+/* The audit baseline as a commit line: the reviewed commit in accent, then the
+   commits that landed after it. The delta is part of the claim, not hidden. */
+
+.commit-line {
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  gap: 0;
+  margin-top: 4px;
   position: relative;
 }
 
-.proof-runs li {
-  align-items: center;
-  display: flex;
-  gap: 12px;
-}
-
-.proof-run-index {
-  color: var(--ink-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.6875rem;
-}
-
-.proof-run-bar {
+.commit-track {
   background: repeating-linear-gradient(
-    -45deg,
-    color-mix(in srgb, var(--ink) 22%, transparent) 0 1px,
-    transparent 1px 5px
+    90deg,
+    var(--line-strong) 0 4px,
+    transparent 4px 9px
   );
-  border: 1px solid var(--line-strong);
-  flex: 1;
-  height: 14px;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
 }
 
-.proof-run-bar[data-latest='true'] {
-  background: repeating-linear-gradient(-45deg, var(--accent) 0 1px, transparent 1px 5px);
+.commit-node {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  height: 11px;
+  position: relative;
+  width: 11px;
+}
+
+.commit-node + .commit-node {
+  margin-left: auto;
+}
+
+.commit-node[data-kind='audited'] {
+  background: var(--accent);
   border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  height: 13px;
+  width: 13px;
+}
+
+.commit-node[data-kind='head'] {
+  border-color: var(--ink);
+  border-width: 2px;
+}
+
+.commit-labels {
+  color: var(--ink-muted);
+  display: flex;
+  font-size: 0.75rem;
+  justify-content: space-between;
+  margin-top: 12px;
+  position: relative;
+}
+
+.commit-labels code {
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.proof-note {
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin: 18px 0 0;
+  max-width: 42ch;
+  position: relative;
 }
 
 /* --- The wide panel ------------------------------------------------------- */
@@ -2212,73 +2246,88 @@ button {
   text-wrap: balance;
 }
 
-.proof-states {
+/* --- The cap, drawn ------------------------------------------------------- */
+
+.gauge {
+  margin: clamp(28px, 3vw, 36px) auto 0;
+  max-width: 620px;
+  padding-inline: clamp(22px, 2.6vw, 28px);
+  position: relative;
+  width: 100%;
+}
+
+.gauge-head {
+  color: var(--ink-muted);
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(18px, 3vw, 34px);
-  justify-content: center;
-  list-style: none;
-  margin: clamp(26px, 3vw, 34px) 0 0;
-  padding: 0 clamp(22px, 2.6vw, 28px);
+  font-size: 0.75rem;
+  justify-content: space-between;
+  letter-spacing: 0.03em;
+  margin-bottom: 9px;
 }
 
-.proof-states li {
-  text-align: center;
-}
-
-.proof-dial {
-  align-items: center;
-  background: linear-gradient(to bottom, var(--line), transparent);
-  border-radius: 16px;
-  display: flex;
-  padding: 1px;
-}
-
-.proof-dial > span {
-  margin-right: -14px;
-}
-
-.proof-dial::after {
-  content: '';
-}
-
-.proof-disc {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  display: block;
-  height: 30px;
-  width: 30px;
-}
-
-.proof-disc[data-pattern='solid'] {
-  background: repeating-linear-gradient(-45deg, var(--accent) 0 1px, transparent 1px 4px);
-}
-
-.proof-disc[data-pattern='hatched'] {
+.gauge-bar {
   background: repeating-linear-gradient(
     -45deg,
-    color-mix(in srgb, var(--ink) 24%, transparent) 0 1px,
-    transparent 1px 4px
+    color-mix(in srgb, var(--ink) 12%, transparent) 0 1px,
+    transparent 1px 6px
   );
-  border-color: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  display: flex;
+  height: 46px;
+  position: relative;
 }
 
-.proof-disc[data-pattern='ring'] {
-  border-color: var(--line-strong);
+.gauge-fill {
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding-inline: 14px;
+  white-space: nowrap;
 }
 
-.proof-disc[data-pattern='empty'] {
-  border-style: dashed;
-  border-color: var(--line-strong);
+/* The right edge is the signed cap: nothing may cross it. */
+.gauge-cap {
+  background: var(--ink);
+  bottom: -6px;
+  position: absolute;
+  right: -1px;
+  top: -6px;
+  width: 2px;
 }
 
-.proof-state-label {
+.gauge-facts {
   color: var(--ink-muted);
-  display: block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.6875rem;
-  margin-top: 10px;
+  display: grid;
+  gap: 8px 26px;
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+@media (min-width: 720px) {
+  .gauge-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.gauge-facts li {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+
+.gauge-facts li::before {
+  background: var(--accent);
+  content: '';
+  height: 5px;
+  left: 0;
+  position: absolute;
+  top: 0.55em;
+  width: 5px;
 }
 
 /* --- The link at the foot of each panel ------------------------------------ */

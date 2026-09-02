@@ -38,22 +38,31 @@ export const closing = {
   audits: {
     icon: 'shield',
     label: 'Audited',
-    title: 'Three security reviews by Cantina.',
-    commit: AUDITED_COMMIT,
+    title: 'Three reviews by Cantina, and an honest delta.',
+    /** The audit baseline is a commit, and what landed after it is public too. */
+    baseline: `${AUDITED_COMMIT.slice(0, 10)}…`,
+    head: 'main',
+    note: 'Audit scope is commit-based. The reviewed commit is published, and so is everything that has landed since.',
     meta: [
-      { term: 'latest review', value: '2026-07-30' },
-      { term: 'audited through', value: `${AUDITED_COMMIT.slice(0, 12)}…` },
+      { term: 'reviews', value: 'Cantina × 3' },
+      { term: 'latest', value: '2026-07-30' },
     ],
     link: { label: 'See the diff since', href: `${REPO}/compare/${AUDITED_COMMIT}...main` },
   },
 
   custody: {
     statement: 'Non-custodial by construction: the cap is enforced on-chain, and the subscriber can revoke it at any time.',
-    states: [
-      { label: 'active', pattern: 'solid' },
-      { label: 'grace_period', pattern: 'hatched' },
-      { label: 'past_due', pattern: 'hatched' },
-      { label: 'suspended', pattern: 'empty' },
+    gauge: {
+      capLabel: 'Authorized cap — per period',
+      pullLabel: 'What a pull can take',
+      rejectLabel: 'Rejected by the program',
+      /** Illustrative proportion: the pull sits inside the signed cap. */
+      fill: 42,
+    },
+    facts: [
+      'The subscriber signs the cap once.',
+      'Every pull is checked against it on-chain.',
+      'Revoking ends it, with no one to ask.',
     ],
     link: { label: 'How delegation works', href: `${REPO}#overview` },
   },

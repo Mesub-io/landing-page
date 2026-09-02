@@ -92,14 +92,23 @@ export function Closing() {
 
           <div className="proof-figure">
             <div className="proof-glow" aria-hidden="true" />
-            <ul className="proof-runs">
-              {[1, 2, 3].map((run) => (
-                <li key={run}>
-                  <span className="proof-run-index">0{run}</span>
-                  <span className="proof-run-bar" data-latest={run === 3} />
-                </li>
+
+            <div className="commit-line" aria-hidden="true">
+              <span className="commit-track" />
+              <span className="commit-node" data-kind="audited" />
+              {[0, 1, 2].map((i) => (
+                <span className="commit-node" key={i} />
               ))}
-            </ul>
+              <span className="commit-node" data-kind="head" />
+            </div>
+            <div className="commit-labels">
+              <span>
+                audited through <code>{audits.baseline}</code>
+              </span>
+              <span>{audits.head}</span>
+            </div>
+            <p className="proof-note">{audits.note}</p>
+
             <dl className="proof-meta">
               {audits.meta.map((item) => (
                 <div key={item.term}>
@@ -120,17 +129,23 @@ export function Closing() {
           <Corners />
           <p className="proof-statement">{custody.statement}</p>
 
-          <ul className="proof-states">
-            {custody.states.map((state) => (
-              <li key={state.label}>
-                <span className="proof-dial">
-                  <span className="proof-disc" data-pattern={state.pattern} />
-                  <span className="proof-disc" data-pattern={state.pattern === 'solid' ? 'empty' : 'ring'} />
-                </span>
-                <span className="proof-state-label">{state.label}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="gauge">
+            <div className="gauge-head">
+              <span>{custody.gauge.capLabel}</span>
+              <span>{custody.gauge.rejectLabel}</span>
+            </div>
+            <div className="gauge-bar">
+              <span className="gauge-fill" style={{ width: `${custody.gauge.fill}%` }}>
+                <span className="gauge-fill-label">{custody.gauge.pullLabel}</span>
+              </span>
+              <span className="gauge-cap" aria-hidden="true" />
+            </div>
+            <ul className="gauge-facts">
+              {custody.facts.map((fact) => (
+                <li key={fact}>{fact}</li>
+              ))}
+            </ul>
+          </div>
 
           <a className="proof-link proof-link-centred" href={custody.link.href} rel="noreferrer" target="_blank">
             {custody.link.label}
