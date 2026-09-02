@@ -18,6 +18,7 @@ export function WaitlistForm() {
   const [handle, setHandle] = useState('')
   const [source, setSource] = useState('')
   const [note, setNote] = useState('')
+  const [trap, setTrap] = useState('')
   const [errors, setErrors] = useState<Errors>({})
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
@@ -42,10 +43,14 @@ export function WaitlistForm() {
     event.preventDefault()
     if (sending) return
 
-    // Same checks as the server, run here only for an immediate answer.
+    // Same checks as the server, run here only for an immediate answer. The
+    // source is checked against the list the server actually served, so the
+    // form can never reject an option the server would accept.
     const local = validate({ email, handle, note, source })
-    if (!local.ok) {
-      setErrors(local.errors)
+    const localErrors = { ...local.errors }
+    if (source && sources.some((option) => option.id === source)) delete localErrors.source
+    if (Object.keys(localErrors).length > 0) {
+      setErrors(localErrors)
       return
     }
 
@@ -54,18 +59,14 @@ export function WaitlistForm() {
 
     try {
       const response = await fetch('/api/waitlist', {
-        body: JSON.stringify({ company: '', email, handle, note, source }),
+        body: JSON.stringify({ company: trap, email, handle, note, source }),
         headers: { 'content-type': 'application/json' },
         method: 'POST',
       })
 
-      if (response.status === 422) {
-        const data: { errors: Errors } = await response.json()
-        setErrors(data.errors)
-        return
-      }
       if (!response.ok) {
-        setErrors({ form: 'Something went wrong on our side. Try again in a moment.' })
+        const data = (await response.json().catch(() => null)) as { errors?: Errors } | null
+        setErrors(data?.errors ?? { form: 'Something went wrong on our side. Try again in a moment.' })
         return
       }
       setDone(true)
@@ -163,7 +164,10 @@ export function WaitlistForm() {
         ) : null}
       </div>
 
-      <p className="wl-hint">One of the two is enough -  whichever you actually read.</p>
+      <p className="wl-hint">
+        One of the two is enough, whichever you actually read. A handle is checked against X to confirm the account
+        exists.
+      </p>
 
       <div className="wl-field">
         <label htmlFor="wl-source">How did you hear about us?</label>
@@ -216,8 +220,9 @@ export function WaitlistForm() {
         autoComplete="off"
         className="wl-trap"
         name="company"
+        onChange={(event) => setTrap(event.target.value)}
         tabIndex={-1}
-        onChange={() => undefined}
+        value={trap}
       />
 
       {errors.form ? (

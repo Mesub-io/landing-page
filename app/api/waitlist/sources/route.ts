@@ -5,8 +5,9 @@ import { referralSources } from '@/lib/waitlist/sources'
 /**
  * The options the form is allowed to offer.
  *
- * Served rather than hard-coded in the client so the list can change without a
- * deploy of the form, and so there is one list to validate against.
+ * Served so there is exactly one list, and the same one the submission is
+ * validated against. (It is a compiled constant, so changing it still needs a
+ * deploy — the point is the single source, not hot reloading.)
  */
 export function GET() {
   return NextResponse.json(

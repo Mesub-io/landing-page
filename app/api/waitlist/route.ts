@@ -1,26 +1,43 @@
 import { NextResponse } from 'next/server'
 
+import { clientKey, rateLimit } from '@/lib/waitlist/rate-limit'
 import { validate } from '@/lib/waitlist/validate'
 import { checkXHandle } from '@/lib/waitlist/x-account'
 
-/** Bodies larger than this are refused before they are parsed. */
+/** Bodies larger than this are refused. */
 const MAX_BODY_BYTES = 4_000
 
+/** One shape for every failure, so the client only has one branch to read. */
+function fail(errors: Record<string, string>, status: number, headers?: HeadersInit) {
+  return NextResponse.json({ errors }, { headers, status })
+}
+
 export async function POST(request: Request) {
-  const length = Number(request.headers.get('content-length') ?? 0)
-  if (length > MAX_BODY_BYTES) {
-    return NextResponse.json({ error: 'Payload too large.' }, { status: 413 })
+  // Before any work: an unauthenticated caller must not be able to spend our
+  // request budget, nor use us to hammer X.
+  const limit = rateLimit(clientKey(request))
+  if (!limit.ok) {
+    return fail({ form: 'Too many attempts. Try again in a minute.' }, 429, {
+      'retry-after': String(limit.retryAfterSeconds),
+    })
+  }
+
+  // The content-length header is absent on a chunked body and can be forged,
+  // so the real cap is measured on what actually arrived.
+  const raw = await request.text()
+  if (raw.length > MAX_BODY_BYTES) {
+    return fail({ form: 'That payload is too large.' }, 413)
   }
 
   let body: unknown
   try {
-    body = await request.json()
+    body = JSON.parse(raw)
   } catch {
-    return NextResponse.json({ error: 'Expected a JSON body.' }, { status: 400 })
+    return fail({ form: 'Expected a JSON body.' }, 400)
   }
 
   if (typeof body !== 'object' || body === null) {
-    return NextResponse.json({ error: 'Expected a JSON object.' }, { status: 400 })
+    return fail({ form: 'Expected a JSON object.' }, 400)
   }
 
   const payload = body as Record<string, unknown>
@@ -28,7 +45,7 @@ export async function POST(request: Request) {
 
   // A field no human sees; anything filling it is a bot. Answer 201 so the bot
   // believes it succeeded and does not retry with a different shape.
-  if (read('company')) {
+  if (read('company')?.trim()) {
     return NextResponse.json({ ok: true }, { status: 201 })
   }
 
@@ -40,7 +57,7 @@ export async function POST(request: Request) {
   })
 
   if (!result.ok) {
-    return NextResponse.json({ errors: result.errors }, { status: 422 })
+    return fail(result.errors as Record<string, string>, 422)
   }
 
   // The format was valid; now check the account is real. Only an explicit
@@ -48,19 +65,17 @@ export async function POST(request: Request) {
   if (result.value.handle) {
     const status = await checkXHandle(result.value.handle)
     if (status === 'missing') {
-      return NextResponse.json(
-        { errors: { handle: 'We could not find that account on X. Check the spelling.' } },
-        { status: 422 },
-      )
+      return fail({ handle: 'We could not find that account on X. Check the spelling.' }, 422)
     }
   }
 
-  // TODO(supabase): insert result.value into the waitlist table, with a unique
-  // index on lower(email) and on handle so a second submission updates rather
-  // than duplicates. Until then the entry is accepted and not stored.
+  // TODO(supabase): insert result.value, with a unique index on lower(email)
+  // and lower(handle) so a second submission updates rather than duplicates.
+  // Nothing is persisted until then.
   console.info('[waitlist] accepted', {
-    handle: result.value.handle,
+    // No personal data in the logs: the source is enough to read the funnel.
     hasEmail: Boolean(result.value.email),
+    hasHandle: Boolean(result.value.handle),
     source: result.value.source,
   })
 

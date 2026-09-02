@@ -9,7 +9,7 @@ import { referralSourceIds } from './sources'
 
 export const LIMITS = {
   email: 254,
-  handle: 25,
+  handle: 15,
   note: 500,
 }
 
@@ -84,7 +84,8 @@ export function validate(input: WaitlistSubmission): ValidationResult {
     ok: Object.keys(errors).length === 0,
     value: {
       email: email ? email.toLowerCase() : null,
-      handle: handle || null,
+      // X handles are case-insensitive: Vercel, vercel and VERCEL are one account.
+      handle: handle ? handle.toLowerCase() : null,
       note: note || null,
       source,
     },
