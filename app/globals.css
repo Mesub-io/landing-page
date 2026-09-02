@@ -2708,6 +2708,10 @@ button {
 }
 
 .wl-submit {
+  /* `.cta` is hidden by default because the nav's own button appears only on
+     wide screens. Every other use re-declares its display; this one has to as
+     well, or the form has no submit button on a phone. */
+  display: flex;
   justify-content: center;
   margin-top: 4px;
   width: 100%;
@@ -2842,5 +2846,142 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .wl-done {
     animation: none;
+  }
+}
+
+/* ==========================================================================
+   Mobile
+
+   Every rule below sits inside a max-width query, so the desktop layout is
+   untouched by construction.
+
+   Three things break on a narrow screen, and only three: elements that are
+   deliberately wider than their track, grid items that refuse to shrink, and
+   controls sized for a cursor rather than a thumb.
+   ========================================================================== */
+
+@media (max-width: 999px) {
+  /* An auto inline margin turns a grid item into shrink-to-fit. Every child of
+     the stage is absolutely positioned, so the hero mock measured zero wide and
+     never rendered at all. Centre it by alignment instead. */
+  .hero-visual {
+    justify-self: center;
+    margin-inline: 0;
+    width: 100%;
+  }
+
+  /* The dashboard is deliberately wider than its track on desktop, where it
+     bleeds past the stage on the right. On a phone that bleed is just a panel
+     with its right half cropped off. */
+  .panel {
+    min-width: 0;
+  }
+
+  /* A grid item's automatic minimum is its own content, so the snippet pushed
+     its column past the viewport as soon as the typing finished. Let the column
+     shrink; the code keeps its own horizontal scroll. */
+  .builders-copy,
+  .builders-panel,
+  .integrate-copy,
+  .integrate-visual {
+    min-width: 0;
+  }
+
+  /* Scrolling the snippet sideways should not drag the page with it. */
+  .code-body,
+  .panel-table {
+    overscroll-behavior-x: contain;
+  }
+
+  /* Both the snippet and the table are too wide to fit a phone and scroll
+     sideways instead. Without a signal a cut line reads as a broken layout, so
+     the edge fades into the surface behind it: it looks like more, not like
+     damage. The fade sits above the content and takes no pointer events, so it
+     never eats a swipe. */
+  /* The snippet scrolls in a child, so an overlay pinned to the window stays
+     put while the code moves underneath it. */
+  .code-window::after {
+    background: linear-gradient(to right, rgb(19 20 23 / 0%), rgb(19 20 23 / 92%));
+    bottom: 38px;
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 38px;
+    width: 34px;
+    z-index: 2;
+  }
+
+  /* The table is itself the scroll container, so an absolute child would scroll
+     away with the rows. A mask is resolved in the element's own box and stays
+     at the edge. */
+  .panel-table {
+    mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent 100%);
+  }
+}
+
+/* Below the nav breakpoint every control is touched rather than clicked, so
+   they need a thumb-sized target. */
+@media (max-width: 859px) {
+  .nav-toggle {
+    height: 44px;
+    width: 44px;
+  }
+
+  .brand,
+  .footer-brand {
+    min-height: 44px;
+  }
+
+  .pill {
+    min-height: 44px;
+  }
+
+  .email-action {
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The height that makes each link tappable is taken back out of the gap, so
+     the column keeps the rhythm it had. */
+  .footer-columns ul {
+    gap: 0;
+  }
+
+  .footer-columns a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+
+  /* 11px of monospace is legible on a desk and not in a hand. */
+  .faq-index {
+    font-size: 0.75rem;
+  }
+
+  /* Safari on iOS zooms the page in when a focused field is under 16px, and it
+     does not zoom back out afterwards. 16px is the floor, not a preference. */
+  .wl-field input,
+  .wl-field select,
+  .wl-field textarea {
+    font-size: 1rem;
+  }
+
+  /* The remaining standalone links: the record's outbound links, the legal
+     line, and the ways back from the 404. Links set inside a sentence are left
+     alone on purpose - padding them would break the line they sit in. */
+  .record-row a,
+  .footer-bottom a,
+  .missing-links a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+
+  /* That height would otherwise stack on top of the gap the lists already
+     carry, so it is taken back out. */
+  .footer-bottom ul,
+  .missing-links {
+    gap: 0 clamp(16px, 5vw, 28px);
   }
 }
