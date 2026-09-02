@@ -34,6 +34,7 @@ function Art({ kind }: { kind: string }) {
           <g>
             <circle className="art-sol-coin" cx="151" cy="95" r="40" />
             <image className="art-sol-token" href="/sol-token.png" x="117" y="61" width="68" height="68" />
+            <circle className="art-usdc-mask" cx="214" cy="95" r="42" />
             <image className="art-usdc-token" href="/USDC-Nobg.png" x="173" y="54" width="82" height="82" />
           </g>
         ) : null}

@@ -812,6 +812,10 @@ button {
   filter: drop-shadow(0 8px 12px rgb(20 21 26 / 8%));
 }
 
+.art-usdc-mask {
+  fill: var(--surface);
+}
+
 .art-usdc-token {
   filter: drop-shadow(0 8px 14px rgb(20 21 26 / 13%));
 }
