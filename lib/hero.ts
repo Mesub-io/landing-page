@@ -4,9 +4,10 @@ import { PLACEHOLDER } from './nav'
 
 export const hero = {
   eyebrow: 'Billing layer for Solana Subscriptions',
-  headline: 'Recurring revenue on Solana, without building the billing.',
-  subhead:
-    'Mesub turns an authorized on-chain pull into a subscription your product can act on: collection on schedule, retries when it fails, and access that follows the payment.',
+  headline: 'Recurring subscriptions for Solana products',
+  subhead: 'Collect recurring payments and gate access without building billing infrastructure.',
+  detail:
+    'Mesub gives Solana apps scheduled collections, failed-payment retries, webhooks, and API/SDK access states. Build memberships, SaaS plans, and paid features around states like active, past_due, and grace_period.',
   primary: { label: 'Join waitlist', href: PLACEHOLDER },
   secondary: { label: 'See how it works', href: PLACEHOLDER },
   note: {

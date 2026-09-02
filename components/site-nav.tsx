@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { brand, contact, cta, links } from '@/lib/nav'
+import { site } from '@/lib/site'
 
 import { MailIcon, XIcon } from './icons'
 import { Logo } from './logo'
@@ -51,7 +52,7 @@ export function SiteNav() {
     <header className="nav" data-scrolled={scrolled}>
       <div className="nav-inner">
         <div className="nav-left">
-          <a className="brand" href="/" aria-label={`${brand.name} home`}>
+          <a className="brand" href={site.home} aria-label={`${brand.name} home`}>
             <span className="brand-tile">
               <Logo />
             </span>

@@ -18,6 +18,7 @@ export function Hero() {
           <p className="eyebrow">{hero.eyebrow}</p>
           <h1>{hero.headline}</h1>
           <p className="hero-sub">{hero.subhead}</p>
+          <p className="hero-detail">{hero.detail}</p>
           <div className="hero-actions">
             <a className="cta" href={hero.primary.href}>
               {hero.primary.label}

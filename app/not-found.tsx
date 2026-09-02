@@ -36,7 +36,7 @@ export default function NotFound() {
           </p>
 
           <div className="missing-actions">
-            <a className="cta" href="/">
+            <a className="cta" href={site.home}>
               Back to the homepage
               <Arrow />
             </a>
@@ -45,7 +45,7 @@ export default function NotFound() {
           <ul className="missing-links">
             {links.map((link) => (
               <li key={link.label}>
-                <a href={`/${link.href}`}>{link.label}</a>
+                <a href={`${site.home}${link.href}`}>{link.label}</a>
               </li>
             ))}
             <li>

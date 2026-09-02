@@ -1,4 +1,6 @@
 import { footer } from '@/lib/footer'
+import { site } from '@/lib/site'
+
 import { brand } from '@/lib/nav'
 
 import { Logo } from './logo'
@@ -23,7 +25,7 @@ export function SiteFooter() {
       <div className="footer-inner">
         <div className="footer-top">
           <div>
-            <a className="footer-brand" href="/">
+            <a className="footer-brand" href={site.home}>
               <span className="brand-tile">
                 <Logo />
               </span>

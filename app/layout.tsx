@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
-  alternates: { canonical: '/' },
+  alternates: { canonical: site.home },
   category: 'technology',
   openGraph: {
     type: 'website',
-    url: site.url,
+    url: `${site.url}${site.home}`,
     siteName: site.name,
     title: 'Mesub — Billing layer for Solana subscriptions',
     description: site.description,

@@ -21,6 +21,8 @@ export const site = {
     'USDC subscriptions',
     'web3 billing infrastructure',
   ],
+  /** Where the landing page lives while the root redirects to it. */
+  home: '/landing',
   x: 'https://x.com/mesub_io',
   github: 'https://github.com/Mesub-io',
   email: 'contact@mesub.io',

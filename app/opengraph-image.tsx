@@ -44,11 +44,10 @@ export default function OpengraphImage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: -2.5, lineHeight: 1.05, maxWidth: 940 }}>
-            Recurring revenue on Solana, without building the billing.
+            Recurring subscriptions for Solana products
           </div>
           <div style={{ color: '#4a4f5a', fontSize: 28, lineHeight: 1.4, maxWidth: 900 }}>
-            Collect authorized payments on schedule, retry the ones that fail, and connect payment status to real
-            product access.
+            Collect recurring payments and gate access without building billing infrastructure.
           </div>
         </div>
 
