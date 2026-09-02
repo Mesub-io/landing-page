@@ -1,9 +1,9 @@
 /**
- * A small sliding-window limiter, keyed by IP.
+ * A small sliding-window limiter, keyed by client address.
  *
  * It lives in memory, so each serverless instance keeps its own counters: this
  * raises the cost of hammering the endpoint, it does not make it impossible.
- * Move the window into the datastore once there is one.
+ * Move the window into Postgres or Upstash if that stops being enough.
  */
 
 const WINDOW_MS = 60_000
