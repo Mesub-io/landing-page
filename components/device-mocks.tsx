@@ -1,6 +1,6 @@
 /**
  * Placeholder devices for the hero: a desktop window with a phone in front.
- * Everything is drawn in CSS — no screenshots yet — so the composition can be
+ * Everything is drawn in CSS -  no screenshots yet -  so the composition can be
  * swapped for the real product UI without touching the layout.
  *
  * The stage is a container: every dimension below is in `em`, and the stage's

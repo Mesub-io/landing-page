@@ -5,11 +5,11 @@ import { ImageResponse } from 'next/og'
 
 import { site } from '@/lib/site'
 
-export const alt = 'Mesub — Billing layer for Solana subscriptions'
+export const alt = 'Mesub -  Billing layer for Solana subscriptions'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-/** The share card, generated at build time — no design file to keep in sync. */
+/** The share card, generated at build time -  no design file to keep in sync. */
 export default async function OpengraphImage() {
   // The mark is inlined: a generated image cannot fetch from a site that is
   // not serving yet, and CSS masks do not exist in this renderer.

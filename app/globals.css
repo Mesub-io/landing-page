@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Mesub — foundations. Light theme.
+   Mesub -  foundations. Light theme.
 
    The ground is warm paper, never pure white; the ink is never pure black.
    One accent carries every action. Elevation comes from hairlines and a very
@@ -628,7 +628,7 @@ button {
 }
 
 /* ==========================================================================
-   Pillars — the three cards under the hero.
+   Pillars -  the three cards under the hero.
 
    The page reads as three stacked planes: paper for the hero, a sunk band for
    this section, white for the cards themselves. The band edge is the seam
@@ -775,7 +775,7 @@ button {
 }
 
 /* ==========================================================================
-   Builders — copy on the left, the merchant's dashboard on the right.
+   Builders -  copy on the left, the merchant's dashboard on the right.
 
    The section arrives on scroll: the two columns rise, then the stats and the
    rows follow in a short stagger. Nothing loops; the entrance plays once.
@@ -1064,7 +1064,7 @@ button {
 
 
 /* ==========================================================================
-   The halo behind the dashboard — concentric rings, in the spirit of the
+   The halo behind the dashboard -  concentric rings, in the spirit of the
    21st.dev "Vermilion Rings" gradient, rebuilt from our own accent so it
    follows the brand instead of carrying a second palette.
    ========================================================================== */
@@ -1103,7 +1103,7 @@ button {
 
 /* The stage's ground: concentric rings in the spirit of the 21st.dev
    "Vermilion Rings" gradient, rebuilt from our own accent. Flat bands, then a
-   soft blur — the same recipe as the original, mixed to our palette. */
+   soft blur -  the same recipe as the original, mixed to our palette. */
 .stage-rings {
   --ring-cream: #fff1cf;
 
@@ -1241,7 +1241,7 @@ button {
 }
 
 /* ==========================================================================
-   Integrate — the snippet on the left, the argument on the right.
+   Integrate -  the snippet on the left, the argument on the right.
    The code types itself out once, when the section arrives.
    ========================================================================== */
 
@@ -1628,8 +1628,8 @@ button {
 
 /* --- Claude, in a bubble --------------------------------------------------
    Claude sits on the right and the bubble points back at him, so the eye
-   lands on the sentence first. The tail is drawn twice — the border triangle,
-   then the fill on top — or its outline breaks at the join. */
+   lands on the sentence first. The tail is drawn twice -  the border triangle,
+   then the fill on top -  or its outline breaks at the join. */
 
 .claude-say {
   align-items: flex-start;
@@ -1938,7 +1938,7 @@ button {
 }
 
 /* ==========================================================================
-   Closing — the last ask, then the record it stands on.
+   Closing -  the last ask, then the record it stands on.
    ========================================================================== */
 
 .closing {
@@ -2111,7 +2111,7 @@ button {
 }
 
 /* ==========================================================================
-   FAQ — the questions people type, in the words they type them.
+   FAQ -  the questions people type, in the words they type them.
 
    Native <details>, so every answer is in the HTML whether or not it is open:
    crawlers and answer engines read the closed ones too.
@@ -2298,7 +2298,7 @@ button {
 
 /* Animating open: `interpolate-size` lets height transition to auto, and
    `allow-discrete` carries content-visibility along with it. Browsers without
-   it simply snap open — the content is never hidden from anyone. */
+   it simply snap open -  the content is never hidden from anyone. */
 .faq-item::details-content {
   block-size: 0;
   content-visibility: hidden;
@@ -2323,7 +2323,7 @@ button {
 }
 
 /* ==========================================================================
-   404 — the same ground as the closing section, with one way back.
+   404 -  the same ground as the closing section, with one way back.
    ========================================================================== */
 
 .missing {

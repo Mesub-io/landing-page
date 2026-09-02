@@ -33,12 +33,12 @@ export const closing = {
     },
     {
       label: 'licence',
-      value: 'MIT — Solana Foundation',
+      value: 'MIT -  Solana Foundation',
       link: { label: 'Read', href: `${REPO}/blob/main/LICENSE` },
     },
     {
       label: 'audits',
-      value: 'Cantina × 3 — latest 2026-07-30',
+      value: 'Cantina × 3 -  latest 2026-07-30',
       link: { label: 'Status', href: `${REPO}/blob/main/audits/AUDIT_STATUS.md` },
     },
     {
@@ -49,7 +49,7 @@ export const closing = {
     },
     {
       label: 'custody',
-      value: 'None — capped, revocable delegation',
+      value: 'None -  capped, revocable delegation',
       link: { label: 'How it works', href: `${REPO}#overview` },
     },
   ],

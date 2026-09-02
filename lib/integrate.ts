@@ -17,7 +17,7 @@ export interface Token {
 
 export const integrate = {
   title: 'Gate your product in one call.',
-  body: 'Install the SDK, read the subscription state, decide. Accounts, delegations and pull execution stay on our side of the line — your route handler only ever sees an answer.',
+  body: 'Install the SDK, read the subscription state, decide. Accounts, delegations and pull execution stay on our side of the line -  your route handler only ever sees an answer.',
   bullets: [
     { icon: 'braces', label: 'Typed SDK, no account juggling' },
     { icon: 'layers', label: 'Drop it in middleware or a route' },
@@ -28,7 +28,7 @@ export const integrate = {
   /** Claude, speaking from a bubble pinned to the editor. */
   mcp: {
     speaker: 'Claude',
-    line: 'Plug me into the MCP server with the Mesub skills — I’ll take it from here.',
+    line: 'Plug me into the MCP server with the Mesub skills -  I’ll take it from here.',
     action: 'Connect Claude',
     href: PLACEHOLDER,
   },

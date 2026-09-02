@@ -5,7 +5,7 @@ import { PLACEHOLDER } from './nav'
 export const pillars = {
   title: 'Everything after the signature.',
   subhead:
-    'The protocol settles the money. Mesub runs the subscription around it — so a payment result becomes something your product can act on.',
+    'The protocol settles the money. Mesub runs the subscription around it -  so a payment result becomes something your product can act on.',
   action: { label: 'See how it works', href: PLACEHOLDER },
   cards: [
     {

@@ -85,7 +85,7 @@ export function TalkToUs() {
               </a>
 
               {/* A mail client is not guaranteed to exist, so the address is
-                  copied on the same tap — no second target to miss. */}
+                  copied on the same tap -  no second target to miss. */}
               {'copy' in option && option.copy ? (
                 <span className="talk-copied" data-shown={copied}>
                   {copied ? <CheckIcon /> : <CopyIcon />}

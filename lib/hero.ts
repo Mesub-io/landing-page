@@ -1,4 +1,4 @@
-/** Hero copy. Placeholder wording — meant to be argued with. */
+/** Hero copy. Placeholder wording -  meant to be argued with. */
 
 import { PLACEHOLDER } from './nav'
 

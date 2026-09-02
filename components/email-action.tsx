@@ -7,7 +7,7 @@ import { contact } from '@/lib/nav'
 /**
  * The address, not a label that may do nothing.
  *
- * `mailto:` only works when the device has a mail handler registered — on a
+ * `mailto:` only works when the device has a mail handler registered -  on a
  * desktop without one, clicking it is silent. So the click does both: it lets
  * the mail client open if there is one, and copies the address either way,
  * with visible feedback. Something always happens.

@@ -1,7 +1,7 @@
 /**
  * The builder section.
  *
- * The figures below belong to the *merchant's* dashboard in the mock — they
+ * The figures below belong to the *merchant's* dashboard in the mock -  they
  * illustrate the product UI. They are not claims about Mesub's own traction.
  */
 

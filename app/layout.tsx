@@ -16,8 +16,8 @@ const sans = Inter_Tight({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Mesub — Billing layer for Solana subscriptions',
-    template: '%s — Mesub',
+    default: 'Mesub -  Billing layer for Solana subscriptions',
+    template: '%s -  Mesub',
   },
   description: site.description,
   keywords: site.keywords,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: `${site.url}${site.home}`,
     siteName: site.name,
-    title: 'Mesub — Billing layer for Solana subscriptions',
+    title: 'Mesub -  Billing layer for Solana subscriptions',
     description: site.description,
     locale: 'en_US',
   },
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@mesub_io',
     creator: '@mesub_io',
-    title: 'Mesub — Billing layer for Solana subscriptions',
+    title: 'Mesub -  Billing layer for Solana subscriptions',
     description: site.description,
   },
   robots: {
