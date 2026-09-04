@@ -164,10 +164,7 @@ export function WaitlistForm() {
         ) : null}
       </div>
 
-      <p className="wl-hint">
-        One of the two is enough, whichever you actually read. A handle is checked against X to confirm the account
-        exists.
-      </p>
+      <p className="wl-hint">One of the two is enough, whichever you actually read.</p>
 
       <div className="wl-field">
         <label htmlFor="wl-source">How did you hear about us?</label>
