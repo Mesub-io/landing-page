@@ -1647,6 +1647,54 @@ button {
   color: var(--accent);
 }
 
+/* Entries with nowhere to go yet. At rest they are indistinguishable from the
+   links beside them, so the column stays even; the hint is spent on hover and
+   focus instead. A button rather than an anchor: keyboard reachable, and there
+   is no href to follow or history entry to undo. */
+.footer-soon {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: help;
+  font-size: 0.9375rem;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  transition: color var(--fast) var(--ease);
+}
+
+.footer-soon:hover {
+  color: var(--accent);
+}
+
+/* Beside the entry, not above it: the rows sit 10px apart, so a hint stacked on
+   top would land on the label of the row above. Absolute, so nothing in the
+   column moves when it appears, and hidden by opacity so it can fade. */
+.footer-soon-hint {
+  background: var(--ink);
+  border-radius: var(--radius-sm);
+  color: var(--paper);
+  font-size: 0.6875rem;
+  left: calc(100% + 9px);
+  letter-spacing: 0.04em;
+  opacity: 0;
+  padding: 2px 7px;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity var(--fast) var(--ease);
+  white-space: nowrap;
+}
+
+/* :focus, not :focus-visible: a tap focuses the button without counting as
+   keyboard navigation, and a tap is the only way to ask on a phone. */
+.footer-soon:hover .footer-soon-hint,
+.footer-soon:focus .footer-soon-hint {
+  opacity: 1;
+}
+
 .footer-bottom {
   align-items: center;
   border-top: 1px solid var(--line);
@@ -3000,7 +3048,10 @@ button {
     gap: 0;
   }
 
-  .footer-columns a {
+  /* The coming-soon rows are not tappable, but they sit in the same list, so
+     they take the same height or the column loses its rhythm. */
+  .footer-columns a,
+  .footer-columns .footer-soon {
     align-items: center;
     display: inline-flex;
     min-height: 44px;

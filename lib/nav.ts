@@ -3,6 +3,8 @@
  * Links marked PLACEHOLDER have no destination yet.
  */
 
+import { site } from '@/lib/site'
+
 export const PLACEHOLDER = '#'
 
 export const brand = {
@@ -15,10 +17,12 @@ export interface NavLink {
   label: string
 }
 
+/* The sections live on the landing page, so the hrefs are absolute: a bare
+   fragment would do nothing on /waitlist or any other route. */
 export const links: NavLink[] = [
-  { label: 'Product', href: '#product' },
-  { label: 'Developers', href: '#developers' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Product', href: `${site.home}#product` },
+  { label: 'Developers', href: `${site.home}#developers` },
+  { label: 'FAQ', href: `${site.home}#faq` },
 ]
 
 export const cta = { label: 'Join waitlist', href: '/waitlist' }

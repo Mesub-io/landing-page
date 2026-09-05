@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { brand, contact, cta, links } from '@/lib/nav'
@@ -71,9 +72,9 @@ export function SiteNav() {
 
         <nav className="nav-links" aria-label="Main">
           {links.map((link) => (
-            <a className="nav-link" href={link.href} key={link.label}>
+            <Link className="nav-link" href={link.href} key={link.label}>
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -98,9 +99,9 @@ export function SiteNav() {
         <div className="nav-sheet" id="nav-sheet">
           <div className="nav-sheet-inner">
             {links.map((link) => (
-              <a className="nav-sheet-link" href={link.href} key={link.label} onClick={() => setSheetOpen(false)}>
+              <Link className="nav-sheet-link" href={link.href} key={link.label} onClick={() => setSheetOpen(false)}>
                 {link.label}
-              </a>
+              </Link>
             ))}
             <a className="cta nav-sheet-cta" href={cta.href} onClick={() => setSheetOpen(false)}>
               {cta.label}

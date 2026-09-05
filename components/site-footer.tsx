@@ -47,12 +47,21 @@ export function SiteFooter() {
               <ul>
                 {column.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      {...(isExternal(link.href) ? { rel: 'noreferrer', target: '_blank' } : {})}
-                    >
-                      {link.label}
-                    </a>
+                    {'soon' in link ? (
+                      <button className="footer-soon" type="button">
+                        {link.label}
+                        <span className="footer-soon-hint" role="tooltip">
+                          Soon
+                        </span>
+                      </button>
+                    ) : (
+                      <a
+                        href={link.href}
+                        {...(isExternal(link.href) ? { rel: 'noreferrer', target: '_blank' } : {})}
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -64,13 +73,6 @@ export function SiteFooter() {
           <p>
             © {new Date().getFullYear()} {brand.name}. {footer.note}
           </p>
-          <ul>
-            {footer.legal.map((link) => (
-              <li key={link.label}>
-                <a href={link.href}>{link.label}</a>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </footer>
